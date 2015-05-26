@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using backend.model;
-using rerest.models.@base;
+using modelInterface;
 
 namespace rerest.models.output
 {
@@ -14,7 +13,7 @@ namespace rerest.models.output
 
         public UserList() { Friends = new List<string>();}
 
-        public UserList(IEnumerable<User> users)
+        public UserList(IEnumerable<IUser> users)
         {
             Friends = users.Select(u => u.Username).ToList();
         }

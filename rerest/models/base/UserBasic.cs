@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Serialization;
-using backend.model;
+using modelInterface;
 
 namespace rerest.models.@base
 {
@@ -11,7 +11,7 @@ namespace rerest.models.@base
         public string Username { get; set; }
 
         public UserBasic() { }
-        public UserBasic(User user) : this()
+        public UserBasic(IUser user) : this()
         {
             Username = user.Username;
         }

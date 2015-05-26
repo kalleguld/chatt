@@ -58,11 +58,10 @@
     <Compile Include="behaviors\EnableCrossOriginResourceSharingBehavior.cs" />
     <Compile Include="behaviors\HeaderInjectorInspector.cs" />
     <Compile Include="controllers\BaseController.cs" />
-    <Compile Include="controllers\Friends.cs" />
-    <Compile Include="controllers\Tokens.cs" />
-    <Compile Include="controllers\Users.cs" />
-    <Compile Include="models\input\TokenInput.cs" />
-    <Compile Include="models\input\UsernameInput.cs" />
+    <Compile Include="controllers\FriendController.cs" />
+    <Compile Include="controllers\MessageController.cs" />
+    <Compile Include="controllers\TokenController.cs" />
+    <Compile Include="controllers\UserController.cs" />
     <Compile Include="models\output\exceptions\JsonBadRequest.cs" />
     <Compile Include="models\output\exceptions\JsonException.cs" />
     <Compile Include="models\output\exceptions\ErrorMessage.cs" />
@@ -71,10 +70,10 @@
     <Compile Include="models\output\exceptions\JsonNotFound.cs" />
     <Compile Include="models\output\exceptions\JsonUsernameExists.cs" />
     <Compile Include="models\output\JsonResponse.cs" />
-    <Compile Include="models\input\LoginInfo.cs" />
+    <Compile Include="models\output\MessageList.cs" />
     <Compile Include="models\output\TokenInfo.cs" />
-    <Compile Include="models\input\NewUserInfo.cs" />
     <Compile Include="models\base\UserBasic.cs" />
+    <Compile Include="models\output\TokenList.cs" />
     <Compile Include="models\output\UserInfo.cs" />
     <Compile Include="models\output\UserList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,12 +85,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\backend\backend.csproj">
-      <Project>{2f3a436a-e57b-4cf7-ba66-b2c3405bd5ad}</Project>
-      <Name>backend</Name>
+    <ProjectReference Include="..\modelInterface\modelInterface.csproj">
+      <Project>{c590b2a1-660c-45cd-a880-fe083634e5d2}</Project>
+      <Name>modelInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\serviceInterface\serviceInterface.csproj">
+      <Project>{5efb6bb4-ca5b-4a1a-bea0-5121f218302f}</Project>
+      <Name>serviceInterface</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

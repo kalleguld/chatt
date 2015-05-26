@@ -1,40 +1,43 @@
 ﻿using System;
-using backend;
-using backend.model;
-using backend.Service;
+using System.Linq;
+using modelInterface;
 using rerest.models.output.exceptions;
+using serviceInterface.service;
 
 namespace rerest.controllers
 {
     public class BaseController
     {
-        public ContextFactory ContextFactory { get; set; }
-        public BaseController() { ContextFactory = new ContextFactory(); }
+        protected readonly ConnectionFactory ConnectionFactory;
+        public BaseController() { ConnectionFactory = new ConnectionFactory(); }
 
-        protected Token GetToken(Context context, string guidStr)
+        protected Connection GetConnection()
+        {
+            return ConnectionFactory.GetConnection();
+        }
+
+        protected IToken GetToken(Connection connection, string guidStr)
         {
             if (guidStr == null) throw new JsonBadRequest("you need a token parameter");
             Guid guid;
             if (!Guid.TryParse(guidStr, out guid)) throw new JsonBadRequest("Token needs to be a guid");
 
-            var userService = new UserService(context);
-            var token = userService.GetToken(guid);
+            var token = connection.UserService.GetToken(guid);
             if (token == null) throw new JsonInvalidToken();
             return token;
         }
 
-        protected User GetUser(Context context, string username)
+        protected IUser GetUser(Connection connection, string username)
         {
             if (username == null) throw new JsonBadRequest("you need a username parameter");
-            var userService = new UserService(context);
-            var user = userService.GetUser(username);
+            var user = connection.UserService.GetUser(username);
             if (user == null) throw new JsonNotFound("The specified user was not found. Are you sure you spelled the username correctly?");
             return user;
         }
 
-        protected User GetFriend(Context context, Token token, string username)
+        protected IUser GetFriend(Connection connection, IToken token, string username)
         {
-            var friend= GetUser(context, username);
+            var friend= GetUser(connection, username);
             if (!token.User.Friends.Contains(friend))
             {
                 throw new JsonException(403, 6, 
@@ -42,6 +45,11 @@ namespace rerest.controllers
                     "That user is not a friend of yours");
             }
             return friend;
+        }
+
+        protected void CheckNull(object o, string name)
+        {
+            if (o == null) throw new JsonBadRequest(name + " parameter is needed.");
         }
     }
 

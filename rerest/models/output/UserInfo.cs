@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using backend.model;
+using modelInterface;
 using rerest.models.@base;
 
 namespace rerest.models.output
@@ -17,7 +17,7 @@ namespace rerest.models.output
         public IList<UserBasic> Friends { get; set; }
         
         public UserInfo() { }
-        public UserInfo(User user)
+        public UserInfo(IUser user)
         {
             FullName = user.FullName;
             Username = user.Username;

@@ -1,5 +1,5 @@
 ﻿using System;
-using backend.model;
+using modelInterface;
 using rerest.models.@base;
 
 namespace rerest.models.output
@@ -10,7 +10,7 @@ namespace rerest.models.output
         public UserBasic User { get; set; }
 
         public TokenInfo() { }
-        public TokenInfo(Token token)
+        public TokenInfo(IToken token)
         {
             Guid = token.Guid;
             User = new UserBasic(token.User);
