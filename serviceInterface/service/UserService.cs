@@ -16,9 +16,16 @@ namespace serviceInterface.service
             _conn = conn;
         }
 
-        public IUser GetUser(string username)
+        internal IUser GetUser(string username)
         {
             return _conn.Context.Users.FirstOrDefault(u => u.Username == username);
+        }
+
+        public IUser GetUser(IToken token, string username)
+        {
+            var user = GetUser(username);
+            if (_conn.FriendService.HasAccessToUserDetails(token, user)) return user;
+            return null;
         }
 
         public IToken GetToken(Guid guid)

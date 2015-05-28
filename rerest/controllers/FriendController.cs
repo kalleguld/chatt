@@ -31,7 +31,7 @@ namespace rerest.controllers
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                var friend = GetUser(connection, username);
+                var friend = GetUser(connection, token, username);
                 if (friend == null)
                 {
                     return new FriendRequestResponse(false);
@@ -52,7 +52,7 @@ namespace rerest.controllers
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                var friend = GetUser(connection, username);
+                var friend = GetUser(connection, token, username);
                 if (friend == null) return new JsonResponse();
                 connection.FriendService.RemoveFriend(token, friend);
 

@@ -32,15 +32,15 @@ namespace rerest.controllers
             return token;
         }
 
-        protected IUser GetUser(Connection connection, string username)
+        protected IUser GetUser(Connection connection, IToken token, string username)
         {
             if (username == null) throw new JsonBadRequest("you need a username parameter");
-            return connection.UserService.GetUser(username);
+            return connection.UserService.GetUser(token, username);
         }
 
         protected IUser GetFriend(Connection connection, IToken token, string username)
         {
-            var friend = GetUser(connection, username);
+            var friend = GetUser(connection, token, username);
             var success = (friend != null && connection.FriendService.HasAccessToUserDetails(token, friend));
             
             if (!success)
