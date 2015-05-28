@@ -1,6 +1,7 @@
 ﻿using System;
 using modelInterface;
 using rerest.models.output.exceptions;
+using serviceInterface;
 using serviceInterface.service;
 
 namespace rerest.controllers
@@ -40,7 +41,7 @@ namespace rerest.controllers
         protected IUser GetFriend(Connection connection, IToken token, string username)
         {
             var friend = GetUser(connection, username);
-            var success = (friend != null && connection.FriendService.IsFriendly(token, friend));
+            var success = (friend != null && connection.FriendService.HasAccessToUserDetails(token, friend));
             
             if (!success)
             {

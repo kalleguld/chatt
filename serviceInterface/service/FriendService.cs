@@ -8,11 +8,11 @@ namespace serviceInterface.service
 {
     public class FriendService
     {
-        private readonly Context _context;
+        private readonly Connection _conn;
 
-        public FriendService(Context context)
+        internal FriendService(Connection conn)
         {
-            _context = context;
+            _conn = conn;
         }
 
         public IEnumerable<IUser> GetFriends(IUser user)
@@ -22,8 +22,8 @@ namespace serviceInterface.service
 
         public bool RequestFriend(IToken iToken, IUser iFriend)
         {
-            var user = (User)iToken.User;
-            var friend = (User)iFriend;
+            var user = _conn.UserService.GetUser(iToken.User);
+            var friend = _conn.UserService.GetUser(iFriend);
 
             if (user == friend) return true;
             if (user.FriendRequests.Contains(friend))
@@ -43,8 +43,8 @@ namespace serviceInterface.service
 
         public void RemoveFriend(IToken iToken, IUser iFriend)
         {
-            var user = (User)iToken.User;
-            var friend = (User)iFriend;
+            var user = _conn.UserService.GetUser(iToken.User);
+            var friend = _conn.UserService.GetUser(iFriend);
 
             user.Friends.Remove(friend);
             friend.Friends.Remove(user);
@@ -52,7 +52,7 @@ namespace serviceInterface.service
             friend.FriendRequests.Remove(user);
         }
 
-        public bool IsFriendly(IToken token, IUser friend)
+        public bool HasAccessToUserDetails(IToken token, IUser friend)
         {
             if (token.User.Friends.Contains(friend)) return true;
             if (token.User.FriendRequests.Contains(friend)) return true;

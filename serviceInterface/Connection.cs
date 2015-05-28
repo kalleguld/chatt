@@ -1,23 +1,26 @@
 ﻿using System;
 using backend;
+using serviceInterface.service;
 
-namespace serviceInterface.service
+namespace serviceInterface
 {
     public class Connection : IDisposable
     {
+        internal Context Context { get { return _context; } }
+
         public FriendService FriendService { get
         {
-            return _friendService ?? (_friendService = new FriendService(_context));
+            return _friendService ?? (_friendService = new FriendService(this));
         } }
 
         public UserService UserService{  get
         {
-            return _userService ?? (_userService = new UserService(_context));
+            return _userService ?? (_userService = new UserService(this));
         } }
 
         public MessageService MessageService { get
         {
-            return _messageService ?? (_messageService = new MessageService(_context));
+            return _messageService ?? (_messageService = new MessageService(this));
         } }
 
 
@@ -38,6 +41,9 @@ namespace serviceInterface.service
             return _context.SaveChanges();
         }
 
+
+        #region Disposable
+
         public void Dispose()
         {
             Dispose(true);
@@ -49,6 +55,9 @@ namespace serviceInterface.service
             if (!disposing) return;
             if (_context != null) _context.Dispose();
         }
+
+        #endregion
+
 
 
     }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
-using backend;
 using backend.model;
 using modelInterface;
 using modelInterface.exceptions;
@@ -12,22 +9,21 @@ namespace serviceInterface.service
 {
     public class UserService
     {
-        private readonly Context _context;
+        private readonly Connection _conn;
 
-
-        internal UserService(Context context)
+        internal UserService(Connection conn)
         {
-            _context = context;
+            _conn = conn;
         }
 
         public IUser GetUser(string username)
         {
-            return _context.Users.FirstOrDefault(u => u.Username == username);
+            return _conn.Context.Users.FirstOrDefault(u => u.Username == username);
         }
 
         public IToken GetToken(Guid guid)
         {
-            return _context.Tokens.FirstOrDefault(t => t.Guid == guid);
+            return _conn.Context.Tokens.FirstOrDefault(t => t.Guid == guid);
         }
 
         public IToken CreateToken(string username, string password)
@@ -41,35 +37,38 @@ namespace serviceInterface.service
         private IToken CreateToken(IUser user)
         {
             var guid = Guid.NewGuid();
-            while (_context.Tokens.Any(t => t.Guid == guid))
+            while (_conn.Context.Tokens.Any(t => t.Guid == guid))
             {
                 guid = Guid.NewGuid();
             }
             var token = new Token
             {
                 Guid = guid, 
-                User = (User)user
+                User = GetUser(user)
             };
-            _context.Tokens.Add(token);
+            _conn.Context.Tokens.Add(token);
             return token;
         }
 
         public IUser CreateUser(string username, string fullName, string password)
         {
-            if (_context.Users.Any(u => u.Username == username)) throw new UsernameExists(username);
+            if (_conn.Context.Users.Any(u => u.Username == username))
+            {
+                throw new UsernameExists(username);
+            }
             var user = new User
             {
                 FullName = fullName, 
                 Username = username, 
                 Hash = GetHash(password)
             };
-            _context.Users.Add(user);
+            _conn.Context.Users.Add(user);
             return user;
         }
 
         public IEnumerable<IUser> GetUsers()
         {
-            return _context.Users.Cast<IUser>();
+            return _conn.Context.Users.Cast<IUser>();
         } 
 
         private static string GetHash(string password)
@@ -80,6 +79,11 @@ namespace serviceInterface.service
         private static bool HashMatchesPassword(string password, string hash)
         {
             return hash == password;
+        }
+
+        internal User GetUser(IUser iUser)
+        {
+            return iUser as User ?? _conn.Context.Users.First(u => u.Username == iUser.Username);
         }
 
     }
