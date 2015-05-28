@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using modelInterface;
-using rerest.models.@base;
 
 namespace rerest.models.output
 {
+    [DataContract]
     public class TokenInfo : JsonResponse
     {
-        public Guid Guid { get; set; }
-        public UserBasic User { get; set; }
+        [DataMember]
+        public Guid Token { get; set; }
+        [DataMember]
+        public string Username { get; set; }
 
         public TokenInfo() { }
-        public TokenInfo(IToken token)
+
+        public TokenInfo(IToken token) : this()
         {
-            Guid = token.Guid;
-            User = new UserBasic(token.User);
+            Token = token.Guid;
+            Username = token.User.Username;
         }
     }
 }

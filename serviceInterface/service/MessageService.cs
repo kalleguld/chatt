@@ -16,11 +16,11 @@ namespace serviceInterface.service
             _context = context;
         }
 
-        public IMessage CreateMessage(IUser sender, IUser receiver, string content)
+        public IMessage CreateMessage(IToken token, IUser receiver, string content)
         {
             var msg = new Message
             {
-                Sender = (User) sender, 
+                Sender = (User) token.User, 
                 Receiver = (User)receiver, 
                 Content = content, 
                 Sent = DateTime.UtcNow
@@ -31,10 +31,11 @@ namespace serviceInterface.service
 
         public IEnumerable<IMessage> GetMessages(IUser receiver, IUser sender = null, DateTime? filterDate = null)
         {
-            var result = _context.Messages.Where(m=> m.Receiver == receiver);
+            IQueryable<Message> result = _context.Messages;
+            result = result.Where(m=> m.Receiver.Username == receiver.Username);
             if (sender != null)
             {
-                result = result.Where(m => m.Sender == sender);
+                result = result.Where(m => m.Sender.Username == sender.Username);
             }
             if (filterDate != null)
             {

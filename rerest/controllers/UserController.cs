@@ -36,7 +36,7 @@ namespace rerest.controllers
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
             UriTemplate = "?token={guidStr}")]
-        public UserInfo GetUser(string guidStr)
+        public UserInfo GetSelf(string guidStr)
         {
             using (var connection = GetConnection())
             {

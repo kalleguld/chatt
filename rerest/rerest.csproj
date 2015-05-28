@@ -69,13 +69,14 @@
     <Compile Include="models\output\exceptions\JsonLoginError.cs" />
     <Compile Include="models\output\exceptions\JsonNotFound.cs" />
     <Compile Include="models\output\exceptions\JsonUsernameExists.cs" />
+    <Compile Include="models\output\FriendRequestResponse.cs" />
     <Compile Include="models\output\JsonResponse.cs" />
     <Compile Include="models\output\MessageList.cs" />
     <Compile Include="models\output\TokenInfo.cs" />
     <Compile Include="models\base\UserBasic.cs" />
     <Compile Include="models\output\TokenList.cs" />
     <Compile Include="models\output\UserInfo.cs" />
-    <Compile Include="models\output\UserList.cs" />
+    <Compile Include="models\output\FriendList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

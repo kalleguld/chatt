@@ -6,7 +6,6 @@ namespace backend.model
 {
     public class Token : IToken
     {
-        [Key]
         public Guid Guid { get; set; }
         public virtual User User { get; set; }
 

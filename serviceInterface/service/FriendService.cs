@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using backend;
 using backend.model;
 using modelInterface;
@@ -19,14 +20,43 @@ namespace serviceInterface.service
             return user.Friends;
         } 
 
-        public void AddFriend(IToken token, IUser friend)
+        public bool RequestFriend(IToken iToken, IUser iFriend)
         {
-            ((Token)token).User.Friends.Add((User)friend);
+            var user = (User)iToken.User;
+            var friend = (User)iFriend;
+
+            if (user == friend) return true;
+            if (user.FriendRequests.Contains(friend))
+            {
+                user.FriendRequests.Remove(friend);
+                user.Friends.Add(friend);
+                friend.Friends.Add(user);
+                return true;
+            }
+            if (user.Friends.Contains(friend))
+            {
+                return true;
+            }
+            friend.FriendRequests.Add(user);
+            return false;
         }
 
-        public void RemoveFriend(IToken token, IUser friend)
+        public void RemoveFriend(IToken iToken, IUser iFriend)
         {
-            ((Token)token).User.Friends.Remove((User)friend);
+            var user = (User)iToken.User;
+            var friend = (User)iFriend;
+
+            user.Friends.Remove(friend);
+            friend.Friends.Remove(user);
+            user.FriendRequests.Remove(friend);
+            friend.FriendRequests.Remove(user);
+        }
+
+        public bool IsFriendly(IToken token, IUser friend)
+        {
+            if (token.User.Friends.Contains(friend)) return true;
+            if (token.User.FriendRequests.Contains(friend)) return true;
+            return false;
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using modelInterface;
-using rerest.models.@base;
 
 namespace rerest.models.output
 {
@@ -13,17 +10,12 @@ namespace rerest.models.output
         public string FullName { get; set; }
         [DataMember]
         public string Username { get; set; }
-        [DataMember]
-        public IList<UserBasic> Friends { get; set; }
         
         public UserInfo() { }
         public UserInfo(IUser user)
         {
             FullName = user.FullName;
             Username = user.Username;
-            Friends = user.Friends
-                .Select(u => new UserBasic(u))
-                .ToList();
         }
         
     }

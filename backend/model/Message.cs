@@ -6,7 +6,6 @@ namespace backend.model
 {
     public class Message : IMessage
     {
-        [Key]
         public int Id { get; set; }
         public string Content { get; set; }
         public DateTime Sent { get; set; }

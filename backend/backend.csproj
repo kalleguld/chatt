@@ -47,15 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context.cs" />
-    <Compile Include="Migrations\201505241927590_InitialCreate.cs" />
-    <Compile Include="Migrations\201505241927590_InitialCreate.Designer.cs">
-      <DependentUpon>201505241927590_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505261625002_Name.cs" />
-    <Compile Include="Migrations\201505261625002_Name.Designer.cs">
-      <DependentUpon>201505261625002_Name.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="model\Message.cs" />
     <Compile Include="model\Token.cs" />
     <Compile Include="model\User.cs" />
@@ -64,14 +55,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505241927590_InitialCreate.resx">
-      <DependentUpon>201505241927590_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505261625002_Name.resx">
-      <DependentUpon>201505261625002_Name.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\modelInterface\modelInterface.csproj">

@@ -12,13 +12,12 @@ namespace rerest.controllers
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
             UriTemplate = "?token={guidStr}")]
-        public UserList GetFriends(string guidStr)
+        public FriendList GetFriends(string guidStr)
         {
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                var friends = connection.FriendService.GetFriends(token.User);
-                return new UserList(friends);
+                return new FriendList(token.User);
             }
         }
 
@@ -27,15 +26,20 @@ namespace rerest.controllers
         [WebInvoke(Method = "POST", 
             ResponseFormat = WebMessageFormat.Json, 
             UriTemplate = "?token={guidStr}&username={username}")]
-        public JsonResponse AddFriend(string guidStr, string username)
+        public FriendRequestResponse AddFriend(string guidStr, string username)
         {
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
                 var friend = GetUser(connection, username);
-                connection.FriendService.AddFriend(token, friend);
+                if (friend == null)
+                {
+                    return new FriendRequestResponse(false);
+                }
+                var response = connection.FriendService.RequestFriend(token, friend);
+
                 connection.SaveChanges();
-                return new JsonResponse();
+                return new FriendRequestResponse(response);
             }
         }
 
@@ -49,7 +53,9 @@ namespace rerest.controllers
             {
                 var token = GetToken(connection, guidStr);
                 var friend = GetUser(connection, username);
+                if (friend == null) return new JsonResponse();
                 connection.FriendService.RemoveFriend(token, friend);
+
                 connection.SaveChanges();
                 return new JsonResponse();
             }

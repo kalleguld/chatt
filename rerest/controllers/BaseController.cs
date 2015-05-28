@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using modelInterface;
 using rerest.models.output.exceptions;
 using serviceInterface.service;
@@ -8,12 +7,17 @@ namespace rerest.controllers
 {
     public class BaseController
     {
-        protected readonly ConnectionFactory ConnectionFactory;
-        public BaseController() { ConnectionFactory = new ConnectionFactory(); }
+        private readonly ConnectionFactory _connectionFactory;
+
+        public BaseController() : this(new ConnectionFactory()){}
+        public BaseController(ConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory;
+        }
 
         protected Connection GetConnection()
         {
-            return ConnectionFactory.GetConnection();
+            return _connectionFactory.GetConnection();
         }
 
         protected IToken GetToken(Connection connection, string guidStr)
@@ -30,16 +34,17 @@ namespace rerest.controllers
         protected IUser GetUser(Connection connection, string username)
         {
             if (username == null) throw new JsonBadRequest("you need a username parameter");
-            var user = connection.UserService.GetUser(username);
-            if (user == null) throw new JsonNotFound("The specified user was not found. Are you sure you spelled the username correctly?");
-            return user;
+            return connection.UserService.GetUser(username);
         }
 
         protected IUser GetFriend(Connection connection, IToken token, string username)
         {
-            var friend= GetUser(connection, username);
-            if (!token.User.Friends.Contains(friend))
+            var friend = GetUser(connection, username);
+            var success = (friend != null && connection.FriendService.IsFriendly(token, friend));
+            
+            if (!success)
             {
+                //throw the same exception even if the user doesn't exist
                 throw new JsonException(403, 6, 
                     "That user is not a friend of yours", 
                     "That user is not a friend of yours");

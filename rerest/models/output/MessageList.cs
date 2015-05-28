@@ -13,10 +13,9 @@ namespace rerest.models.output
 
         public MessageList() { Messages = new List<int>(); }
 
-        public MessageList(IEnumerable<IMessage> messages)
+        public MessageList(IEnumerable<IMessage> messages) : this()
         {
-            var ids = messages.Select(m => m.Id);
-            Messages = new List<int>(ids);
+            Messages = messages.Select(m => m.Id).ToList();
         }
     }
 }
