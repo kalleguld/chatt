@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
+using rerest.jsonBase;
 
-namespace rerest.models.output
+namespace rerest.viewmodel
 {
     [DataContract]
     public class FriendRequestResponse : JsonResponse

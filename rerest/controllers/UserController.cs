@@ -1,8 +1,9 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
 using modelInterface.exceptions;
-using rerest.models.output;
-using rerest.models.output.exceptions;
+using rerest.jsonBase;
+using rerest.viewmodel.exceptions;
+using rerest.viewmodel;
 
 namespace rerest.controllers
 {
@@ -28,7 +29,7 @@ namespace rerest.controllers
             }
             catch (UsernameExists)
             {
-                new JsonError(JsonErrorCode.UsernameExists).Throw();
+                new JsonError(JsonResponseCode.UsernameExists).Throw();
                 return null;
             }
         }

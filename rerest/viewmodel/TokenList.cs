@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using modelInterface;
+using rerest.jsonBase;
 
-namespace rerest.models.output
+namespace rerest.viewmodel
 {
     [DataContract]
     class TokenList : JsonResponse

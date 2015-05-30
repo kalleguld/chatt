@@ -1,6 +1,7 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
-using rerest.models.output;
+using rerest.jsonBase;
+using rerest.viewmodel;
 
 namespace rerest.controllers
 {

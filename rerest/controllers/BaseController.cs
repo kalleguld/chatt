@@ -1,6 +1,8 @@
 ﻿using System;
 using modelInterface;
-using rerest.models.output.exceptions;
+using rerest.jsonBase;
+using rerest.viewmodel.exceptions;
+using rerest.viewmodel;
 using serviceInterface;
 
 namespace rerest.controllers
@@ -29,7 +31,7 @@ namespace rerest.controllers
             if (!Guid.TryParse(guidStr, out guid)) new JsonWrongParameterType("token", "guid").Throw();
 
             var token = connection.UserService.GetToken(guid);
-            if (token == null) new JsonError(JsonErrorCode.InvalidToken).Throw();
+            if (token == null) new JsonError(JsonResponseCode.InvalidToken).Throw();
             return token;
         }
 
@@ -46,7 +48,7 @@ namespace rerest.controllers
             
             if (!success)
             {
-                new JsonError(JsonErrorCode.UserNotFriendly).Throw();
+                new JsonError(JsonResponseCode.UserNotFriendly).Throw();
             }
             return friend;
         }

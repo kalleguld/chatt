@@ -1,7 +1,8 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
-using rerest.models.output;
-using rerest.models.output.exceptions;
+using rerest.jsonBase;
+using rerest.viewmodel.exceptions;
+using rerest.viewmodel;
 
 namespace rerest.controllers
 {
@@ -20,7 +21,7 @@ namespace rerest.controllers
             using (var connection = GetConnection())
             {
                 var token = connection.UserService.CreateToken(username, password);
-                if (token == null) new JsonError(JsonErrorCode.LoginError).Throw();
+                if (token == null) new JsonError(JsonResponseCode.LoginError).Throw();
                 connection.SaveChanges();
                 return new TokenInfo(token);
             }

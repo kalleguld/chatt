@@ -2,18 +2,23 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.ServiceModel.Web;
+using rerest.jsonBase;
+using rerest.viewmodel;
 
-namespace rerest.models.output.exceptions
+namespace rerest.viewmodel.exceptions
 {
     [DataContract]
     public class JsonError : JsonResponse
     {
         [DataMember]
-        public virtual string ErrorMessage { get { return JsonErrorCode.ErrorMessage(); } }
+        public string ErrorMessage { get; protected set; }
 
-        public JsonError(JsonErrorCode ec) : base(ec) { }
+        public JsonError(JsonResponseCode ec) : base(ec)
+        {
+            ErrorMessage = ec.ErrorMessage();
+        }
 
-        public void Throw()
+        public virtual void Throw()
         {
             GenericThrow(this);
         }

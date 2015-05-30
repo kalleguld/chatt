@@ -1,7 +1,8 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
-using rerest.models.output;
-using rerest.models.output.exceptions;
+using rerest.jsonBase;
+using rerest.viewmodel.exceptions;
+using rerest.viewmodel;
 
 namespace rerest.controllers
 {
@@ -42,7 +43,7 @@ namespace rerest.controllers
                 var message = conn.MessageService.GetMessage(token, messageId);
                 if (message == null)
                 {
-                    new JsonError(JsonErrorCode.AccessDenied).Throw();
+                    new JsonError(JsonResponseCode.AccessDenied).Throw();
                 }
                 return new MessageInfo(message);
             }
@@ -62,7 +63,7 @@ namespace rerest.controllers
                 var message = conn.MessageService.CreateMessage(token, receiver, content);
                 if (message == null)
                 {
-                    new JsonError(JsonErrorCode.UserNotFriendly).Throw();
+                    new JsonError(JsonResponseCode.UserNotFriendly).Throw();
                 }
                 conn.SaveChanges();
                 return new MessageInfo(message);

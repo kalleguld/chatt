@@ -5,9 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using modelInterface;
+using rerest.jsonBase;
 using utils;
 
-namespace rerest.models.output
+namespace rerest.viewmodel
 {
     [DataContract]
     public class MessageInfo : JsonResponse

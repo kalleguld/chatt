@@ -62,19 +62,17 @@
     <Compile Include="controllers\MessageController.cs" />
     <Compile Include="controllers\TokenController.cs" />
     <Compile Include="controllers\UserController.cs" />
-    <Compile Include="models\output\exceptions\JsonErrorCode.cs" />
-    <Compile Include="models\output\exceptions\JsonException.cs" />
-    <Compile Include="models\output\exceptions\JsonError.cs" />
-    <Compile Include="models\output\exceptions\JsonParamError.cs" />
-    <Compile Include="models\output\FriendRequestResponse.cs" />
-    <Compile Include="models\output\JsonResponse.cs" />
-    <Compile Include="models\output\MessageInfo.cs" />
-    <Compile Include="models\output\MessageList.cs" />
-    <Compile Include="models\output\TokenInfo.cs" />
-    <Compile Include="models\base\UserBasic.cs" />
-    <Compile Include="models\output\TokenList.cs" />
-    <Compile Include="models\output\UserInfo.cs" />
-    <Compile Include="models\output\FriendList.cs" />
+    <Compile Include="jsonBase\JsonResponseCode.cs" />
+    <Compile Include="viewmodel\exceptions\JsonError.cs" />
+    <Compile Include="viewmodel\exceptions\JsonParamError.cs" />
+    <Compile Include="viewmodel\FriendRequestResponse.cs" />
+    <Compile Include="jsonBase\JsonResponse.cs" />
+    <Compile Include="viewmodel\MessageInfo.cs" />
+    <Compile Include="viewmodel\MessageList.cs" />
+    <Compile Include="viewmodel\TokenInfo.cs" />
+    <Compile Include="viewmodel\TokenList.cs" />
+    <Compile Include="viewmodel\UserInfo.cs" />
+    <Compile Include="viewmodel\FriendList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
