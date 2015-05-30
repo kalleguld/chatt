@@ -11,7 +11,7 @@ namespace rerest.viewmodel
     class TokenList : JsonResponse
     {
         [DataMember]
-        public IList<Guid> Tokens { get; set; }
+        public IList<Guid> Tokens { get; private set; }
 
         public TokenList() { Tokens = new List<Guid>(); }
 

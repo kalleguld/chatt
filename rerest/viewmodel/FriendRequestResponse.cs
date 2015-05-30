@@ -7,15 +7,11 @@ namespace rerest.viewmodel
     public class FriendRequestResponse : JsonResponse
     {
         [DataMember]
-        public bool FriendAddded { get; set; }
+        public bool FriendAddded { get; private set; }
 
-        public FriendRequestResponse() { }
-        
-        public FriendRequestResponse(bool friendAdded) : this()
+        public FriendRequestResponse(bool friendAdded = false)
         {
             FriendAddded = friendAdded;
         }
-
-        
     }
 }

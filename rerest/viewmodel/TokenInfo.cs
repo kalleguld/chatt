@@ -9,9 +9,9 @@ namespace rerest.viewmodel
     public class TokenInfo : JsonResponse
     {
         [DataMember]
-        public Guid Token { get; set; }
+        public Guid Token { get; private set; }
         [DataMember]
-        public string Username { get; set; }
+        public string Username { get; private set; }
 
         public TokenInfo() { }
 

@@ -8,9 +8,9 @@ namespace rerest.viewmodel
     public class UserInfo : JsonResponse
     {
         [DataMember]
-        public string FullName { get; set; }
+        public string FullName { get; private set; }
         [DataMember]
-        public string Username { get; set; }
+        public string Username { get; private set; }
         
         public UserInfo() { }
         public UserInfo(IUser user)

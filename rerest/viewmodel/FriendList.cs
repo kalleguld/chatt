@@ -10,10 +10,10 @@ namespace rerest.viewmodel
     public class FriendList : JsonResponse
     {
         [DataMember]
-        IList<string> Friends { get; set; }
+        public IList<string> Friends { get; private set; }
 
         [DataMember]
-        IList<string> FriendRequests { get; set; }
+        public IList<string> FriendRequests { get; private set; }
 
         public FriendList()
         {
