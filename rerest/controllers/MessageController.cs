@@ -57,11 +57,12 @@ namespace rerest.controllers
             using (var conn = GetConnection())
             {
                 var token = GetToken(conn, guidStr);
+                CheckNull(receiver, "receiver");
+                CheckNull(content, "content");
                 var message = conn.MessageService.CreateMessage(token, receiver, content);
                 if (message == null)
                 {
                     throw new JsonException(403, 12, 
-                        "You can only send messages to friends", 
                         "receiver is not in user's friendlist");
                 }
                 conn.SaveChanges();

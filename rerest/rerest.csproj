@@ -64,11 +64,10 @@
     <Compile Include="controllers\UserController.cs" />
     <Compile Include="models\output\exceptions\JsonBadRequest.cs" />
     <Compile Include="models\output\exceptions\JsonException.cs" />
-    <Compile Include="models\output\exceptions\ErrorMessage.cs" />
+    <Compile Include="models\output\exceptions\JsonError.cs" />
     <Compile Include="models\output\exceptions\JsonInvalidToken.cs" />
     <Compile Include="models\output\exceptions\JsonLoginError.cs" />
     <Compile Include="models\output\exceptions\JsonAccessDenied.cs" />
-    <Compile Include="models\output\exceptions\JsonNotFound.cs" />
     <Compile Include="models\output\exceptions\JsonUsernameExists.cs" />
     <Compile Include="models\output\FriendRequestResponse.cs" />
     <Compile Include="models\output\JsonResponse.cs" />

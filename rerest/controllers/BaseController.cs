@@ -48,7 +48,6 @@ namespace rerest.controllers
             {
                 //throw the same exception even if the user doesn't exist
                 throw new JsonException(403, 6, 
-                    "That user is not a friend of yours", 
                     "That user is not a friend of yours");
             }
             return friend;

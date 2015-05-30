@@ -2,8 +2,7 @@
 {
     class JsonInvalidToken : JsonException
     {
-        public JsonInvalidToken() : base(403, 5,
-            "You need to login again", 
+        public JsonInvalidToken() : base(403, 5, 
             "The token guid was not found, is expired, or has been retracted. Get a new token."){ }
     }
 }

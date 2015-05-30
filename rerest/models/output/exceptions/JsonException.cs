@@ -3,14 +3,13 @@ using System.ServiceModel.Web;
 
 namespace rerest.models.output.exceptions
 {
-    class JsonException : WebFaultException<ErrorMessage>
+    class JsonException : WebFaultException<JsonError>
     {
-        public JsonException(int httpErrorCode, int errorCode, string userMessage, string developerMessage) :
-            base(new ErrorMessage(
+        public JsonException(int httpErrorCode, int errorCode, string errorMessage) :
+            base(new JsonError(
                 httpErrorCode, 
                 errorCode, 
-                userMessage, 
-                developerMessage), 
+                errorMessage), 
             GetHttpStatusCode(httpErrorCode)) 
         { }
 

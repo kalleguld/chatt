@@ -2,7 +2,7 @@
 {
     class JsonBadRequest : JsonException
     {
-        public JsonBadRequest(string developerMessage) : base(400, 400, "", developerMessage)
+        public JsonBadRequest(string developerMessage) : base(400, 400, developerMessage)
         {
         }
     }
