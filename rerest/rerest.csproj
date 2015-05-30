@@ -62,13 +62,10 @@
     <Compile Include="controllers\MessageController.cs" />
     <Compile Include="controllers\TokenController.cs" />
     <Compile Include="controllers\UserController.cs" />
-    <Compile Include="models\output\exceptions\JsonBadRequest.cs" />
+    <Compile Include="models\output\exceptions\JsonErrorCode.cs" />
     <Compile Include="models\output\exceptions\JsonException.cs" />
     <Compile Include="models\output\exceptions\JsonError.cs" />
-    <Compile Include="models\output\exceptions\JsonInvalidToken.cs" />
-    <Compile Include="models\output\exceptions\JsonLoginError.cs" />
-    <Compile Include="models\output\exceptions\JsonAccessDenied.cs" />
-    <Compile Include="models\output\exceptions\JsonUsernameExists.cs" />
+    <Compile Include="models\output\exceptions\JsonParamError.cs" />
     <Compile Include="models\output\FriendRequestResponse.cs" />
     <Compile Include="models\output\JsonResponse.cs" />
     <Compile Include="models\output\MessageInfo.cs" />

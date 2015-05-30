@@ -33,7 +33,7 @@ namespace rerest.controllers
             int messageId;
             if (!int.TryParse(messageIdStr, out messageId))
             {
-                throw new JsonBadRequest("message id must be an int");
+                new JsonWrongParameterType("messageId", "int").Throw();
             }
 
             using (var conn = GetConnection())
@@ -42,7 +42,7 @@ namespace rerest.controllers
                 var message = conn.MessageService.GetMessage(token, messageId);
                 if (message == null)
                 {
-                    throw new JsonAccessDenied();
+                    new JsonError(JsonErrorCode.AccessDenied).Throw();
                 }
                 return new MessageInfo(message);
             }
@@ -62,8 +62,7 @@ namespace rerest.controllers
                 var message = conn.MessageService.CreateMessage(token, receiver, content);
                 if (message == null)
                 {
-                    throw new JsonException(403, 12, 
-                        "receiver is not in user's friendlist");
+                    new JsonError(JsonErrorCode.UserNotFriendly).Throw();
                 }
                 conn.SaveChanges();
                 return new MessageInfo(message);

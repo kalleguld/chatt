@@ -24,18 +24,18 @@ namespace rerest.controllers
 
         protected IToken GetToken(Connection connection, string guidStr)
         {
-            if (guidStr == null) throw new JsonBadRequest("you need a token parameter");
+            if (guidStr == null) new JsonMissingParameter("token").Throw();
             Guid guid;
-            if (!Guid.TryParse(guidStr, out guid)) throw new JsonBadRequest("Token needs to be a guid");
+            if (!Guid.TryParse(guidStr, out guid)) new JsonWrongParameterType("token", "guid").Throw();
 
             var token = connection.UserService.GetToken(guid);
-            if (token == null) throw new JsonInvalidToken();
+            if (token == null) new JsonError(JsonErrorCode.InvalidToken).Throw();
             return token;
         }
 
         protected IUser GetUser(Connection connection, IToken token, string username)
         {
-            if (username == null) throw new JsonBadRequest("you need a username parameter");
+            if (username == null) new JsonMissingParameter("username").Throw();
             return connection.UserService.GetUser(token, username);
         }
 
@@ -46,16 +46,14 @@ namespace rerest.controllers
             
             if (!success)
             {
-                //throw the same exception even if the user doesn't exist
-                throw new JsonException(403, 6, 
-                    "That user is not a friend of yours");
+                new JsonError(JsonErrorCode.UserNotFriendly).Throw();
             }
             return friend;
         }
 
         protected void CheckNull(object o, string name)
         {
-            if (o == null) throw new JsonBadRequest(name + " parameter is needed.");
+            if (o == null) new JsonMissingParameter(name).Throw();
         }
 
     }

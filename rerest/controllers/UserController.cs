@@ -28,7 +28,8 @@ namespace rerest.controllers
             }
             catch (UsernameExists)
             {
-                throw new JsonUsernameExists(username);
+                new JsonError(JsonErrorCode.UsernameExists).Throw();
+                return null;
             }
         }
 

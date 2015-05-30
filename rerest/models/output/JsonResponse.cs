@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Net;
+using System.Runtime.Serialization;
+using rerest.models.output.exceptions;
 
 namespace rerest.models.output
 {
@@ -6,18 +8,20 @@ namespace rerest.models.output
     public class JsonResponse
     {
         [DataMember]
-        public int HttpResponseCode { get; set; }
+        public int HttpResponseCode { get { return (int)HttpStatusCode; } }
 
         [DataMember]
-        public int ErrorCode { get; set; }
+        public int ErrorCode { get { return (int)JsonErrorCode; } }
 
-        public JsonResponse() : this(200, 0)
-        { }
+        public HttpStatusCode HttpStatusCode { get { return JsonErrorCode.HttpStatusCode(); } }
 
-        public JsonResponse(int httpResponseCode, int errorCode)
+        public JsonErrorCode JsonErrorCode { get; protected set; }
+
+        public JsonResponse(JsonErrorCode ec)
         {
-            HttpResponseCode = httpResponseCode;
-            ErrorCode = errorCode;
+            JsonErrorCode = ec;
         }
+
+        public JsonResponse() : this(JsonErrorCode.None) { }
     }
 }

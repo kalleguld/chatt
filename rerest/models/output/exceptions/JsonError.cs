@@ -1,19 +1,26 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using System.ServiceModel.Web;
 
 namespace rerest.models.output.exceptions
 {
     [DataContract]
-    class JsonError : JsonResponse
+    public class JsonError : JsonResponse
     {
         [DataMember]
-        public string ErrorMessage { get; private set; }
-        
-        
+        public virtual string ErrorMessage { get { return JsonErrorCode.ErrorMessage(); } }
 
-        public JsonError(int httpResponseCode, int errorCode, string errorMessage) : 
-            base(httpResponseCode, errorCode)
+        public JsonError(JsonErrorCode ec) : base(ec) { }
+
+        public void Throw()
         {
-            ErrorMessage = errorMessage;
+            GenericThrow(this);
+        }
+
+        protected void GenericThrow<T>(T err) where T : JsonResponse
+        {
+            throw new WebFaultException<T>(err, err.HttpStatusCode);
         }
     }
 }
