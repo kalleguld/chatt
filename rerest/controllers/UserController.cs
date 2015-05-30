@@ -40,16 +40,26 @@ namespace rerest.controllers
             }
         }
 
-        [OperationContract]
-        [WebInvoke(Method = "GET", 
-            ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}")]
         public UserInfo GetSelf(string guidStr)
         {
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
                 return new UserInfo(token.User);
+            }
+        }
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "?token={guidStr}&filter={filter}")]
+        public UserList GetUsers(string guidStr, string filter)
+        {
+            using (var conn = GetConnection())
+            {
+                var token = GetToken(conn, guidStr);
+                var users = conn.UserService.GetUsers(token, filter);
+                return new UserList(users);
             }
         }
 

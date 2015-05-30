@@ -1,8 +1,10 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Web;
 using rerest.jsonBase;
 using rerest.viewmodel.exceptions;
 using rerest.viewmodel;
+using utils;
 
 namespace rerest.controllers
 {
@@ -13,13 +15,14 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}")]
-        public MessageList GetMessages(string guidStr)
+            UriTemplate = "?token={guidStr}&sender={sender}&after={after}")]
+        public MessageList GetMessages(string guidStr, string sender, string after)
         {
+            int? aft = IntUtils.ParseN(after);
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                var messages = connection.MessageService.GetMessages(token.User);
+                var messages = connection.MessageService.GetMessages(token, sender, aft);
                 var list = new MessageList(messages);
                 return list;
             }

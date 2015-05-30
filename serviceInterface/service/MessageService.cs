@@ -41,17 +41,17 @@ namespace serviceInterface.service
             return msg;
         }
 
-        public IEnumerable<IMessage> GetMessages(IUser receiver, IUser sender = null, DateTime? filterDate = null)
+        public IEnumerable<IMessage> GetMessages(IToken token, string sender = null, int? afterId = null)
         {
             IQueryable<Message> result = Connection.Context.Messages;
-            result = result.Where(m => m.Receiver.Username == receiver.Username);
+            result = result.Where(m => m.Receiver.Username == token.User.Username);
             if (sender != null)
             {
-                result = result.Where(m => m.Sender.Username == sender.Username);
+                result = result.Where(m => m.Sender.Username == sender);
             }
-            if (filterDate != null)
+            if (afterId != null)
             {
-                result = result.Where(m => m.Sent >= filterDate);
+                result = result.Where(m => m.Id > afterId);
             }
             return result;
         }
@@ -59,6 +59,7 @@ namespace serviceInterface.service
         public bool CanSendMessage(IToken token, IUser receiver)
         {
             return token.User.Friends.Contains(receiver) ||
+                token.User.FriendRequests.Contains(receiver) ||
                 token.User == receiver;
         }
 

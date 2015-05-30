@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using backend.model;
@@ -32,7 +33,7 @@ namespace serviceInterface.service
         {
             var user = GetUser(username);
             if (user == null) return null;
-            if (!HashMatchesPassword(password,user.Hash)) return null;
+            if (!HashMatchesPassword(password, user.Hash)) return null;
             return CreateToken(user);
         }
 
@@ -45,7 +46,7 @@ namespace serviceInterface.service
             }
             var token = new Token
             {
-                Guid = guid, 
+                Guid = guid,
                 User = GetUser(user)
             };
             Connection.Context.Tokens.Add(token);
@@ -60,18 +61,23 @@ namespace serviceInterface.service
             }
             var user = new User
             {
-                FullName = fullName, 
-                Username = username, 
+                FullName = fullName,
+                Username = username,
                 Hash = CreateHash(password)
             };
             Connection.Context.Users.Add(user);
             return user;
         }
 
-        public IEnumerable<IUser> GetUsers()
+        public IEnumerable<IUser> GetUsers(IToken token, string filter = null)
         {
-            return Connection.Context.Users.Cast<IUser>();
-        } 
+            IEnumerable<User> result = Connection.Context.Users;
+            if (filter != null)
+            {
+                result = result.Where(u => u.Username.Contains(filter));
+            }
+            return result;
+        }
 
         private static string CreateHash(string password)
         {
@@ -81,8 +87,7 @@ namespace serviceInterface.service
 
         private static bool HashMatchesPassword(string password, string hash)
         {
-            return hash == password 
-                || BCrypt.Net.BCrypt.Verify(password, hash);
+            return BCrypt.Net.BCrypt.Verify(password, hash);
         }
 
         internal User GetUser(IUser iUser)
