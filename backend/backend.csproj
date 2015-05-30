@@ -47,6 +47,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context.cs" />
+    <Compile Include="Migrations\201505301456344_InitialCreate.cs" />
+    <Compile Include="Migrations\201505301456344_InitialCreate.Designer.cs">
+      <DependentUpon>201505301456344_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505301556046_a.cs" />
+    <Compile Include="Migrations\201505301556046_a.Designer.cs">
+      <DependentUpon>201505301556046_a.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505301602180_UserHashSize.cs" />
+    <Compile Include="Migrations\201505301602180_UserHashSize.Designer.cs">
+      <DependentUpon>201505301602180_UserHashSize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="model\Message.cs" />
     <Compile Include="model\Token.cs" />
     <Compile Include="model\User.cs" />
@@ -61,6 +74,17 @@
       <Project>{c590b2a1-660c-45cd-a880-fe083634e5d2}</Project>
       <Name>modelInterface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201505301456344_InitialCreate.resx">
+      <DependentUpon>201505301456344_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505301556046_a.resx">
+      <DependentUpon>201505301556046_a.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505301602180_UserHashSize.resx">
+      <DependentUpon>201505301602180_UserHashSize.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

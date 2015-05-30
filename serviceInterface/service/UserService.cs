@@ -62,7 +62,7 @@ namespace serviceInterface.service
             {
                 FullName = fullName, 
                 Username = username, 
-                Hash = GetHash(password)
+                Hash = CreateHash(password)
             };
             Connection.Context.Users.Add(user);
             return user;
@@ -73,14 +73,16 @@ namespace serviceInterface.service
             return Connection.Context.Users.Cast<IUser>();
         } 
 
-        private static string GetHash(string password)
+        private static string CreateHash(string password)
         {
-            return password;
+            if (password == null) throw new ArgumentNullException("password");
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(10));
         }
 
         private static bool HashMatchesPassword(string password, string hash)
         {
-            return hash == password;
+            return hash == password 
+                || BCrypt.Net.BCrypt.Verify(password, hash);
         }
 
         internal User GetUser(IUser iUser)

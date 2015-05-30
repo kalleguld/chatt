@@ -1,9 +1,10 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
+using modelInterface;
 using modelInterface.exceptions;
 using rerest.jsonBase;
-using rerest.viewmodel.exceptions;
 using rerest.viewmodel;
+using rerest.viewmodel.exceptions;
 
 namespace rerest.controllers
 {
@@ -18,19 +19,24 @@ namespace rerest.controllers
             UriTemplate = "?username={username}&password={password}&fullname={fullName}")]
         public UserInfo CreateUser(string username, string password, string fullName)
         {
-            try
+            CheckNull(username, "username");
+            CheckNull(password, "password");
+            CheckNull(fullName, "fullname");
+
+            using (var connection = GetConnection())
             {
-                using (var connection = GetConnection())
+                IUser user;
+                try
                 {
-                    var user = connection.UserService.CreateUser(username, fullName, password);
-                    connection.SaveChanges();
-                    return new UserInfo(user);
+                    user = connection.UserService.CreateUser(username, fullName, password);
                 }
-            }
-            catch (UsernameExists)
-            {
-                new JsonError(JsonResponseCode.UsernameExists).Throw();
-                return null;
+                catch (UsernameExists)
+                {
+                    new JsonError(JsonResponseCode.UsernameExists).Throw();
+                    return null;
+                }
+                connection.SaveChanges();
+                return new UserInfo(user);
             }
         }
 

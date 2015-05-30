@@ -2,7 +2,6 @@
 using modelInterface;
 using rerest.jsonBase;
 using rerest.viewmodel.exceptions;
-using rerest.viewmodel;
 using serviceInterface;
 
 namespace rerest.controllers
@@ -43,6 +42,7 @@ namespace rerest.controllers
 
         protected IUser GetFriend(Connection connection, IToken token, string username)
         {
+            CheckNull(username, "username");
             var friend = GetUser(connection, token, username);
             var success = (friend != null && connection.FriendService.HasAccessToUserDetails(token, friend));
             

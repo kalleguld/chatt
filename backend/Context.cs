@@ -13,11 +13,19 @@ namespace backend
         protected override void OnModelCreating(DbModelBuilder dbmb)
         {
 
+            #region User
+
             var user = dbmb.Entity<User>();
             user.ToTable("user");
             user.HasKey(u => u.Username);
-            user.Property(u => u.FullName).IsRequired();
-            user.Property(u => u.Hash).IsRequired();
+
+            user.Property(u => u.FullName)
+                .IsRequired();
+
+            user.Property(u => u.Hash)
+                .IsRequired()
+                .HasColumnType("char")
+                .HasMaxLength(60);
 
             user.HasMany(u => u.Friends)
                 .WithMany()
@@ -37,13 +45,20 @@ namespace backend
                     fr.ToTable("userFriendRequest");
                 });
 
+            #endregion
 
+            #region token
 
             var token = dbmb.Entity<Token>();
             token.ToTable("token");
             token.HasKey(t => t.Guid);
             token.HasRequired(t => t.User).WithMany();
 
+            #endregion
+
+
+
+            #region message
 
             var message = dbmb.Entity<Message>();
             message.ToTable("message");
@@ -54,6 +69,9 @@ namespace backend
             message.Property(m => m.Content).IsRequired();
             message.HasOptional(m => m.Sender).WithMany(u => u.SentMessages);
             message.HasRequired(m => m.Receiver).WithMany(u => u.ReceivedMessages);
+
+            #endregion
+
 
             base.OnModelCreating(dbmb);
         }
