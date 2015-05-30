@@ -34,11 +34,24 @@ namespace backend.model
             set { _reverseFriends = value; }
         }
 
+        public virtual ISet<Message> SentMessages
+        {
+            get { return _sentMessages; }
+            set { _sentMessages = value; }
+        }
 
-        private ISet<User> _friendRequests;
+        public virtual ISet<Message> ReceivedMessages
+        {
+            get { return _receivedMessages; }
+            set { _receivedMessages = value; }
+        }
+
         private ISet<User> _friends;
-        private ISet<User> _requestedFriends;
         private ISet<User> _reverseFriends;
+        private ISet<User> _friendRequests;
+        private ISet<User> _requestedFriends;
+        private ISet<Message> _sentMessages;
+        private ISet<Message> _receivedMessages;
 
         IEnumerable<IUser> IUser.Friends { get { return Friends; } }
         IEnumerable<IUser> IUser.FriendRequests { get { return FriendRequests; } } 
@@ -50,6 +63,8 @@ namespace backend.model
             _friendRequests = new HashSet<User>();
             _requestedFriends = new HashSet<User>();
             _reverseFriends = new HashSet<User>();
+            _sentMessages = new HashSet<Message>();
+            _receivedMessages = new HashSet<Message>();
         }
     }
 }

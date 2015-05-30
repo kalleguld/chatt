@@ -67,10 +67,12 @@
     <Compile Include="models\output\exceptions\ErrorMessage.cs" />
     <Compile Include="models\output\exceptions\JsonInvalidToken.cs" />
     <Compile Include="models\output\exceptions\JsonLoginError.cs" />
+    <Compile Include="models\output\exceptions\JsonAccessDenied.cs" />
     <Compile Include="models\output\exceptions\JsonNotFound.cs" />
     <Compile Include="models\output\exceptions\JsonUsernameExists.cs" />
     <Compile Include="models\output\FriendRequestResponse.cs" />
     <Compile Include="models\output\JsonResponse.cs" />
+    <Compile Include="models\output\MessageInfo.cs" />
     <Compile Include="models\output\MessageList.cs" />
     <Compile Include="models\output\TokenInfo.cs" />
     <Compile Include="models\base\UserBasic.cs" />
@@ -93,6 +95,10 @@
     <ProjectReference Include="..\serviceInterface\serviceInterface.csproj">
       <Project>{5efb6bb4-ca5b-4a1a-bea0-5121f218302f}</Project>
       <Name>serviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\utils\utils.csproj">
+      <Project>{af07a3fe-7735-47dc-9b16-b7adcb861b4e}</Project>
+      <Name>utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

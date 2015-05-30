@@ -20,11 +20,11 @@ namespace serviceInterface.service
             return user.Friends;
         } 
 
-        public bool RequestFriend(IToken iToken, IUser iFriend)
+        public bool RequestFriend(IToken iToken, string friendName)
         {
             var user = _conn.UserService.GetUser(iToken.User);
-            var friend = _conn.UserService.GetUser(iFriend);
-
+            var friend = _conn.UserService.GetUser(friendName);
+            if (friend == null) return false;
             if (user == friend) return true;
             if (user.FriendRequests.Contains(friend))
             {

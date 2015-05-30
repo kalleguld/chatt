@@ -12,7 +12,6 @@ namespace backend
 
         protected override void OnModelCreating(DbModelBuilder dbmb)
         {
-            dbmb.HasDefaultSchema("chatt");
 
             var user = dbmb.Entity<User>();
             user.ToTable("user");
@@ -39,10 +38,11 @@ namespace backend
                 });
 
 
+
             var token = dbmb.Entity<Token>();
             token.ToTable("token");
             token.HasKey(t => t.Guid);
-            token.HasRequired(t => t.User);
+            token.HasRequired(t => t.User).WithMany();
 
 
             var message = dbmb.Entity<Message>();
@@ -50,10 +50,10 @@ namespace backend
             message.HasKey(m => m.Id);
             message.Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)
                 .IsRequired();
-            message.Property(m => m.Sent).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            message.Property(m => m.Sent).IsRequired();
             message.Property(m => m.Content).IsRequired();
-            message.HasOptional(m => m.Sender);
-            message.HasRequired(m => m.Receiver);
+            message.HasOptional(m => m.Sender).WithMany(u=>u.SentMessages);
+            message.HasRequired(m => m.Receiver).WithMany(u=>u.ReceivedMessages);
 
             base.OnModelCreating(dbmb);
         }

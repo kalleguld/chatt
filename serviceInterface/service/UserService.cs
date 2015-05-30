@@ -16,7 +16,7 @@ namespace serviceInterface.service
             _conn = conn;
         }
 
-        internal IUser GetUser(string username)
+        internal User GetUser(string username)
         {
             return _conn.Context.Users.FirstOrDefault(u => u.Username == username);
         }

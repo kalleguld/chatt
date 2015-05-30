@@ -1,6 +1,7 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
 using rerest.models.output;
+using rerest.models.output.exceptions;
 
 namespace rerest.controllers
 {
@@ -21,6 +22,52 @@ namespace rerest.controllers
                 var list = new MessageList(messages);
                 return list;
             }
+        }
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "{messageIdStr}/?token={guidStr}")]
+        public MessageInfo GetMessage(string guidStr, string messageIdStr)
+        {
+            int messageId;
+            if (!int.TryParse(messageIdStr, out messageId))
+            {
+                throw new JsonBadRequest("message id must be an int");
+            }
+
+            using (var conn = GetConnection())
+            {
+                var token = GetToken(conn, guidStr);
+                var message = conn.MessageService.GetMessage(token, messageId);
+                if (message == null)
+                {
+                    throw new JsonAccessDenied();
+                }
+                return new MessageInfo(message);
+            }
+        }
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "?token={guidStr}&receiver={receiver}&content={content}")]
+        public MessageInfo CreateMessage(string guidStr, string receiver, string content)
+        {
+            using (var conn = GetConnection())
+            {
+                var token = GetToken(conn, guidStr);
+                var message = conn.MessageService.CreateMessage(token, receiver, content);
+                if (message == null)
+                {
+                    throw new JsonException(403, 12, 
+                        "You can only send messages to friends", 
+                        "receiver is not in user's friendlist");
+                }
+                conn.SaveChanges();
+                return new MessageInfo(message);
+            }
+            
         }
     }
 }

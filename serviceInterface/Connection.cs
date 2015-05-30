@@ -42,8 +42,7 @@ namespace serviceInterface
         }
 
 
-        #region Disposable
-
+        #region IDisposable
         public void Dispose()
         {
             Dispose(true);
@@ -55,7 +54,6 @@ namespace serviceInterface
             if (!disposing) return;
             if (_context != null) _context.Dispose();
         }
-
         #endregion
 
 

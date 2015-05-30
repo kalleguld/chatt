@@ -2,7 +2,6 @@
 using modelInterface;
 using rerest.models.output.exceptions;
 using serviceInterface;
-using serviceInterface.service;
 
 namespace rerest.controllers
 {
@@ -20,6 +19,8 @@ namespace rerest.controllers
         {
             return _connectionFactory.GetConnection();
         }
+
+
 
         protected IToken GetToken(Connection connection, string guidStr)
         {
@@ -57,6 +58,7 @@ namespace rerest.controllers
         {
             if (o == null) throw new JsonBadRequest(name + " parameter is needed.");
         }
+
     }
 
     

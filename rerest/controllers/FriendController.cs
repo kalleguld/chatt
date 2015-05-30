@@ -31,13 +31,7 @@ namespace rerest.controllers
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                var friend = GetUser(connection, token, username);
-                if (friend == null)
-                {
-                    return new FriendRequestResponse(false);
-                }
-                var response = connection.FriendService.RequestFriend(token, friend);
-
+                var response = connection.FriendService.RequestFriend(token, username);
                 connection.SaveChanges();
                 return new FriendRequestResponse(response);
             }
