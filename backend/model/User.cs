@@ -28,12 +28,6 @@ namespace backend.model
             set { _requestedFriends = value; }
         }
 
-        public virtual ISet<User> ReverseFriends
-        {
-            get { return _reverseFriends; }
-            set { _reverseFriends = value; }
-        }
-
         public virtual ISet<Message> SentMessages
         {
             get { return _sentMessages; }
@@ -47,7 +41,6 @@ namespace backend.model
         }
 
         private ISet<User> _friends;
-        private ISet<User> _reverseFriends;
         private ISet<User> _friendRequests;
         private ISet<User> _requestedFriends;
         private ISet<Message> _sentMessages;
@@ -62,7 +55,6 @@ namespace backend.model
             _friends = new HashSet<User>();
             _friendRequests = new HashSet<User>();
             _requestedFriends = new HashSet<User>();
-            _reverseFriends = new HashSet<User>();
             _sentMessages = new HashSet<Message>();
             _receivedMessages = new HashSet<Message>();
         }

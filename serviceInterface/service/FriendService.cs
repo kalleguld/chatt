@@ -6,14 +6,9 @@ using modelInterface;
 
 namespace serviceInterface.service
 {
-    public class FriendService
+    public class FriendService : BaseService
     {
-        private readonly Connection _conn;
-
-        internal FriendService(Connection conn)
-        {
-            _conn = conn;
-        }
+        internal FriendService(Connection connection) : base(connection) { }
 
         public IEnumerable<IUser> GetFriends(IUser user)
         {
@@ -22,8 +17,8 @@ namespace serviceInterface.service
 
         public bool RequestFriend(IToken iToken, string friendName)
         {
-            var user = _conn.UserService.GetUser(iToken.User);
-            var friend = _conn.UserService.GetUser(friendName);
+            var user = Connection.UserService.GetUser(iToken.User);
+            var friend = Connection.UserService.GetUser(friendName);
             if (friend == null) return false;
             if (user == friend) return true;
             if (user.FriendRequests.Contains(friend))
@@ -43,8 +38,8 @@ namespace serviceInterface.service
 
         public void RemoveFriend(IToken iToken, IUser iFriend)
         {
-            var user = _conn.UserService.GetUser(iToken.User);
-            var friend = _conn.UserService.GetUser(iFriend);
+            var user = Connection.UserService.GetUser(iToken.User);
+            var friend = Connection.UserService.GetUser(iFriend);
 
             user.Friends.Remove(friend);
             friend.Friends.Remove(user);

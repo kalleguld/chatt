@@ -6,18 +6,13 @@ using modelInterface;
 
 namespace serviceInterface.service
 {
-    public class MessageService
+    public class MessageService : BaseService
     {
-        private readonly Connection _conn;
-
-        internal MessageService(Connection conn)
-        {
-            _conn = conn;
-        }
+        internal MessageService(Connection connection) : base(connection) { }
 
         public IMessage GetMessage(IToken token, int messageId)
         {
-            var message = _conn.Context.Messages.FirstOrDefault(m => m.Id == messageId);
+            var message = Connection.Context.Messages.FirstOrDefault(m => m.Id == messageId);
 
             if (message == null) return null;
             if (!CanSeeMessage(token, message)) return null;
@@ -27,7 +22,7 @@ namespace serviceInterface.service
 
         public IMessage CreateMessage(IToken token, string receiver, string content)
         {
-            var iReceiver = _conn.UserService.GetUser(receiver);
+            var iReceiver = Connection.UserService.GetUser(receiver);
             return CreateMessage(token, iReceiver, content);
         }
 
@@ -37,18 +32,18 @@ namespace serviceInterface.service
 
             var msg = new Message
             {
-                Sender = _conn.UserService.GetUser(token.User),
-                Receiver = _conn.UserService.GetUser(receiver),
+                Sender = Connection.UserService.GetUser(token.User),
+                Receiver = Connection.UserService.GetUser(receiver),
                 Content = content,
                 Sent = DateTime.UtcNow
             };
-            _conn.Context.Messages.Add(msg);
+            Connection.Context.Messages.Add(msg);
             return msg;
         }
 
         public IEnumerable<IMessage> GetMessages(IUser receiver, IUser sender = null, DateTime? filterDate = null)
         {
-            IQueryable<Message> result = _conn.Context.Messages;
+            IQueryable<Message> result = Connection.Context.Messages;
             result = result.Where(m => m.Receiver.Username == receiver.Username);
             if (sender != null)
             {

@@ -20,7 +20,7 @@ namespace backend
             user.Property(u => u.Hash).IsRequired();
 
             user.HasMany(u => u.Friends)
-                .WithMany(u => u.ReverseFriends)
+                .WithMany()
                 .Map(ff =>
                 {
                     ff.MapLeftKey("user");
@@ -52,8 +52,8 @@ namespace backend
                 .IsRequired();
             message.Property(m => m.Sent).IsRequired();
             message.Property(m => m.Content).IsRequired();
-            message.HasOptional(m => m.Sender).WithMany(u=>u.SentMessages);
-            message.HasRequired(m => m.Receiver).WithMany(u=>u.ReceivedMessages);
+            message.HasOptional(m => m.Sender).WithMany(u => u.SentMessages);
+            message.HasRequired(m => m.Receiver).WithMany(u => u.ReceivedMessages);
 
             base.OnModelCreating(dbmb);
         }
