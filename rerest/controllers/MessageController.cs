@@ -1,9 +1,8 @@
-﻿using System;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using System.ServiceModel.Web;
 using rerest.jsonBase;
-using rerest.viewmodel.exceptions;
 using rerest.viewmodel;
+using rerest.viewmodel.exceptions;
 using utils;
 
 namespace rerest.controllers
