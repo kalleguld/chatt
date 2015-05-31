@@ -10,7 +10,7 @@ namespace rerest.viewmodel.exceptions
     [DataContract]
     public class JsonError : JsonResponse
     {
-        [DataMember]
+        [DataMember(Name = "errorMessage")]
         public string ErrorMessage { get; protected set; }
 
         public JsonError(JsonResponseCode ec) : base(ec)

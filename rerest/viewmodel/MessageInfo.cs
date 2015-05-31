@@ -13,15 +13,15 @@ namespace rerest.viewmodel
     [DataContract]
     public class MessageInfo : JsonResponse
     {
-        [DataMember]
+        [DataMember(Name = "id")]
         public int Id { get; private set; }
-        [DataMember]
+        [DataMember(Name = "receiver")]
         public string Receiver { get; private set; }
-        [DataMember]
+        [DataMember(Name = "sender")]
         public string Sender { get; private set; }
-        [DataMember]
+        [DataMember(Name = "sent")]
         public long Sent { get; private set; }
-        [DataMember]
+        [DataMember(Name = "content")]
         public string Content { get; private set; }
 
         public MessageInfo() { }

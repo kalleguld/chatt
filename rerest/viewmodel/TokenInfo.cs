@@ -8,9 +8,9 @@ namespace rerest.viewmodel
     [DataContract]
     public class TokenInfo : JsonResponse
     {
-        [DataMember]
+        [DataMember(Name = "token")]
         public Guid Token { get; private set; }
-        [DataMember]
+        [DataMember(Name = "username")]
         public string Username { get; private set; }
 
         public TokenInfo() { }

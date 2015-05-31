@@ -7,25 +7,40 @@
     <div class="col-md-4">empty</div>
     <div class="col-md-4">
         <p>Login here:</p>
-        <input id="Username" placeholder="username"/><br/>
-        <input id="Password" type="password" placeholder="password"/><br/>
+        <input id="Username" placeholder="username" /><br />
+        <input id="Password" type="password" placeholder="password" /><br />
         <button onclick="getToken($('#Username').val(), $('#Password').val())">Log in</button>
 
         <textarea id="response" placeholder="response"></textarea>
 
         <script>
-            
+            if (window.chatt == undefined) window.chatt = {};
+
             function getToken(un, pw) {
                 $.ajax({
                     url: getUrl("tokens/", { username: un, password: pw }),
                     type: "POST",
-                    success: function(result, status, xhr) {
-                        
-                        $('#response').val(result["Token"]);
-                        window.chatt.token = result["Token"];
+                    success: function (result, status, xhr) {
+
+                        $('#response').val(result["token"]);
+                        window.chatt.token = result["token"];
+                    },
+                    error: function(xhr, errorType, error) {
+                        if (errorType === "error") {
+                            var obj = $.parseJSON(xhr.responseText);
+                            if (!obj) {
+                                console.log("Unknown error: " + xhr.responseText);
+                            }
+                            if (obj.errorCode === 7) {
+                                console.log("incorrect login");
+                            }
+                        } else {
+                            console.log("error: " + errorType);
+                        }
                     }
                 });
             }
+
 
             function getUrl(path, params) {
                 return "http://localhost:8733/jsonv1/" + path + encodeParams(params);

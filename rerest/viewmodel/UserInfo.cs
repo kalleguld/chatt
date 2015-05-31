@@ -7,9 +7,9 @@ namespace rerest.viewmodel
     [DataContract]
     public class UserInfo : JsonResponse
     {
-        [DataMember]
+        [DataMember(Name = "fullName")]
         public string FullName { get; private set; }
-        [DataMember]
+        [DataMember(Name = "username")]
         public string Username { get; private set; }
         
         public UserInfo() { }

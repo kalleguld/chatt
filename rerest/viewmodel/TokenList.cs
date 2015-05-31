@@ -10,7 +10,7 @@ namespace rerest.viewmodel
     [DataContract]
     class TokenList : JsonResponse
     {
-        [DataMember]
+        [DataMember(Name = "tokens")]
         public IList<Guid> Tokens { get; private set; }
 
         public TokenList() { Tokens = new List<Guid>(); }

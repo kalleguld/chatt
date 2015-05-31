@@ -7,7 +7,7 @@ namespace rerest.viewmodel.exceptions
     [DataContract]
     public abstract class JsonParamError : JsonError
     {
-        [DataMember]
+        [DataMember(Name = "parameterName")]
         public string ParameterName { get; private set; }
 
 
@@ -46,7 +46,7 @@ namespace rerest.viewmodel.exceptions
     [DataContract]
     public class JsonWrongParameterType : JsonParamError
     {
-        [DataMember]
+        [DataMember(Name = "requiredType")]
         public string RequiredType { get; private set; }
 
         public JsonWrongParameterType(string parameterName, string requiredType)

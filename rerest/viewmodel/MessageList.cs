@@ -9,7 +9,7 @@ namespace rerest.viewmodel
     [DataContract]
     public class MessageList : JsonResponse
     {
-        [DataMember]
+        [DataMember(Name = "messages")]
         public IList<int> Messages { get; private set; }
 
         public MessageList() { Messages = new List<int>(); }
