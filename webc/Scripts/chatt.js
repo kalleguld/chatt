@@ -1,32 +1,4 @@
-﻿window.chatt = {
-    friends: {},
-    friendRequests: {},
-    users: {},
-    token: "931a9540-9238-4094-a03c-9b19219e2d97",
-    self: null
-};
-
-function User(username, fullName) {
-    this.username = username;
-    this.fullName = fullName;
-    this.messages = [];
-    this.lastMessage = 0;
-
-    this.addMessage = function(id, sent, outgoing, content) {
-        var m = new Message(id, this, sent, outgoing, content);
-        this.messages.push(m);
-        this.lastMessage = Math.max(this.lastMessage, id);
-        return m;
-    }
-}
-
-function Message(id, partner, sent, outgoing, content) {
-    this.id = id;
-    this.partner = partner;
-    this.sent = sent;
-    this.outgoing = outgoing;
-    this.content = content;
-}
+﻿window.chatt = new ChattSingleton();
 
 function getToken(un, pw, callback) {
     $.ajax({
@@ -34,25 +6,6 @@ function getToken(un, pw, callback) {
         type: "POST",
         error: getXhrErrorHandler("in getToken"),
         success: callback
-    });
-}
-
-function updateUserListElement(userList, userListElem, templateElem, idPrefix, token, url) {
-    updateUserList(userList, token, url,
-        function (user) {
-            //callback for new users
-            var e = templateElem.clone();
-            e.attr("id", idPrefix + classEscape(user.username));
-            e.attr("for", classEscape(user.username));
-            e.find(".username").html(htmlEscape(user.username));
-            e.find(".fullName").html(htmlEscape(user.fullName));
-
-            userListElem.append(e);
-        },
-        function (username) {
-            userListElem.find("#" + idPrefix + username)
-                .remove();
-        
     });
 }
 

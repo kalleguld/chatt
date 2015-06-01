@@ -27,7 +27,12 @@ namespace webc
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/chatt").Include("~/Scripts/chatt.js"));
+            bundles.Add(new ScriptBundle("~/bundles/chatt").Include(
+                "~/Scripts/net.js",
+                "~/Scripts/chatt.js",
+                "~/Scripts/ui.js"
+                ));
+
         }
     }
 }
