@@ -22,3 +22,17 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.friend-window { border: solid 2px black; }
+.friend-window > .header { font-weight: bold; }
+
+.no-friends-marker { display: none;}
+.friend-list:empty ~ .no-friends-marker { display: block;}
+
+.topbar .right > * { display: inline; }
+.dropdown { background-color: yellowgreen;}
+.dropdown .body{ position: fixed; display: none;background-color: yellow; }
+.dropdown:hover .body { display: block; }
+
+
+.history-item { border: dotted 1px blue; }

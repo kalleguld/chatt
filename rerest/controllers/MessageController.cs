@@ -14,7 +14,7 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}&sender={sender}&after={after}")]
+            UriTemplate = "?token={guidStr}&sender={sender}&afterId={after}")]
         public MessageList GetMessages(string guidStr, string sender, string after)
         {
             int? aft = IntUtils.ParseN(after);

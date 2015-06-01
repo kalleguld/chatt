@@ -1,62 +1,121 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿<div class="topbar" style="display: none">
+    <div class="top-logo">Chatt</div>
+    <div class="right">
+        <a id="m-login" href="#">Log In</a>
+        <a id="m-logout" href="#">Log Out</a>
+        <div id="m-friends" class="dropdown down-left">
+            <div class="header">Friends</div>
+            <div class="body">
+                <ul><li class="sub-header">Friends:</li></ul>
+                <ul id="m-friend-list"></ul>
+                <ul><li class="sub-header">Add Friend</li></ul>
+                <ul><li class="sub-header">Friend Requests:</li></ul>
+                <ul id="m-friend-request-list"></ul>
 
+            </div>
+        </div>
 
-<div class="row">
-    <div class="col-md-4">empty</div>
-    <div class="col-md-4">
-        <p>Login here:</p>
-        <input id="Username" placeholder="username" /><br />
-        <input id="Password" type="password" placeholder="password" /><br />
-        <button onclick="getToken($('#Username').val(), $('#Password').val())">Log in</button>
-
-        <textarea id="response" placeholder="response"></textarea>
-
-        <script>
-            if (window.chatt == undefined) window.chatt = {};
-
-            function getToken(un, pw) {
-                $.ajax({
-                    url: getUrl("tokens/", { username: un, password: pw }),
-                    type: "POST",
-                    success: function (result, status, xhr) {
-
-                        $('#response').val(result["token"]);
-                        window.chatt.token = result["token"];
-                    },
-                    error: function(xhr, errorType, error) {
-                        if (errorType === "error") {
-                            var obj = $.parseJSON(xhr.responseText);
-                            if (!obj) {
-                                console.log("Unknown error: " + xhr.responseText);
-                            }
-                            if (obj.errorCode === 7) {
-                                console.log("incorrect login");
-                            }
-                        } else {
-                            console.log("error: " + errorType);
-                        }
-                    }
-                });
-            }
-
-
-            function getUrl(path, params) {
-                return "http://localhost:8733/jsonv1/" + path + encodeParams(params);
-            }
-
-            function encodeParams(map) {
-                var result = "";
-                var first = true;
-                for (var key in map) {
-                    result += (first ? "?" : "&");
-                    first = false;
-                    result += encodeURIComponent(key) + "=" + encodeURIComponent(map[key]);
-                }
-                return result;
-            }
-
-        </script>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div id="friend-window" class="friend-window program-window">
+            <div class="header">Friend List</div>
+            <ul id="friend-list" class="friend-list"></ul>
+            <div class="no-friends-marker"> - No Friends - </div>
+            <button onclick="updateFriendList()">Update</button>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div id="chat-window-container"></div>
+    </div>
+</div>
+
+<hr />
+<footer>
+    <p>&copy; @DateTime.Now.Year - kalleguld</p>
+    <p>@Html.ActionLink("About", "About", "Home")</p>
+</footer>
+
+<div style="display: none" id="templates">
+    <ul>
+        <li id="friend-list-item-template" class="friend-list-item">
+            <a href="#" onclick="openChatWindowFromElement(this)">
+                <span class="username"></span>
+            </a>
+        </li>
+    </ul>
+
+    <div id="chat-window-template" class="chat-window program-window">
+        <div class="header">
+            <span>Chat with </span><span class="username"></span>
+        </div>
+        <div class="chat-history"></div>
+        <form class="message-form" onsubmit="event.preventDefault(); return sendChatMessageForm(this);">
+            <input type="text" class="chat-input" name="chat-input"/>
+            <input type="hidden" class="receiver" name="receiver"/>
+            <input type="submit" value="send"/>
+        </form>
+    </div>
+
+    <div id="chat-history-item-out-template" class="history-item outgoing">
+        <div class="username"></div>
+        <div class="full-name"></div>
+        <div class="content"></div>
+        <div class="message-id"></div>
+    </div>
+
+</div>
+
+<script>
+    
+    function openChatWindowFromElement(elem) {
+        var fli = $(elem).parents(".friend-list-item")[0];
+        var escUsername = $(fli).attr("for");
+        openChatWindow(classUnescape(escUsername));
+        return false;
+    }
+
+    function openChatWindow(username) {
+        var user = window.chatt.users[username];
+        var w = $("#chat-window-template").clone();
+        w.attr("id", "m-cw-" + classEscape(username));
+        w.attr("for", classEscape(username));
+        w.find(".username").html(htmlEscape(username));
+        w.find(".full-name").html(htmlEscape(user.fullName));
+
+        $("#chat-window-container").append(w);
+    }
+
+    function updateFriendList() {
+        updateUserListElement(
+            window.chatt.friends,
+            $("#friend-list"),
+            $("#friend-list-item-template"),
+            "m-fl-",
+            window.chatt.token,
+            "friends/");
+    }
+
+    function sendChatMessageForm(form) {
+        var chatWindow = $($(form).parents(".chat-window")[0]);
+        var username = classUnescape(chatWindow.attr("for"));
+        var user = window.chatt.users[username];
+
+        sendChatMessage(window.chatt.token,
+            user,
+            $(form).find("[name=chat-input]").val(),
+            function(r, m) {
+                var w = $("#chat-history-item-out-template").clone();
+                w.attr("id", "m-chi-" + classEscape(r.username));
+                w.attr("for", classEscape(r.username));
+                w.find(".username").html(htmlEscape(r.username));
+                w.find(".full-name").html(htmlEscape(r.fullName));
+                w.find(".content").html(htmlEscape(m.content));
+                w.find(".message-id").html(htmlEscape(m.id));
+                chatWindow.find(".chat-history").append(w);
+            });
+        return false;
+    }
+</script>

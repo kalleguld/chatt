@@ -13,30 +13,15 @@ namespace rerest.controllers
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
             UriTemplate = "?token={guidStr}")]
-        public FriendList GetFriends(string guidStr)
+        public UserList GetFriends(string guidStr)
         {
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                return new FriendList(token.User);
+                return new UserList(token.User.Friends);
             }
         }
 
-
-        [OperationContract]
-        [WebInvoke(Method = "POST", 
-            ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}&username={username}")]
-        public FriendRequestResponse AddFriend(string guidStr, string username)
-        {
-            using (var connection = GetConnection())
-            {
-                var token = GetToken(connection, guidStr);
-                var response = connection.FriendService.RequestFriend(token, username);
-                connection.SaveChanges();
-                return new FriendRequestResponse(response);
-            }
-        }
 
         [OperationContract]
         [WebInvoke(Method = "DELETE", 

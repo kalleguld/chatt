@@ -38,9 +38,14 @@ namespace serviceInterface.service
         {
             var user = Connection.UserService.GetUser(iToken.User);
             var friend = Connection.UserService.GetUser(iFriend);
-
             user.Friends.Remove(friend);
             friend.Friends.Remove(user);
+        }
+
+        public void RemoveFriendRequest(IToken iToken, string friendName)
+        {
+            var user = Connection.UserService.GetUser(iToken.User);
+            var friend = Connection.UserService.GetUser(friendName);
             user.FriendRequests.Remove(friend);
             friend.FriendRequests.Remove(user);
         }
