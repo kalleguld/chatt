@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoolUtils.cs" />
     <Compile Include="DateUtils.cs" />
     <Compile Include="IntUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

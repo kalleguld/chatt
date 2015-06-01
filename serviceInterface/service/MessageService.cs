@@ -41,19 +41,46 @@ namespace serviceInterface.service
             return msg;
         }
 
-        public IEnumerable<IMessage> GetMessages(IToken token, string sender = null, int? afterId = null)
+        public IEnumerable<IMessage> GetMessages(
+            IToken token,
+            bool includeSent,
+            bool includeReceived,
+            string sender = null,
+            int? afterId = null,
+            DateTime? afterTime = null)
         {
             IQueryable<Message> result = Connection.Context.Messages;
-            result = result.Where(m => m.Receiver.Username == token.User.Username);
+
+            if (includeReceived && includeSent)
+            {
+                result = result.Where(m => m.Receiver.Username == token.User.Username ||
+                                           m.Sender.Username == token.User.Username);
+            }
+            else if (includeSent)
+            {
+                result = result.Where(m => m.Sender.Username == token.User.Username);
+            }
+            else if (includeReceived)
+            {
+                result = result.Where(m => m.Receiver.Username == token.User.Username);
+            }
+            else return Enumerable.Empty<IMessage>();
+
             if (sender != null)
             {
-                result = result.Where(m => m.Sender.Username == sender);
+                result = result.Where(m => m.Sender.Username == sender ||
+                                           m.Receiver.Username == sender);
             }
             if (afterId != null)
             {
                 result = result.Where(m => m.Id > afterId);
             }
-            return result;
+            if (afterTime != null)
+            {
+                result = result.Where(m => m.Sent > afterTime);
+            }
+
+            return result.OrderBy(m => m.Sent);
         }
 
         public bool CanSendMessage(IToken token, IUser receiver)

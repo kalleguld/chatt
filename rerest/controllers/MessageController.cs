@@ -14,14 +14,27 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}&sender={sender}&afterId={after}")]
-        public MessageList GetMessages(string guidStr, string sender, string after)
+            UriTemplate = "?token={guidStr}" +
+                          "&sender={sender}" +
+                          "&afterId={afterIdStr}" +
+                          "&afterTimestamp={afterTimestampStr}" +
+                          "&getSent={getSentStr}" +
+                          "&getReceived={getReceivedStr}")]
+        public MessageList GetMessages(string guidStr, 
+            string sender, string afterIdStr, string afterTimestampStr, 
+            string getSentStr, string getReceivedStr)
         {
-            int? aft = IntUtils.ParseN(after);
+            int? afterId = IntUtils.ParseN(afterIdStr);
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
-                var messages = connection.MessageService.GetMessages(token, sender, aft);
+                var messages = connection.MessageService.GetMessages(
+                    token, 
+                    BoolUtils.ParseN(getSentStr) ?? true,
+                    BoolUtils.ParseN(getReceivedStr) ?? true,
+                    sender,
+                    afterId,
+                    DateUtils.FromMilisN(afterTimestampStr));
                 var list = new MessageList(messages);
                 return list;
             }
