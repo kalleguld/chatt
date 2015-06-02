@@ -38,6 +38,7 @@ namespace serviceInterface.service
                 Sent = DateTime.UtcNow
             };
             Connection.Context.Messages.Add(msg);
+            Connection.MessageListenerService.QueueMessage(msg);
             return msg;
         }
 

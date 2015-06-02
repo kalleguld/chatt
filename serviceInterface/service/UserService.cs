@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using backend.model;
 using modelInterface;
 using modelInterface.exceptions;
@@ -10,6 +11,9 @@ namespace serviceInterface.service
 {
     public class UserService : BaseService
     {
+
+        public static readonly Regex NameRegex = new Regex("^[a-zA-Z0-9-_]+$");
+
         internal UserService(Connection connection) : base(connection) { }
 
         internal User GetUser(string username)
@@ -55,10 +59,11 @@ namespace serviceInterface.service
 
         public IUser CreateUser(string username, string fullName, string password)
         {
+            if (!IsValidUsername(username))
+                throw new InvalidUsername(username, NameRegex);
             if (Connection.Context.Users.Any(u => u.Username == username))
-            {
                 throw new UsernameExists(username);
-            }
+
             var user = new User
             {
                 FullName = fullName,
@@ -95,5 +100,9 @@ namespace serviceInterface.service
             return iUser as User ?? Connection.Context.Users.First(u => u.Username == iUser.Username);
         }
 
+        public static bool IsValidUsername(string name)
+        {
+            return name != null && NameRegex.IsMatch(name);
+        }
     }
 }

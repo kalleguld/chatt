@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace serviceInterface.service
+﻿namespace serviceInterface.service
 {
     public class BaseService
     {
@@ -14,5 +8,6 @@ namespace serviceInterface.service
         {
             Connection = connection;
         }
+
     }
 }

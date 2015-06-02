@@ -35,6 +35,11 @@ namespace rerest.controllers
                     new JsonError(JsonResponseCode.UsernameExists).Throw();
                     return null;
                 }
+                catch (InvalidUsername)
+                {
+                    new JsonError(JsonResponseCode.InvalidUsername).Throw();
+                    return null;
+                }
                 connection.SaveChanges();
                 return new UserInfo(user);
             }

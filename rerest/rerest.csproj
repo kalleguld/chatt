@@ -63,6 +63,7 @@
     <Compile Include="controllers\MessageController.cs" />
     <Compile Include="controllers\TokenController.cs" />
     <Compile Include="controllers\UserController.cs" />
+    <Compile Include="controllers\WsMessageController.cs" />
     <Compile Include="jsonBase\JsonResponseCode.cs" />
     <Compile Include="viewmodel\exceptions\JsonError.cs" />
     <Compile Include="viewmodel\exceptions\JsonParamError.cs" />

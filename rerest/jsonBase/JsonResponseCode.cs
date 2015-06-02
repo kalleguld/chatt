@@ -15,7 +15,8 @@ namespace rerest.jsonBase
         InvalidToken,
         LoginError,
         UsernameExists,
-        UserNotFriendly
+        UserNotFriendly,
+        InvalidUsername
     }
 
     public static class JsonResponseCodeExtensions
@@ -30,6 +31,7 @@ namespace rerest.jsonBase
                 case JsonResponseCode.MalformedParameter:
                 case JsonResponseCode.MissingParameter:
                 case JsonResponseCode.WrongParameterType:
+                case JsonResponseCode.InvalidUsername:
                     return System.Net.HttpStatusCode.BadRequest;
                 case JsonResponseCode.AccessDenied:
                 case JsonResponseCode.InvalidToken:
@@ -67,6 +69,8 @@ namespace rerest.jsonBase
                     return "The requested username is already taken.";
                 case JsonResponseCode.UserNotFriendly:
                     return "That user is not a friend of yours.";
+                case JsonResponseCode.InvalidUsername:
+                    return "Supplied username is not valid";
 
                 default:
                     throw new NotImplementedException("No error message for JsonResponseCode " + e);

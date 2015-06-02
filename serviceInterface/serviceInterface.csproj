@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="service\BaseService.cs" />
     <Compile Include="service\FriendService.cs" />
+    <Compile Include="service\MessageListenerService.cs" />
     <Compile Include="service\MessageService.cs" />
     <Compile Include="service\UserService.cs" />
   </ItemGroup>
