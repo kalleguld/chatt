@@ -23,16 +23,75 @@ textarea {
     max-width: 280px;
 }
 
-.friend-window { border: solid 2px black; }
-.friend-window > .header { font-weight: bold; }
+.friend-window {
+    border: solid 2px black;
+}
 
-.no-friends-marker { display: none;}
-.friend-list:empty ~ .no-friends-marker { display: block;}
+    .friend-window > .header {
+        font-weight: bold;
+    }
 
-.topbar .right > * { display: inline; }
-.dropdown { background-color: yellowgreen;}
-.dropdown .body{ position: fixed; display: none;background-color: yellow; }
-.dropdown:hover .body { display: block; }
+.no-friends-marker {
+    display: none;
+}
+
+.friend-list:empty ~ .no-friends-marker {
+    display: block;
+}
+
+.topbar .right > * {
+    display: inline;
+}
+
+.dropdown {
+    background-color: yellowgreen;
+}
+
+    .dropdown .body {
+        position: fixed;
+        display: none;
+        background-color: yellow;
+    }
+
+    .dropdown:hover .body {
+        display: block;
+    }
 
 
-.history-item { border: dotted 1px blue; }
+
+.chat-window {
+    border: solid 2px blue;
+}
+
+    .chat-window .header {
+        background-color: aqua;
+        margin-bottom: 5px;
+    }
+
+    .chat-window .chat-history {
+        height: 20rem;
+        overflow: auto;
+    }
+
+.history-item + .history-item {
+    border-top: dotted 1px blue;
+}
+/*
+.history-item.incoming {
+    text-align: right;
+}
+
+.history-item.outgoing {
+    background-color: azure;
+}
+    */
+.history-item.placeholder {
+    display: none;
+}
+
+.history-item .you {
+    font-weight: bold;
+}
+.history-item .username {
+    font-weight: bold;
+}

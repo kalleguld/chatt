@@ -59,8 +59,9 @@ namespace rerest.controllers
                 if (message == null)
                 {
                     new JsonError(JsonResponseCode.AccessDenied).Throw();
+                    return null;
                 }
-                return new MessageInfo(message);
+                return new MessageInfo(message, message.Sender.Username == token.User.Username);
             }
         }
 
@@ -81,7 +82,7 @@ namespace rerest.controllers
                     new JsonError(JsonResponseCode.UserNotFriendly).Throw();
                 }
                 conn.SaveChanges();
-                return new MessageInfo(message);
+                return new MessageInfo(message, true);
             }
             
         }

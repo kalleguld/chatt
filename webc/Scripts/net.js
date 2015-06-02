@@ -1,31 +1,21 @@
-﻿
-class User {
-    username: string;
-    fullName: string;
-    messages: Array<Message> = [];
-    lastMessage: number = 0;
-
-    constructor(username: string, fullName: string) {
+﻿var User = (function () {
+    function User(username, fullName) {
+        this.messages = [];
+        this.lastMessage = 0;
         this.username = username;
         this.fullName = fullName;
     }
-
-    addMessage(id: number, sent: number, outgoing: boolean, content: string): Message {
+    User.prototype.addMessage = function (id, sent, outgoing, content) {
         var m = new Message(id, this, sent, outgoing, content);
         this.messages.push(m);
         this.lastMessage = Math.max(this.lastMessage, id);
         return m;
-    }
-}
+    };
+    return User;
+})();
 
-class Message {
-    id: number;
-    partner: User;
-    sent: number;
-    outgoing: boolean;
-    content: string;
-
-    constructor(id: number, partner: User, sent: number, outgoing: boolean, content: string) {
+var Message = (function () {
+    function Message(id, partner, sent, outgoing, content) {
         this.id = id;
         this.partner = partner;
         this.sent = sent;
@@ -33,37 +23,31 @@ class Message {
         this.content = content;
         return this;
     }
-}
+    return Message;
+})();
 
-class ChattSingleton {
-    friends: Array<string> = [];
-    friendRequests: Array<string> = [];
-    users: Array<User> = [];
-    token: string = "931a9540-9238-4094-a03c-9b19219e2d97";
-    self: User = null;
-}
+var ChattSingleton = (function () {
+    function ChattSingleton() {
+        this.friends = [];
+        this.friendRequests = [];
+        this.users = [];
+        this.token = "931a9540-9238-4094-a03c-9b19219e2d97";
+        this.self = null;
+    }
+    return ChattSingleton;
+})();
 
-interface IXhrErrorHandler {
-    (xhr: XMLHttpRequest, errorType: string, error: string): void
-}
-
-interface IMessageListHandler {
-    (messageIds: Array<number>): any
-}
-
-
-function classEscape(s: string): string {
+function classEscape(s) {
     return htmlEscape(s);
 }
-function classUnescape(s: string): string {
+function classUnescape(s) {
     var p = document.createElement("p");
     p.innerHTML = s;
     var child = p.childNodes[0];
     return child ? child.nodeValue : "";
 }
 
-
-function htmlEscape(s: string): string {
+function htmlEscape(s) {
     var entityMap = {
         "&": "&amp;",
         "<": "&lt;",
@@ -72,14 +56,16 @@ function htmlEscape(s: string): string {
         "'": "&#39;",
         "/": "&#x2F;"
     };
-    return String(s).replace(/[&<>"'\/]/g, ss => entityMap[ss]);
+    return String(s).replace(/[&<>"'\/]/g, function (ss) {
+        return entityMap[ss];
+    });
 }
 
-function getUrl(path: string, params: any): string {
+function getUrl(path, params) {
     return "http://localhost:8733/jsonv1/" + path + encodeParams(params);
 }
 
-function encodeParams(map: Map<string, string>): string {
+function encodeParams(map) {
     var result = "";
     var first = true;
     for (var key in map) {
@@ -90,8 +76,8 @@ function encodeParams(map: Map<string, string>): string {
     return result;
 }
 
-function getXhrErrorHandler($, helpText: string): IXhrErrorHandler {
-    return (xhr, errorType, error) => {
+function getXhrErrorHandler($, helpText) {
+    return function (xhr, errorType, error) {
         console.log("Xhr Error: " + helpText, xhr);
         if (errorType === "error") {
             var obj = $.parseJSON(xhr.responseText);
@@ -104,14 +90,17 @@ function getXhrErrorHandler($, helpText: string): IXhrErrorHandler {
         } else {
             console.log("error: " + errorType);
         }
-    }
+    };
 }
 
-function getNewMessages($, token: string, user: User, callback: IMessageListHandler) {
+function getNewMessages($, token, user, callback) {
     $.ajax({
         url: getUrl("messages/", { token: token, sender: user.username, afterId: user.lastMessage }),
         error: getXhrErrorHandler($, " in getNewMessages"),
         type: "GET",
-        success: (result, status, xhr) => {callback(result.messages)}
+        success: function (result, status, xhr) {
+            callback(result.messages);
+        }
     });
 }
+//# sourceMappingURL=net.js.map

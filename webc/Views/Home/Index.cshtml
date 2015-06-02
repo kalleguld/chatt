@@ -57,13 +57,20 @@
             <input type="hidden" class="receiver" name="receiver"/>
             <input type="submit" value="send"/>
         </form>
+            <button onclick="updateChatWindow($(this).parents('.chat-window'));">
+                Refresh
+            </button>
     </div>
 
     <div id="chat-history-item-out-template" class="history-item outgoing">
-        <div class="username"></div>
-        <div class="full-name"></div>
-        <div class="content"></div>
-        <div class="message-id"></div>
+        <span class="you">You: </span>
+        <span class="message-id"></span>
+        <span class="content"></span>
     </div>
-
+    <div id="chat-history-item-in-template" class="history-item incoming">
+        <span class="username"></span> (<span class="full-name"></span>)
+        <span class="message-id"></span>
+        <div class="content"></div>
+    </div>
+    <div id="chat-history-item-placeholder-template" class="history-item placeholder"></div>
 </div>
