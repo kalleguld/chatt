@@ -18,6 +18,20 @@
     </div>
 </div>
 
+<script src="/Scripts/jquery.signalR-2.1.2.js"></script>
+<script src="/signalr/hubs"></script>
+<script type="text/javascript">
+    var messageHub = $.connection.messageHub;
+    messageHub.client.newMessageCreated = function(messageId, sender, receiver) {
+        alert(messageId);
+    };
+    $.connection.hub.start().done(function() {
+        messageHub.server.login(window.chatt.token);
+        alert("logged in");
+    });
+</script>
+
+
 <div class="row">
     <div class="col-md-4">
         <div id="friend-window" class="friend-window program-window">

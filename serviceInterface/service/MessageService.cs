@@ -84,6 +84,11 @@ namespace serviceInterface.service
             return result.OrderBy(m => m.Sent);
         }
 
+        public IEnumerable<IMessage> GetMessages(int afterId)
+        {
+            return Connection.Context.Messages.Where(m => m.Id > afterId);
+        } 
+
         public bool CanSendMessage(IToken token, IUser receiver)
         {
             return token.User.Friends.Contains(receiver) ||
