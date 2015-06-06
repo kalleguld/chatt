@@ -47,14 +47,4 @@ function updateUserInfo(username, userList, token, callback) {
     });
 }
 
-function sendChatMessage(token, receiver, content, callback) {
-    $.ajax({
-        url: getUrl("messages/", { token: token, receiver: receiver.username, content: content }),
-        type: "POST",
-        error: getXhrErrorHandler($, "in sendChatMessage"),
-        success: function(result, status, xhr) {
-            if (callback) callback();
-        }
-    });
-}
 

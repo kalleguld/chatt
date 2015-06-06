@@ -68,15 +68,15 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}&receiver={receiver}&content={content}")]
-        public MessageInfo CreateMessage(string guidStr, string receiver, string content)
+            UriTemplate = "?token={guidStr}&receiver={receiver}&contents={contents}")]
+        public MessageInfo CreateMessage(string guidStr, string receiver, string contents)
         {
             using (var conn = GetConnection())
             {
                 var token = GetToken(conn, guidStr);
                 CheckNull(receiver, "receiver");
-                CheckNull(content, "content");
-                var message = conn.MessageService.CreateMessage(token, receiver, content);
+                CheckNull(contents, "contents");
+                var message = conn.MessageService.CreateMessage(token, receiver, contents);
                 if (message == null)
                 {
                     new JsonError(JsonResponseCode.UserNotFriendly).Throw();

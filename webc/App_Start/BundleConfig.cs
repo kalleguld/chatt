@@ -30,7 +30,8 @@ namespace webc
             bundles.Add(new ScriptBundle("~/bundles/chatt").Include(
                 "~/Scripts/net.js",
                 "~/Scripts/chatt.js",
-                "~/Scripts/ui.js"
+                "~/Scripts/ui.js",
+                "~/Scripts/jquery-ui-{version}.js"
                 ));
 
         }

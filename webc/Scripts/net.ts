@@ -23,14 +23,14 @@ class Message {
     partner: User;
     sent: number;
     outgoing: boolean;
-    content: string;
+    contents: string;
 
     constructor(id: number, partner: User, sent: number, outgoing: boolean, content: string) {
         this.id = id;
         this.partner = partner;
         this.sent = sent;
         this.outgoing = outgoing;
-        this.content = content;
+        this.contents = content;
         return this;
     }
 }
@@ -38,9 +38,9 @@ class Message {
 class ChattSingleton {
     friends: Array<string> = [];
     friendRequests: Array<string> = [];
-    users: Array<User> = [];
-    token: string = "931a9540-9238-4094-a03c-9b19219e2d97";
-    self: User = null;
+    users: Map<string, User> = new Map<string, User>();
+    token: string;
+    currentZIndex: number = 1;
 }
 
 interface IXhrErrorHandler {

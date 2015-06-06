@@ -21,7 +21,7 @@ namespace rerest.viewmodel
         public string Sender { get; private set; }
         [DataMember(Name = "sent")]
         public long Sent { get; private set; }
-        [DataMember(Name = "content")]
+        [DataMember(Name = "contents")]
         public string Content { get; private set; }
         [DataMember(Name = "outgoing")]
         public bool Outgoing { get; private set; }

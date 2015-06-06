@@ -23,75 +23,126 @@ textarea {
     max-width: 280px;
 }
 
-.friend-window {
-    border: solid 2px black;
+.c-table {
+    display: table;
+    margin: 0;
+    padding: 0;
 }
 
-    .friend-window > .header {
+.c-row {
+    display: table-row;
+    margin: 0;
+    padding: 0;
+}
+
+.c-cell {
+    display: table-cell;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.close-button {
+    float: right;
+    color: red;
+}
+
+.draggable-h .drag-handle {
+    
+}
+
+.close-button {
+    cursor: pointer;
+}
+
+
+.window {
+    border: solid 2px black;
+    background-color: white;
+    max-width: 350px;
+}
+
+    .window-header {
         font-weight: bold;
+        background-color: silver;
+        cursor: move;
     }
 
 .no-friends-marker {
     display: none;
 }
 
-.friend-list:empty ~ .no-friends-marker {
-    display: block;
-}
-
-.topbar .right > * {
-    display: inline;
-}
-
-.dropdown {
-    background-color: yellowgreen;
-}
-
-    .dropdown .body {
-        position: fixed;
-        display: none;
-        background-color: yellow;
-    }
-
-    .dropdown:hover .body {
+    .friend-list:empty ~ .no-friends-marker {
         display: block;
     }
 
 
-
 .chat-window {
-    border: solid 2px blue;
+    max-width: 350px;
 }
 
-    .chat-window .header {
-        background-color: aqua;
-        margin-bottom: 5px;
-    }
-
     .chat-window .chat-history {
-        height: 20rem;
+        height: 14rem;
         overflow: auto;
     }
 
-.history-item + .history-item {
-    border-top: dotted 1px blue;
-}
-/*
-.history-item.incoming {
-    text-align: right;
+    .chat-window .footer {
+        width: 100%;
+        box-sizing: border-box;
+        border-top: 1px dotted black;
+        padding: 0;
+    }
+
+    .chat-window .message-input {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        margin: 0;
+        border: none;
+        resize: none;
+    }
+
+    .chat-window button {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        background-color: antiquewhite;
+        border: none;
+        border-left: 1px dotted black;
+    }
+
+.history-item {
+    
 }
 
-.history-item.outgoing {
-    background-color: azure;
-}
-    */
-.history-item.placeholder {
-    display: none;
-}
+    .history-item .contents {
+        white-space: pre-wrap;
+    }
 
-.history-item .you {
-    font-weight: bold;
-}
-.history-item .username {
-    font-weight: bold;
-}
+    .history-item + .history-item {
+        border-top: dotted 1px blue;
+    }
+
+    .history-item.incoming {
+        text-align: right;
+    }
+
+    .history-item.outgoing {
+        background-color: azure;
+    }
+
+    .history-item.placeholder {
+        display: none;
+    }
+
+    .history-item .you {
+        font-weight: bold;
+    }
+
+    .history-item .username {
+        font-weight: bold;
+    }
+
+
