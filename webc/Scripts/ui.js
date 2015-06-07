@@ -113,8 +113,8 @@ function fetchLatestMessages(username) {
         error: getXhrErrorHandler($, "getLatestMessages"),
         success: function(result, status, xhr) {
             for (var i = 0; i < result.messages.length; i++) {
-                var mid = result.messages[i];
-                fetchMessage(mid, false);
+                var msgJson = result.messages[i];
+                var msg = processMessage(msgJson);
             }
         }
     });
@@ -162,17 +162,20 @@ function fetchMessage(messageId, openWindowOnFetch) {
         type: "GET",
         error: getXhrErrorHandler($, "fetchMessage"),
         success: function(result, status, xhr) {
-            var partner = (result.outgoing ? result.receiver : result.sender);
-            var newMessage = window.chatt.users[partner].addMessage(
-                result.id,
-                result.sent,
-                result.outgoing,
-                result.contents);
-            if (openWindowOnFetch) {
-                displayMessage(newMessage);
-            }
+            var newMessage = processMessage(result);
+            displayMessage(newMessage);
         }
     });
+}
+
+function processMessage(result) {
+    var partner = (result.outgoing ? result.receiver : result.sender);
+    var newMessage = window.chatt.users[partner].addMessage(
+        result.id,
+        result.sent,
+        result.outgoing,
+        result.contents);
+    return newMessage;
 }
 
 function displayMessage(message) {

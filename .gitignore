@@ -189,4 +189,10 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 #jquery UI
-webc/Content/themes/
+webc/Content/themes/base/*
+
+webc/Scripts/jquery*
+webc/Scripts/modernizr*
+webc/Scripts/*.map
+
+webc/Scripts/net.js

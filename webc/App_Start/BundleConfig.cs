@@ -31,7 +31,8 @@ namespace webc
                 "~/Scripts/net.js",
                 "~/Scripts/chatt.js",
                 "~/Scripts/ui.js",
-                "~/Scripts/jquery-ui-{version}.js"
+                "~/Scripts/jquery-ui-{version}.js",
+                "~/Scripts/jquery.signalR-{version}.js"
                 ));
 
         }

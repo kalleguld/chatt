@@ -42,7 +42,7 @@ namespace rerest.controllers
                     afterId,
                     DateUtils.FromMilisN(afterTimestampStr),
                     maxResults);
-                var list = new MessageList(messages);
+                var list = new MessageList(messages, token.User.Username);
                 return list;
             }
         }
