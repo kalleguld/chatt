@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using modelInterface;
 using Microsoft.AspNet.SignalR;
 using serviceInterface;
-using WcfWsComms;
 
 namespace webc
 {
@@ -59,12 +58,10 @@ namespace webc
                         var newMessages = conn.MessageService.GetMessages(lastMessageId);
                         foreach (var newMessage in newMessages)
                         {
-                            NewMessage(new MessageInfo
-                            {
-                                MessageId = newMessage.Id, 
-                                Sender = newMessage.Sender.Username,
-                                Receiver = newMessage.Receiver.Username
-                            });
+                            NewMessage(
+                                newMessage.Id, 
+                                newMessage.Sender.Username, 
+                                newMessage.Receiver.Username);
                             lastMessageId = newMessage.Id;
                         }
                     }
@@ -74,11 +71,11 @@ namespace webc
             _dbChecker.Start();
         }
 
-        private static void NewMessage(MessageInfo message)
+        private static void NewMessage(int messageId, string sender, string receiver)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<MessageHub>();
-            hubContext.Clients.Group(message.Receiver).NewMessageCreated(message.MessageId, message.Sender, message.Receiver);
-            hubContext.Clients.Group(message.Sender).NewMessageCreated(message.MessageId, message.Sender, message.Receiver);
+            hubContext.Clients.Group(receiver).NewMessageCreated(messageId, sender, receiver);
+            hubContext.Clients.Group(sender).NewMessageCreated(messageId, sender, receiver);
         }
     }
 }

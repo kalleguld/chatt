@@ -65,7 +65,6 @@
     <Compile Include="controllers\FriendController.cs" />
     <Compile Include="controllers\FriendRequestController.cs" />
     <Compile Include="controllers\MessageController.cs" />
-    <Compile Include="controllers\NewMessageController.cs" />
     <Compile Include="controllers\TokenController.cs" />
     <Compile Include="controllers\UserController.cs" />
     <Compile Include="jsonBase\JsonResponseCode.cs" />

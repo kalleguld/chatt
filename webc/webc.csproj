@@ -22,6 +22,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -234,10 +235,6 @@
     <ProjectReference Include="..\serviceInterface\serviceInterface.csproj">
       <Project>{5efb6bb4-ca5b-4a1a-bea0-5121f218302f}</Project>
       <Name>serviceInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WcfWsComms\WcfWsComms.csproj">
-      <Project>{C4C4A035-2A86-44D9-9AB1-C04B2438106E}</Project>
-      <Name>WcfWsComms</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

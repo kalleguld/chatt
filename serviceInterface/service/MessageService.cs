@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using backend.model;
 using modelInterface;
@@ -41,7 +40,6 @@ namespace serviceInterface.service
                 Sent = DateTime.UtcNow
             };
             Connection.Context.Messages.Add(msg);
-            Connection.MessageListenerService.QueueMessage(msg);
             return msg;
         }
 

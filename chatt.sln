@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rerest", "rerest\rerest.csproj", "{0FE757D7-425A-4A89-BB1B-58FCDEE89159}"
 EndProject
@@ -14,8 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "modelInterface", "modelInterface\modelInterface.csproj", "{C590B2A1-660C-45CD-A880-FE083634E5D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils", "utils\utils.csproj", "{AF07A3FE-7735-47DC-9B16-B7ADCB861B4E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfWsComms", "WcfWsComms\WcfWsComms.csproj", "{C4C4A035-2A86-44D9-9AB1-C04B2438106E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AC9D2127-98A1-4C77-B115-F754B6AF3052}"
 	ProjectSection(SolutionItems) = preProject
@@ -52,10 +50,6 @@ Global
 		{AF07A3FE-7735-47DC-9B16-B7ADCB861B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF07A3FE-7735-47DC-9B16-B7ADCB861B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF07A3FE-7735-47DC-9B16-B7ADCB861B4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4C4A035-2A86-44D9-9AB1-C04B2438106E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4C4A035-2A86-44D9-9AB1-C04B2438106E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4C4A035-2A86-44D9-9AB1-C04B2438106E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4C4A035-2A86-44D9-9AB1-C04B2438106E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

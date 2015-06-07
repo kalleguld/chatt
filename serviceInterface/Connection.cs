@@ -23,18 +23,12 @@ namespace serviceInterface
             return _messageService ?? (_messageService = new MessageService(this));
         } }
 
-        public MessageListenerService MessageListenerService { get
-        {
-            return _messageListenerService ?? (_messageListenerService = new MessageListenerService());
-        } }
-
 
 
         private readonly Context _context;
         private FriendService _friendService;
         private UserService _userService;
         private MessageService _messageService;
-        private MessageListenerService _messageListenerService;
 
 
         internal Connection()
@@ -45,10 +39,6 @@ namespace serviceInterface
         public int SaveChanges()
         {
             var result = _context.SaveChanges();
-            if (_messageListenerService != null)
-            {
-                MessageListenerService.DatabaseSaved();
-            }
             return result;
         }
 
