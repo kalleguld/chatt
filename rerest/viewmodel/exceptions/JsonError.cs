@@ -18,14 +18,14 @@ namespace rerest.viewmodel.exceptions
             ErrorMessage = ec.ErrorMessage();
         }
 
-        public virtual void Throw()
+        public WebFaultException<JsonError> GetException()
         {
-            GenericThrow(this);
-        }
+            return GetException(this);
+        } 
 
-        protected void GenericThrow<T>(T err) where T : JsonResponse
+        protected WebFaultException<T> GetException<T>(T err) where T : JsonError
         {
-            throw new WebFaultException<T>(err, err.HttpStatusCode);
-        }
+            return new WebFaultException<T>(err, err.HttpStatusCode);
+        } 
     }
 }

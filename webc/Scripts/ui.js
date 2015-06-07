@@ -32,19 +32,25 @@ function getChatWindow(user) {
     w.attr("for", classEscape(user.username));
     w.find(".username").html(htmlEscape(user.username));
     w.find(".full-name").html(htmlEscape(user.fullName));
+    var history = w.find(".chat-history");
+    for (var i = 0; i < user.messages.length; i++) {
+        var msg = user.messages[i];
+        var melem = getMessageElem(msg);
+        history.append(melem);
+    }
     return w;
 }
 
 function showLoginWindow() {
     $("#login-window").show();
-    $(".friend-window").hide();
+    $("#friend-window").hide();
     $(".friend-list .friend-list-item").remove();
-    $(".chat-window-container .chat-window").remove();
+    $("#chat-window-container").empty();
 }
 
 function hideLoginWindow() {
     $("#login-window").hide();
-    $(".friend-window").show();
+    $("#friend-window").show();
 }
 
 function startLogin(username, password) {
@@ -91,6 +97,25 @@ function fetchUser(username) {
             var user = new User(result.username, result.fullName);
             window.chatt.users[result.username] = user;
             addToFriendList(user);
+            fetchLatestMessages(username);
+        }
+    });
+}
+
+function fetchLatestMessages(username) {
+    $.ajax({
+        url: getUrl("messages/", {
+            token: window.chatt.token,
+            sender: username,
+            maxResults: 10
+        }),
+        type: "GET",
+        error: getXhrErrorHandler($, "getLatestMessages"),
+        success: function(result, status, xhr) {
+            for (var i = 0; i < result.messages.length; i++) {
+                var mid = result.messages[i];
+                fetchMessage(mid, false);
+            }
         }
     });
 }
@@ -130,26 +155,33 @@ function getFriendListItemElem(user) {
     return elem;
 }
 
-function fetchMessage(messageId) {
+function fetchMessage(messageId, openWindowOnFetch) {
+
     $.ajax({
         url: getUrl("messages/" + messageId, { token: window.chatt.token }),
         type: "GET",
         error: getXhrErrorHandler($, "fetchMessage"),
         success: function(result, status, xhr) {
-            var newMessage = new Message(
+            var partner = (result.outgoing ? result.receiver : result.sender);
+            var newMessage = window.chatt.users[partner].addMessage(
                 result.id,
-                (result.outgoing ? result.receiver : result.sender),
                 result.sent,
                 result.outgoing,
-                result.contents
-            );
-            displayMessage(newMessage);
+                result.contents);
+            if (openWindowOnFetch) {
+                displayMessage(newMessage);
+            }
         }
     });
 }
 
 function displayMessage(message) {
+    var chatWindow = $(".chat-window[for=" + message.partner + "]");
+    if (chatWindow.length === 0) {
+        openChatWindow(message.partner);
+    }
     var chatHistories = $(".chat-window[for=" + message.partner + "] .chat-history");
+
     var newItem = getMessageElem(message);
     for (var i = 0; i < chatHistories.length; i++) {
         var history = $(chatHistories[i]);
@@ -209,6 +241,7 @@ function sendMessageFromElement(elem) {
 }
 
 function sendMessage(username, contents) {
+    if (contents.match(/^\s*$/)) return;
     $.ajax({
         url: getUrl("messages/", {
             token: window.chatt.token,
@@ -229,6 +262,17 @@ function closeWindow(containingElem) {
 }
 
 function windowCreated(elem) {
-    $(".window").draggable({ handle: ".window-header" });
-    $(".resizable").resizable();
+    $(".window").draggable({
+        handle: ".window-header",
+        containment: "body"
+    });
+}
+
+function logout() {
+    window.chatt.token = null;
+    window.chatt.users = {};
+    window.chatt.friends = [];
+    window.chatt.currentZIndex = 1;
+    window.chatt.friendRequests = [];
+    showLoginWindow();
 }

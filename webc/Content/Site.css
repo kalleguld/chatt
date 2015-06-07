@@ -1,26 +1,14 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿html {
+     height: 100%;
+     box-sizing: border-box;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: black;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .c-table {
@@ -48,17 +36,12 @@ textarea {
     color: red;
 }
 
-.draggable-h .drag-handle {
-    
-}
-
 .close-button {
     cursor: pointer;
 }
 
-
 .window {
-    border: solid 2px black;
+    border: solid 2px silver;
     background-color: white;
     max-width: 350px;
 }
@@ -80,6 +63,7 @@ textarea {
 
 .chat-window {
     max-width: 350px;
+    resize: both;
 }
 
     .chat-window .chat-history {
@@ -90,7 +74,7 @@ textarea {
     .chat-window .footer {
         width: 100%;
         box-sizing: border-box;
-        border-top: 1px dotted black;
+        border-top: 1px solid silver;
         padding: 0;
     }
 
@@ -108,9 +92,9 @@ textarea {
         padding: 0;
         height: 100%;
         width: 100%;
-        background-color: antiquewhite;
+        background-color: azure;
         border: none;
-        border-left: 1px dotted black;
+        border-left: 1px solid silver;
     }
 
 .history-item {
@@ -122,11 +106,12 @@ textarea {
     }
 
     .history-item + .history-item {
-        border-top: dotted 1px blue;
+        border-top: dotted 1px silver;
     }
 
     .history-item.incoming {
         text-align: right;
+        background-color: ivory;
     }
 
     .history-item.outgoing {

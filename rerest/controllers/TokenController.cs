@@ -21,7 +21,7 @@ namespace rerest.controllers
             using (var connection = GetConnection())
             {
                 var token = connection.UserService.CreateToken(username, password);
-                if (token == null) new JsonError(JsonResponseCode.LoginError).Throw();
+                if (token == null) throw new JsonError(JsonResponseCode.LoginError).GetException();
                 connection.SaveChanges();
                 return new TokenInfo(token);
             }

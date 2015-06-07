@@ -7,39 +7,29 @@
 
 
 
-<div class="row">
-    <div class="col-md-4">
-        <div id="friend-window" class="friend-window window" onmousedown="setTopmost(this)">
-            <div class="window-header">Friend List</div>
-            <ul id="friend-list" class="friend-list"></ul>
-            <div class="no-friends-marker"> - No Friends - </div>
-        </div>
-
-        <div id="login-window" class="login-window window" onmousedown="setTopmost(this)">
-            <div class="window-header">Login</div>
-            <div>
-                <input id="login-username" type="text" value="un" />
-            </div>
-            <div>
-                <input id="login-password" type="password" value="pw" />
-            </div>
-            <div>
-                <button onclick="startLogin($('#login-username').val(), $('#login-password').val())">
-                    Log in
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div id="chat-window-container"></div>
+<div id="friend-window" class="friend-window window" onmousedown="setTopmost(this)">
+    <div class="window-header">Friend List</div>
+    <ul id="friend-list" class="friend-list"></ul>
+    <div class="no-friends-marker"> - No Friends - </div>
+    <div class="footer">
+        <button onclick="logout()">Log out</button>
     </div>
 </div>
-
-<hr />
-<footer>
-    <p>&copy; @DateTime.Now.Year - kalleguld</p>
-    <p>@Html.ActionLink("About", "About", "Home")</p>
-</footer>
+<div id="login-window" class="login-window window" onmousedown="setTopmost(this)">
+    <div class="window-header">Login</div>
+    <div>
+        <input id="login-username" type="text" value="un" />
+    </div>
+    <div>
+        <input id="login-password" type="password" value="pw" />
+    </div>
+    <div>
+        <button onclick="startLogin($('#login-username').val(), $('#login-password').val())">
+            Log in
+        </button>
+    </div>
+</div>
+<div id="chat-window-container"></div>
 
 <div style="display: none" id="templates">
     <ul>
@@ -53,7 +43,9 @@
         </li>
     </ul>
 
-    <div id="chat-window-template" class="chat-window closeable window" onmousedown="setTopmost(this)">
+    <div id="chat-window-template"
+         class="chat-window closeable window resizable"
+         onmousedown="setTopmost(this)">
         <div class="window-header drag-handle">
             <span>Chat with </span><span class="username"></span>
             <a class="close-button" onclick="closeWindow(this)">Close</a>
@@ -87,7 +79,7 @@
         showLoginWindow();
         var messageHub = $.connection.messageHub;
         messageHub.client.newMessageCreated = function (messageId, sender, receiver) {
-            fetchMessage(messageId);
+            fetchMessage(messageId, true);
         };
         windowCreated($(".window"));
     })

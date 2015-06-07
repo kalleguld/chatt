@@ -25,18 +25,20 @@ namespace rerest.controllers
 
         protected IToken GetToken(Connection connection, string guidStr)
         {
-            if (guidStr == null) new JsonMissingParameter("token").Throw();
+            if (guidStr == null) 
+                throw new JsonMissingParameter("token").GetException();
             Guid guid;
-            if (!Guid.TryParse(guidStr, out guid)) new JsonWrongParameterType("token", "guid").Throw();
+            if (!Guid.TryParse(guidStr, out guid)) 
+                throw new JsonWrongParameterType("token", "guid").GetException();
 
             var token = connection.UserService.GetToken(guid);
-            if (token == null) new JsonError(JsonResponseCode.InvalidToken).Throw();
+            if (token == null) throw new JsonError(JsonResponseCode.InvalidToken).GetException();
             return token;
         }
 
         protected IUser GetUser(Connection connection, IToken token, string username)
         {
-            if (username == null) new JsonMissingParameter("username").Throw();
+            if (username == null) throw new JsonMissingParameter("username").GetException();
             return connection.UserService.GetUser(token, username);
         }
 
@@ -47,15 +49,14 @@ namespace rerest.controllers
             var success = (friend != null && connection.FriendService.HasAccessToUserDetails(token, friend));
             
             if (!success)
-            {
-                new JsonError(JsonResponseCode.UserNotFriendly).Throw();
-            }
+                throw new JsonError(JsonResponseCode.UserNotFriendly).GetException();
+
             return friend;
         }
 
         protected void CheckNull(object o, string name)
         {
-            if (o == null) new JsonMissingParameter(name).Throw();
+            if (o == null) throw new JsonMissingParameter(name).GetException();
         }
 
     }

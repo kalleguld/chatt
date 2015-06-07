@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using backend.model;
 using modelInterface;
+using modelInterface.exceptions;
 
 namespace serviceInterface.service
 {
@@ -28,7 +30,8 @@ namespace serviceInterface.service
 
         public IMessage CreateMessage(IToken token, IUser receiver, string content)
         {
-            if (!CanSendMessage(token, receiver)) return null;
+            if (!CanSendMessage(token, receiver)) throw new InsufficientRights();
+            if (string.IsNullOrWhiteSpace(content)) throw new MessageContentEmpty();
 
             var msg = new Message
             {
@@ -48,7 +51,8 @@ namespace serviceInterface.service
             bool includeReceived,
             string sender = null,
             int? afterId = null,
-            DateTime? afterTime = null)
+            DateTime? afterTime = null,
+            int? maxResults = null)
         {
             IQueryable<Message> result = Connection.Context.Messages;
 
@@ -79,6 +83,10 @@ namespace serviceInterface.service
             if (afterTime != null)
             {
                 result = result.Where(m => m.Sent > afterTime);
+            }
+            if (maxResults != null)
+            {
+                result = result.OrderByDescending(m => m.Sent).Take(maxResults??0);
             }
 
             return result.OrderBy(m => m.Sent);

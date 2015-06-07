@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.ServiceModel.Web;
 using rerest.jsonBase;
 using rerest.viewmodel;
 
@@ -25,9 +26,9 @@ namespace rerest.viewmodel.exceptions
         public JsonMalformedParameter(string parameterName)
             : base(JsonResponseCode.MissingParameter, parameterName) { }
 
-        public override void Throw()
+        public new WebFaultException<JsonMalformedParameter> GetException()
         {
-            GenericThrow(this);
+            return GetException(this);
         }
     }
 
@@ -37,9 +38,9 @@ namespace rerest.viewmodel.exceptions
         public JsonMissingParameter(string parameterName)
             : base(JsonResponseCode.MissingParameter, parameterName) { }
 
-        public override void Throw()
+        public new WebFaultException<JsonMissingParameter> GetException()
         {
-            GenericThrow(this);
+            return GetException(this);
         }
     }
 
@@ -56,9 +57,10 @@ namespace rerest.viewmodel.exceptions
             ErrorMessage += " Required Type: " + requiredType + ".";
         }
 
-        public override void Throw()
+        public new WebFaultException<JsonWrongParameterType> GetException()
         {
-            GenericThrow(this);
+            return GetException(this);
         }
+
     }
 }

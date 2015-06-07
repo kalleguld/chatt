@@ -1,5 +1,8 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Web;
+using modelInterface;
+using modelInterface.exceptions;
 using rerest.jsonBase;
 using rerest.viewmodel;
 using rerest.viewmodel.exceptions;
@@ -19,12 +22,15 @@ namespace rerest.controllers
                           "&afterId={afterIdStr}" +
                           "&afterTimestamp={afterTimestampStr}" +
                           "&getSent={getSentStr}" +
-                          "&getReceived={getReceivedStr}")]
+                          "&getReceived={getReceivedStr}" +
+                          "&maxResults={maxResultsStr}")]
         public MessageList GetMessages(string guidStr, 
             string sender, string afterIdStr, string afterTimestampStr, 
-            string getSentStr, string getReceivedStr)
+            string getSentStr, string getReceivedStr, string maxResultsStr)
         {
             int? afterId = IntUtils.ParseN(afterIdStr);
+            int? maxResults = IntUtils.ParseN(maxResultsStr);
+
             using (var connection = GetConnection())
             {
                 var token = GetToken(connection, guidStr);
@@ -34,7 +40,8 @@ namespace rerest.controllers
                     BoolUtils.ParseN(getReceivedStr) ?? true,
                     sender,
                     afterId,
-                    DateUtils.FromMilisN(afterTimestampStr));
+                    DateUtils.FromMilisN(afterTimestampStr),
+                    maxResults);
                 var list = new MessageList(messages);
                 return list;
             }
@@ -49,7 +56,7 @@ namespace rerest.controllers
             int messageId;
             if (!int.TryParse(messageIdStr, out messageId))
             {
-                new JsonWrongParameterType("messageId", "int").Throw();
+                throw new JsonWrongParameterType("messageId", "int").GetException();
             }
 
             using (var conn = GetConnection())
@@ -58,8 +65,7 @@ namespace rerest.controllers
                 var message = conn.MessageService.GetMessage(token, messageId);
                 if (message == null)
                 {
-                    new JsonError(JsonResponseCode.AccessDenied).Throw();
-                    return null;
+                    throw new JsonError(JsonResponseCode.AccessDenied).GetException();
                 }
                 return new MessageInfo(message, message.Sender.Username == token.User.Username);
             }
@@ -76,11 +82,20 @@ namespace rerest.controllers
                 var token = GetToken(conn, guidStr);
                 CheckNull(receiver, "receiver");
                 CheckNull(contents, "contents");
-                var message = conn.MessageService.CreateMessage(token, receiver, contents);
-                if (message == null)
+                IMessage message;
+                try
                 {
-                    new JsonError(JsonResponseCode.UserNotFriendly).Throw();
+                    message = conn.MessageService.CreateMessage(token, receiver, contents);
                 }
+                catch (MessageContentEmpty)
+                {
+                    throw new JsonMissingParameter("contents").GetException();
+                }
+                catch (InsufficientRights)
+                {
+                    throw new JsonError(JsonResponseCode.UserNotFriendly).GetException();
+                }
+                
                 conn.SaveChanges();
                 return new MessageInfo(message, true);
             }

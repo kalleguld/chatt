@@ -11,7 +11,7 @@ class User {
     }
 
     addMessage(id: number, sent: number, outgoing: boolean, content: string): Message {
-        var m = new Message(id, this, sent, outgoing, content);
+        var m = new Message(id, this.username, sent, outgoing, content);
         this.messages.push(m);
         this.lastMessage = Math.max(this.lastMessage, id);
         return m;
@@ -20,17 +20,17 @@ class User {
 
 class Message {
     id: number;
-    partner: User;
+    partner: string;
     sent: number;
     outgoing: boolean;
     contents: string;
 
-    constructor(id: number, partner: User, sent: number, outgoing: boolean, content: string) {
+    constructor(id: number, partner: string, sent: number, outgoing: boolean, contents: string) {
         this.id = id;
         this.partner = partner;
         this.sent = sent;
         this.outgoing = outgoing;
-        this.contents = content;
+        this.contents = contents;
         return this;
     }
 }
