@@ -9,14 +9,32 @@ namespace rerest.viewmodel
     [DataContract]
     public class UserList : JsonResponse
     {
-        [DataMember(Name = "usernames")]
-        public IList<string> Usernames { get; set; }
+        [DataMember(Name = "users")]
+        public IList<LightUserInfo> Users { get; set; }
 
         public UserList() { }
 
         public UserList(IEnumerable<IUser> users)
         {
-            Usernames = users.Select(u=>u.Username).ToList();
+            Users = users.Select(u => new LightUserInfo(u)).ToList();
+        }
+    }
+
+    [DataContract]
+    public class LightUserInfo
+    {
+        [DataMember(Name = "username")]
+        public string Username { get; set; }
+
+        [DataMember(Name = "fullName")]
+        public string FullName { get; set; }
+
+        public LightUserInfo() { }
+
+        public LightUserInfo(IUser user)
+        {
+            Username = user.Username;
+            FullName = user.FullName;
         }
     }
 }

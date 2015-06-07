@@ -77,27 +77,13 @@ function fetchFriendList() {
         type: "GET",
         error: getXhrErrorHandler($, "updateFriendList"),
         success: function(result, status, xhr) {
-            for (var i = 0; i < result.usernames.length ; i++) {
-                var username = result.usernames[i];
-                window.chatt.friends.push(username);
-                fetchUser(username);
+            for (var i = 0; i < result.users.length ; i++) {
+                var userJson = result.users[i];
+                var user = new User(userJson.username, userJson.fullName);
+                window.chatt.users[user.username] = user;
+                addToFriendList(user);
+                fetchLatestMessages(user.username);
             }
-        }
-    });
-}
-
-function fetchUser(username) {
-    var placeholder = getFriendItemPlaceholder(username);
-    $(".friend-list").append(placeholder);
-    $.ajax({
-        url: getUrl("users/" + username, { token: window.chatt.token }),
-        type: "GET",
-        error: getXhrErrorHandler($, "in fetchFriend"),
-        success: function(result, status, xhr) {
-            var user = new User(result.username, result.fullName);
-            window.chatt.users[result.username] = user;
-            addToFriendList(user);
-            fetchLatestMessages(username);
         }
     });
 }

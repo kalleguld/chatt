@@ -22,7 +22,6 @@ namespace rerest.controllers
             }
         }
 
-
         [OperationContract]
         [WebInvoke(Method = "DELETE", 
             ResponseFormat = WebMessageFormat.Json,
@@ -40,6 +39,5 @@ namespace rerest.controllers
                 return new JsonResponse();
             }
         }
-
     }
 }
