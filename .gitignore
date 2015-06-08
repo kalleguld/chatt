@@ -196,3 +196,5 @@ webc/Scripts/modernizr*
 webc/Scripts/*.map
 
 webc/Scripts/net.js
+
+angularClient/Scripts/**

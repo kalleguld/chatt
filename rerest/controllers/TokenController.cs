@@ -7,13 +7,25 @@ using rerest.viewmodel;
 namespace rerest.controllers
 {
     [ServiceContract]
-    class TokenController : BaseController
+    public interface ITokenController : IOptionController
     {
         [OperationContract]
         [WebInvoke(
             Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "?username={username}&password={password}")]
+        TokenInfo CreateToken(string username, string password);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "{guidStr}/")]
+        TokenInfo GetToken(string guidStr);
+    }
+
+    public class TokenController : BaseController, ITokenController
+    {
+        
         public TokenInfo CreateToken(string username, string password)
         {
             CheckNull(username, "username");
@@ -26,11 +38,7 @@ namespace rerest.controllers
                 return new TokenInfo(token);
             }
         }
-
-        [OperationContract]
-        [WebInvoke(Method = "GET", 
-            ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{guidStr}/")]
+        
         public TokenInfo GetToken(string guidStr)
         {
             using (var connection = GetConnection())
@@ -40,5 +48,6 @@ namespace rerest.controllers
             }
         }
 
+        
     }
 }

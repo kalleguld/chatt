@@ -6,13 +6,25 @@ using rerest.viewmodel;
 namespace rerest.controllers
 {
     [ServiceContract]
-    class FriendController : BaseController
+    public interface IFriendController : IOptionController
     {
-
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
             UriTemplate = "?token={guidStr}")]
+        UserList GetFriends(string guidStr);
+
+        [OperationContract]
+        [WebInvoke(Method = "DELETE", 
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "?token={guidStr}&username={username}")]
+        JsonResponse RemoveFriend(string guidStr, string username);
+
+    }
+
+    public class FriendController : BaseController, IFriendController
+    {
+
         public UserList GetFriends(string guidStr)
         {
             using (var connection = GetConnection())
@@ -22,10 +34,6 @@ namespace rerest.controllers
             }
         }
 
-        [OperationContract]
-        [WebInvoke(Method = "DELETE", 
-            ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}&username={username}")]
         public JsonResponse RemoveFriend(string guidStr, string username)
         {
             using (var connection = GetConnection())

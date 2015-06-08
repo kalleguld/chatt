@@ -11,9 +11,8 @@ using utils;
 namespace rerest.controllers
 {
     [ServiceContract]
-    public class MessageController : BaseController
+    public interface IMessageController : IOptionController
     {
-
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
@@ -24,6 +23,26 @@ namespace rerest.controllers
                           "&getSent={getSentStr}" +
                           "&getReceived={getReceivedStr}" +
                           "&maxResults={maxResultsStr}")]
+        MessageList GetMessages(string guidStr, 
+            string sender, string afterIdStr, string afterTimestampStr, 
+            string getSentStr, string getReceivedStr, string maxResultsStr);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "{messageIdStr}/?token={guidStr}")]
+        MessageInfo GetMessage(string guidStr, string messageIdStr);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "?token={guidStr}&receiver={receiver}&contents={contents}")]
+        MessageInfo CreateMessage(string guidStr, string receiver, string contents);
+    }
+
+    public class MessageController : BaseController, IMessageController
+    {
+
         public MessageList GetMessages(string guidStr, 
             string sender, string afterIdStr, string afterTimestampStr, 
             string getSentStr, string getReceivedStr, string maxResultsStr)
@@ -47,10 +66,6 @@ namespace rerest.controllers
             }
         }
 
-        [OperationContract]
-        [WebInvoke(Method = "GET",
-            ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{messageIdStr}/?token={guidStr}")]
         public MessageInfo GetMessage(string guidStr, string messageIdStr)
         {
             int messageId;
@@ -71,10 +86,6 @@ namespace rerest.controllers
             }
         }
 
-        [OperationContract]
-        [WebInvoke(Method = "POST",
-            ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}&receiver={receiver}&contents={contents}")]
         public MessageInfo CreateMessage(string guidStr, string receiver, string contents)
         {
             using (var conn = GetConnection())

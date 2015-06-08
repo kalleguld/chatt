@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ServiceModel;
+using System.ServiceModel.Web;
 using modelInterface;
 using rerest.jsonBase;
 using rerest.viewmodel.exceptions;
@@ -6,15 +8,28 @@ using serviceInterface;
 
 namespace rerest.controllers
 {
-    public class BaseController
+    public abstract class BaseController
     {
         private readonly ConnectionFactory _connectionFactory;
 
-        public BaseController() : this(new ConnectionFactory()){}
-        public BaseController(ConnectionFactory connectionFactory)
+        protected BaseController() : this(new ConnectionFactory()){}
+
+        protected BaseController(ConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
+
+
+        public JsonResponse GetOptions()
+        {
+            return new JsonResponse();
+        }
+
+        public JsonResponse GetNamedOptions(string input)
+        {
+            return new JsonResponse();
+        }
+
 
         protected Connection GetConnection()
         {

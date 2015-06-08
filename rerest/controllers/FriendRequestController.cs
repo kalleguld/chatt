@@ -11,12 +11,29 @@ using rerest.viewmodel;
 namespace rerest.controllers
 {
     [ServiceContract]
-    class FriendRequestController : BaseController
+    public interface IFriendRequestController : IOptionController
     {
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "?token={guidStr}")]
+        UserList GetFriendRequests(string guidStr);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "{username}/?token={guidStr}")]
+        FriendRequestResponse AddFriend(string guidStr, string username);
+
+        [OperationContract]
+        [WebInvoke(Method = "DELETE",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "{username}/?token={guidStr}")]
+        JsonResponse CancelFriendRequest(string guidStr, string username);
+    }
+
+    public class FriendRequestController : BaseController, IFriendRequestController
+    {
         public UserList GetFriendRequests(string guidStr)
         {
             using (var conn = GetConnection())
@@ -26,10 +43,6 @@ namespace rerest.controllers
             }
         }
 
-        [OperationContract]
-        [WebInvoke(Method = "POST",
-            ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{username}/?token={guidStr}")]
         public FriendRequestResponse AddFriend(string guidStr, string username)
         {
             CheckNull(username, "username");
@@ -42,10 +55,6 @@ namespace rerest.controllers
             }
         }
 
-        [OperationContract]
-        [WebInvoke(Method = "DELETE",
-            ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{username}/?token={guidStr}")]
         public JsonResponse CancelFriendRequest(string guidStr, string username)
         {
             CheckNull(username, "username");
