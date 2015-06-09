@@ -5,6 +5,9 @@
         fullName: string;
         messages: Array<Message>;
 
+        constructor() {
+            this.messages = [];
+        }
 
     }
 }

@@ -1,23 +1,28 @@
 ﻿module dk.kalleguld.AngularChatt {
     export class LoginController {
         
-        scope;
-        tokenService: ITokenService;
+        private _scope;
+        private _tokenService: ITokenService;
 
         username: string;
         password: string;
 
-        constructor(scope, tokenService) {
-            this.scope = scope;
-            this.tokenService = tokenService;
+        get isLoggedIn(): boolean {
+            return this._tokenService.loggedIn;
+        }
+
+        get token(): string {
+            return this._tokenService.token;
+        }
+
+        constructor(scope, tokenService: ITokenService) {
+            this._scope = scope;
+            this._tokenService = tokenService;
         }
 
         login():void {
-            this.tokenService.setCredentials(this.username, this.password);
+            this._tokenService.setCredentials(this.username, this.password);
         }
-
-        isLoggedIn(): boolean {
-            return this.tokenService.isLoggedIn();
-        }
+        
     }
 }

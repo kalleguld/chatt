@@ -1,7 +1,10 @@
 ﻿module dk.kalleguld.AngularChatt {
 
     export interface IUserService {
-        getUser(username: string): User;
-        getFriends() : Array<User>;
+        
+        friends: Map<string,User>;
+
+        updateFriends(): void;
+
     }
 }
