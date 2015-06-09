@@ -82,7 +82,7 @@ namespace serviceInterface.service
             {
                 result = result.Where(m => m.Sent > afterTime);
             }
-            if (maxResults != null)
+            if (maxResults != null && maxResults > 0)
             {
                 result = result.OrderByDescending(m => m.Sent).Take(maxResults??0);
             }
