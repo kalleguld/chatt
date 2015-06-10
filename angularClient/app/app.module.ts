@@ -29,17 +29,19 @@ module dk.kalleguld.AngularChatt {
     //Controllers
     app.controller("LoginController", [
         "$scope",
+        "$rootScope",
         "$location",
         "TokenService",
-        (scope, loc, token) => new LoginController(scope, loc, token)
+        (scope, rootScope, loc, token) => new LoginController(scope, rootScope, loc, token)
     ]);
 
     app.controller("MainController", [
         "$scope",
+        "$rootScope",
         "UserService",
         "TokenService",
         "MessageService",
-        (scope, user, token, message)=>new MainController(scope, user, token, message)
+        (scope, rootScope, user, token, message)=>new MainController(scope, rootScope, user, token, message)
     ]);
 
     function authChecker($q, $rootScope, $location) {

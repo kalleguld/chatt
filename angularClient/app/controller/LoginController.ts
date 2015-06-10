@@ -2,6 +2,7 @@
     export class LoginController {
         
         private _scope;
+        private _rootScope: IRootScope;
         private _location;
         private _tokenService: ITokenService;
 
@@ -17,10 +18,12 @@
             return this._tokenService.token;
         }
 
-        constructor(scope, location, tokenService: ITokenService) {
+        constructor(scope: ng.IScope, rootScope:IRootScope, location, tokenService: ITokenService) {
             this._scope = scope;
+            this._rootScope = rootScope;
             this._location = location;
             this._tokenService = tokenService;
+            rootScope.title = "Login";
         }
 
         login():void {

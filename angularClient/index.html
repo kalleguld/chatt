@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="AngularChatt">
 <head>
-    <title>ng-chat</title>
+    <title ng-bind="title">ng-chat</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/style/index.css"/>
     <script src="/Scripts/angular.js"></script>
     <script src="/Scripts/angular-route.js"></script>
     <script src="/Scripts/ts.js"></script>
 </head>
-<body ng-app="AngularChatt">
+<body>
 <h1>Index</h1>
 <div ng-view></div>
 </body>

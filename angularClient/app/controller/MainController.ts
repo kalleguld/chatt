@@ -1,17 +1,21 @@
 ﻿module dk.kalleguld.AngularChatt {
     export class MainController {
 
-        private _scope:any;
+        private _scope: any;
+        private _rootScope: IRootScope;
         private _userService: IUserService;
         private _tokenService: ITokenService;
         private _messageService: IMessageService;
 
         
-        constructor(scope:any, us: IUserService, ts:ITokenService, ms:IMessageService) {
+        constructor(scope: ng.IScope, rootScope: IRootScope,
+                us: IUserService, ts: ITokenService, ms: IMessageService) {
             this._scope = scope;
+            this._rootScope = rootScope;
             this._userService = us;
             this._tokenService = ts;
             this._messageService = ms;
+            rootScope.title = "Main";
         }
 
         get friends(): Map<string, User> {

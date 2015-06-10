@@ -866,6 +866,7 @@
     <TypeScriptCompile Include="app\controller\MainController.ts" />
     <TypeScriptCompile Include="app\interface\IMessageService.ts" />
     <TypeScriptCompile Include="app\interface\IRerestService.ts" />
+    <TypeScriptCompile Include="app\interface\IRootScope.ts" />
     <TypeScriptCompile Include="app\interface\ITokenService.ts" />
     <TypeScriptCompile Include="app\interface\IUserService.ts" />
     <TypeScriptCompile Include="app\model\Message.ts" />
