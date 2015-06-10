@@ -6,7 +6,7 @@
         messages: Array<Message>;
 
         constructor() {
-            this.messages = [];
+            this.messages = new Array<Message>();
         }
 
     }

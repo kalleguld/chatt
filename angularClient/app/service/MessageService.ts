@@ -32,16 +32,17 @@
                 maxResults: (lastMessageId > 0 ? -1 : 20)
             });
 
-            this._httpService.get<IRMessageList>(url).success((rMessageList: IRMessageList) => {
-                for (var i = 0; i < rMessageList.messages.length; i++) {
-                    var rMessage = rMessageList.messages[i];
-                    var message = new Message();
-                    message.id = rMessage.id;
-                    message.contents = rMessage.contents;
-                    message.outgoing = rMessage.outgoing;
-                    message.sent = new Date(rMessage.sent);
-                    user.messages[message.id] = message;
-                }
+            this._httpService.get<IRMessageList>(url)
+                .success((rMessageList: IRMessageList) => {
+                    for (var i = 0; i < rMessageList.messages.length; i++) {
+                        var rMessage = rMessageList.messages[i];
+                        var message = new Message();
+                        message.id = rMessage.id;
+                        message.contents = rMessage.contents;
+                        message.outgoing = rMessage.outgoing;
+                        message.sent = new Date(rMessage.sent);
+                        user.messages.push(message);
+                    }
             });
         }
 

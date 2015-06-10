@@ -853,6 +853,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
+    <Content Include="style\index.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -860,6 +861,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\app.init.ts" />
+    <TypeScriptCompile Include="app\controller\ChatWindowController.ts" />
     <TypeScriptCompile Include="app\controller\LoginController.ts" />
     <TypeScriptCompile Include="app\controller\MainController.ts" />
     <TypeScriptCompile Include="app\interface\IMessageService.ts" />

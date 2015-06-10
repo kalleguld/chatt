@@ -37,17 +37,23 @@
             this._rerestService = rerestService;
         }
 
-        setCredentials(username: string, password: string): void {
+        setCredentials(username: string, password: string, callback:ILoginCallback): void {
+            this.pToken = null;
+            this._username = null;
+
             var url = this._rerestService.getUrl("tokens/", {
                 username: username,
                 password: password
             });
             this._http.post(url, {})
-                .success((result: any) => {
+                .success((result: IRTokenInfo) => {
                     this.pToken = result.token;
                     this._username = result.username;
+                    if (callback) callback(true);
                 })
-                .error((e) => { alert("errrrror: " + e) });
+                .error(() => {
+                    if (callback) callback(false);
+                });
         }
 
         clearCredentials(): void {
@@ -60,5 +66,10 @@
             this._tokenChangeListeners.push(tcl);
         }
         
+    }
+    
+    interface IRTokenInfo {
+        token: string;
+        username:string;
     }
 }

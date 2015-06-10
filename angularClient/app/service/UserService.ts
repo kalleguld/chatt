@@ -1,6 +1,6 @@
 ﻿module dk.kalleguld.AngularChatt {
     
-    class UserService implements IUserService, ITokenChangeListener {
+    export class UserService implements IUserService, ITokenChangeListener {
         
         private _friends: Map<string, User> = new Map<string, User>();
         private _tokenService: ITokenService;
@@ -28,10 +28,10 @@
                 return;
             }
             var url = this._rerestService.getUrl("friends/", { token: this._tokenService.token });
-            var a = this._http.get<RUserList>(url).success(this.friendListCallback);
+            var a = this._http.get<IRUserList>(url).success(this.friendListCallback);
         }
 
-        friendListCallback: angular.IHttpPromiseCallback<RUserList> = (data: RUserList) => {
+        friendListCallback: angular.IHttpPromiseCallback<IRUserList> = (data: IRUserList) => {
             for (var i = 0; i < data.users.length; i++) {
                 var rUser = data.users[i];
                 var user = new User();
@@ -47,11 +47,11 @@
         }
     }
 
-    class RUserListUser {
+    export interface IRUserListUser {
         username: string;
         fullName: string;
     }
-    class RUserList {
-        users:Array<RUserListUser>;
+    export interface IRUserList {
+        users:Array<IRUserListUser>;
     }
 }

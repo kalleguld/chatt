@@ -1,18 +1,38 @@
 ﻿module dk.kalleguld.AngularChatt {
     export class MainController {
 
-        userService: IUserService;
-        messageService: IMessageService;
+        private _scope:any;
+        private _userService: IUserService;
+        private _tokenService: ITokenService;
+        private _messageService: IMessageService;
 
-        static $inject = [
-            "dk.kalleguld.AngularChatt.IUserService",
-            "dk.kalleguld.AngularChatt.IMessageService"];
-        constructor(us: IUserService, ms: IMessageService) {
-            this.userService = us;
-            this.messageService = ms;
+        
+        constructor(scope:any, us: IUserService, ts:ITokenService, ms:IMessageService) {
+            this._scope = scope;
+            this._userService = us;
+            this._tokenService = ts;
+            this._messageService = ms;
         }
 
+        get friends(): Map<string, User> {
+            return this._userService.friends;
+        }
 
+        get loggedIn(): boolean {
+            return this._tokenService.loggedIn;
+        }
+
+        get token(): string {
+            return this._tokenService.token;
+        }
+
+        get username(): string {
+            return this._tokenService.username;
+        }
+
+        updateHistory(user: User): void {
+            this._messageService.getMessages(user);
+        }
 
     }
 }

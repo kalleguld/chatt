@@ -1,3 +1,23 @@
-﻿<div>
-    Main
+﻿<div ng-controller="MainController as mc">
+    <h2>Main</h2>
+    <div ng-show="mc.loggedIn">Logged in with token {{mc.token}}</div>
+    <div ng-hide="mc.loggedIn">Not logged in</div>
+
+    <div class="friend-list">
+        <h3>Friends of {{mc.username}}</h3>
+        <ul>
+            <li ng-repeat="f in mc.friends">{{f.username}}</li>
+        </ul>
+    </div>
+    <div class="chat-window" ng-repeat="f in mc.friends">
+        <h3>Chat with {{f.username}}</h3>
+        <div class="chat-history">
+            <div class="history-item"
+                 ng-repeat="m in f.messages" 
+                 ng-class="m.outgoing ? 'outgoing' : 'incoming'">
+                {{::m.contents}}
+            </div>
+        </div>
+        <button ng-click="mc.updateHistory(f)">Update</button>
+    </div>
 </div>
