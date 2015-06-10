@@ -1,21 +1,24 @@
 ﻿module dk.kalleguld.AngularChatt {
-    
-    export class UserService implements IUserService, ITokenChangeListener {
-        
+
+    export class UserService implements IUserService, ITokenChangeListener, IMessageCreatedListener {
+
         private _friends: Map<string, User> = new Map<string, User>();
         private _tokenService: ITokenService;
         private _rerestService: IRerestService;
-        private _messageService:IMessageService;
+        private _messageService: IMessageService;
+        private _messageListenerService: IMessageListenerService;
         private _http: ng.IHttpService;
 
         constructor(http: ng.IHttpService, tokenService: ITokenService, rerestService: IRerestService,
-            ms:IMessageService) {
+            ms: IMessageService, mls: IMessageListenerService) {
             this._http = http;
             this._tokenService = tokenService;
             this._rerestService = rerestService;
             this._messageService = ms;
+            this._messageListenerService = mls;
             this.updateFriends();
             tokenService.addTokenChangeListener(this);
+            mls.addListener(this);
         }
 
         get friends(): Map<string, User> {
@@ -45,6 +48,11 @@
         tokenChanged(token: string): void {
             this.updateFriends();
         }
+
+        messageCreated(messageId: number, partner: string): void {
+            var user = this._friends[partner];
+            if (user) this._messageService.getMessages(user);
+        }
     }
 
     export interface IRUserListUser {
@@ -52,6 +60,6 @@
         fullName: string;
     }
     export interface IRUserList {
-        users:Array<IRUserListUser>;
+        users: Array<IRUserListUser>;
     }
 }

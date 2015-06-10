@@ -14,12 +14,11 @@
         <div class="chat-history">
             <div class="history-item"
                  ng-repeat="m in f.messages"
-                 ng-class="m.outgoing ? 'outgoing' : 'incoming'">
+                 ng-class="::m.outgoing ? 'outgoing' : 'incoming'">
                 {{::m.contents}}
             </div>
         </div>
         <textarea ng-model="f.outMessage"></textarea>
         <button ng-click="mc.sendMessage(f)">Send Message</button>
-        <button ng-click="mc.updateHistory(f)">Update</button>
     </div>
 </div>

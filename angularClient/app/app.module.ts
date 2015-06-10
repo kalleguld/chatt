@@ -15,6 +15,12 @@ module dk.kalleguld.AngularChatt {
             new TokenService(http, rootScope, rerest)
     ]);
 
+    app.factory("MessageListenerService", [
+        "TokenService",
+        (token) =>
+            new MessageListenerService(token)
+    ]);
+
     app.factory("MessageService", [
         "$http",
         "TokenService",
@@ -23,9 +29,13 @@ module dk.kalleguld.AngularChatt {
             new MessageService(http, token, rerest)]);
 
     app.factory("UserService", [
-        "$http", "TokenService", "RerestService", "MessageService",
-        (http, token, rerest, message) =>
-            new UserService(http, token, rerest, message)
+        "$http",
+        "TokenService",
+        "RerestService",
+        "MessageService",
+        "MessageListenerService",
+        (http, token, rerest, message, messageListener) =>
+            new UserService(http, token, rerest, message, messageListener)
     ]);
 
 

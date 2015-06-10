@@ -1,12 +1,13 @@
-﻿using Microsoft.Owin;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Owin;
 using Owin;
-using webc;
 
-[assembly: OwinStartup(typeof(SignalrMessageStartup))]
+[assembly: OwinStartup(typeof(angularClient.SignalrStartup))]
 
-namespace webc
+namespace angularClient
 {
-    public class SignalrMessageStartup
+    public class SignalrStartup
     {
         public void Configuration(IAppBuilder app)
         {
