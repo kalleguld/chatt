@@ -4,20 +4,23 @@ module dk.kalleguld.AngularChatt {
     var app = angular.module(AngularChatt.moduleName, ["ngRoute"]);
 
     //Services
-    app.factory("RerestService", ()=>new RerestService());
+    app.factory("RerestService",() =>
+        new RerestService());
 
     app.factory("TokenService", [
         "$http",
         "$rootScope",
         "RerestService",
-        (http, rootScope, rerest) => new TokenService(http, rootScope, rerest)
+        (http, rootScope, rerest) =>
+            new TokenService(http, rootScope, rerest)
     ]);
 
     app.factory("MessageService", [
         "$http",
         "TokenService",
         "RerestService",
-        (http, token, rerest) => new MessageService(http, token, rerest)]);
+        (http, token, rerest) =>
+            new MessageService(http, token, rerest)]);
 
     app.factory("UserService", [
         "$http", "TokenService", "RerestService", "MessageService",
@@ -32,7 +35,8 @@ module dk.kalleguld.AngularChatt {
         "$rootScope",
         "$location",
         "TokenService",
-        (scope, rootScope, loc, token) => new LoginController(scope, rootScope, loc, token)
+        (scope, rootScope, loc, token) =>
+            new LoginController(scope, rootScope, loc, token)
     ]);
 
     app.controller("MainController", [
@@ -41,7 +45,8 @@ module dk.kalleguld.AngularChatt {
         "UserService",
         "TokenService",
         "MessageService",
-        (scope, rootScope, user, token, message)=>new MainController(scope, rootScope, user, token, message)
+        (scope, rootScope, user, token, message) =>
+            new MainController(scope, rootScope, user, token, message)
     ]);
 
     function authChecker($q, $rootScope, $location) {

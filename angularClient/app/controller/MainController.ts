@@ -38,5 +38,9 @@
             this._messageService.getMessages(user);
         }
 
+        sendMessage(user: User): void {
+            this._messageService.sendMessage(user);
+        }
+
     }
 }

@@ -18,8 +18,7 @@
 
         getMessages(user: User): void {
             if (!this._tokenService.loggedIn) return;
-            if (user === null) return;
-            if (user == undefined) return;
+            if (!user) return;
 
             var lastMessageId = (user.messages.length > 0
                 ? user.messages[user.messages.length - 1].id
@@ -46,7 +45,21 @@
             });
         }
 
+        sendMessage(user: User): void {
+            if (!this._tokenService.loggedIn) return;
+            if (!user) return;
+            if (user.outMessage.match(/^\s*$/g)) return;
 
+            var url = this._rerestService.getUrl("messages/", {
+                token: this._tokenService.token,
+                receiver: user.username,
+                contents: user.outMessage
+            });
+            this._httpService.post(url, "")
+                .success(() => {
+                    user.outMessage = "";
+                });
+        }
     }
 
     interface IRMessageList {

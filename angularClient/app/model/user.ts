@@ -4,10 +4,13 @@
         username: string;
         fullName: string;
         messages: Array<Message>;
+        outMessage: string;
+
 
         constructor() {
             this.messages = new Array<Message>();
         }
 
+        
     }
 }
