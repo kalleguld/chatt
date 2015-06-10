@@ -5,8 +5,8 @@
         static injName = "TokenService";
 
         private _http: ng.IHttpService;
+        private _rootScope: any;
         private _rerestService: IRerestService;
-        private _token: string = null;
         private _username: string = null;
         private _tokenChangeListeners: Array<ITokenChangeListener> = new Array();
 
@@ -15,12 +15,12 @@
         }
 
         get token(): string {
-            return this._token;
+            return this._rootScope.token;
         }
 
         private set pToken(token: string) {
-            var sendChange = (this._token !== token);
-            this._token = token;
+            var sendChange = (this._rootScope.token !== token);
+            this._rootScope.token = token;
             if (sendChange) {
                 for (var i = 0; i < this._tokenChangeListeners.length; i++) {
                     this._tokenChangeListeners[i].tokenChanged(token);
@@ -32,8 +32,9 @@
             return this.token != null && this.token !== "";
         }
 
-        constructor($http: ng.IHttpService, rerestService:IRerestService) {
+        constructor($http: ng.IHttpService, rootScope:any, rerestService:IRerestService) {
             this._http = $http;
+            this._rootScope = rootScope;
             this._rerestService = rerestService;
         }
 
@@ -45,7 +46,7 @@
                 username: username,
                 password: password
             });
-            this._http.post(url, {})
+            this._http.post<IRTokenInfo>(url, {})
                 .success((result: IRTokenInfo) => {
                     this.pToken = result.token;
                     this._username = result.username;

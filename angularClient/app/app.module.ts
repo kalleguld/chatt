@@ -3,12 +3,14 @@ module dk.kalleguld.AngularChatt {
 
     var app = angular.module(AngularChatt.moduleName, ["ngRoute"]);
 
+    //Services
     app.factory("RerestService", ()=>new RerestService());
 
     app.factory("TokenService", [
         "$http",
+        "$rootScope",
         "RerestService",
-        (http, rerest) => new TokenService(http, rerest)
+        (http, rootScope, rerest) => new TokenService(http, rootScope, rerest)
     ]);
 
     app.factory("MessageService", [
@@ -23,6 +25,8 @@ module dk.kalleguld.AngularChatt {
             new UserService(http, token, rerest, message)
     ]);
 
+
+    //Controllers
     app.controller("LoginController", [
         "$scope",
         "$location",
@@ -38,16 +42,26 @@ module dk.kalleguld.AngularChatt {
         (scope, user, token, message)=>new MainController(scope, user, token, message)
     ]);
 
+    function authChecker($q, $rootScope, $location) {
+        if (!!$rootScope.token) return true;
+        $location.path("/login");
+        return $q.reject();
+    }
+
+    //Routes
     app.config([
-        "$routeProvider", routeProvider => {
+        "$routeProvider",
+        (routeProvider) => {
 
             routeProvider.when("/", {
-                templateUrl: "app/view/main.html"
+                templateUrl: "app/view/main.html",
+                resolve: {
+                    authed: authChecker
+                }
             });
 
             routeProvider.when("/login", {
-                templateUrl: "app/view/login.html",
-                controller: "LoginController"
+                templateUrl: "app/view/login.html"
             });
 
             routeProvider.otherwise({
@@ -55,4 +69,5 @@ module dk.kalleguld.AngularChatt {
             });
         }
     ]);
+
 }
