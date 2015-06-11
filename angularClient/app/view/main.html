@@ -1,41 +1,42 @@
-﻿<div ng-controller="MainController as mc">
-    <div class="m-table">
-        <div class="m-coll-a"></div>
-        <div class="m-coll-b"></div>
-        <div class="m-row">
-            <div class="m-cell">
-                <div class="friend-list">
-                    <h3>Friends of {{mc.username}}</h3>
-                    <ul>
-                        <li ng-repeat="f in mc.friends"
-                            ng-click="mc.selectUser(f)"
-                            class="friend-list-item"
-                            ng-class="mc.selectedUser == f ? 'selected' : ''">
-                            {{f.username}}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="m-cell">
-                <div class="chat-window" ng-show="mc.selectedUser">
-                    <h3>Chat with {{mc.selectedUser.username}}</h3>
-                    <div class="chat-history">
-                        <div class="history-item"
-                             ng-repeat="m in mc.selectedUser.messages"
-                             ng-class="::m.outgoing ? 'outgoing' : 'incoming'"
-                             title="Sent: {{m.sent}}">
-                            <div class="username">{{::mc.selectedUser.username}}</div>
-                            <div class="message-direction" ng-show="::m.outgoing">&#8594;</div>
-                            <div class="message-direction" ng-hide="::m.outgoing">&#8592;</div>
-                            <div class="contents">{{::m.contents}}</div>
-                        </div>
+﻿<div ng-controller="MainController as mc" class="main-body">
+
+    
+    <div class="side-bar">
+        <h3>Friends of {{mc.username}}</h3>
+        <ul class="friend-list">
+            <li ng-repeat="f in mc.friends"
+                ng-click="mc.selectUser(f)"
+                class="friend-list-item"
+                ng-class="mc.selectedUser == f ? 'selected' : ''">
+                {{f.username}}
+            </li>
+        </ul>
+    </div>
+    
+    <div class="chat-window" ng-show="mc.selectedUser">
+        <h3>Chat with {{mc.selectedUser.username}}</h3>
+        <div class="chat-history">
+            <div class="history-item"
+                    ng-repeat="m in mc.selectedUser.messages"
+                    ng-class="::m.outgoing ? 'outgoing' : 'incoming'"
+                    title="Sent: {{::m.sent}}">
+                <div class="header">
+                    <div class="username">{{::mc.selectedUser.username}}</div>
+                    <div class="sent-time" title="{{::m.sent}}">
+                        {{::mc.prettyDate(m.sent)}}
                     </div>
-                    <div class="footer">
-                        <textarea ng-model="mc.selectedUser.outMessage"></textarea>
-                        <button ng-click="mc.sendMessage(mc.selectedUser)">Send Message</button>
-                    </div>
+                    <div class="message-direction" ng-show="::m.outgoing">&#8594;</div>
+                    <div class="message-direction" ng-hide="::m.outgoing">&#8592;</div>
                 </div>
+                <div class="contents">{{::m.contents}}</div>
             </div>
+        </div>
+        <div class="footer">
+            <textarea ng-model="mc.selectedUser.outMessage" 
+                      placeholder="Your Message"></textarea>
+            <button ng-click="mc.sendMessage(mc.selectedUser)">
+                Send Message
+            </button>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿html, body {
+﻿html, body, .main-body {
     height: 100vh;
     box-sizing: border-box;
     margin: 0;
@@ -6,43 +6,74 @@
     font-family: sans-serif;
 }
 
-.friend-list {
+ul {
+    padding: 0;
+}
+
+.main-body {
+    display: flex;
+    flex-direction: row;
+}
+
+h3 {
+    font-family: monospace;
+    padding-left: 18px;
+}
+
+.side-bar {
     box-sizing: border-box;
     height: 100vh;
+    width: 200px;
     overflow-x: hidden;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
+
+.friend-list {
+    flex: 1;
+}
+
+.friend-list-item {
+    list-style-type: none;
+    padding: 3px 30px;
+}
+    .friend-list-item.selected {
+        background-color: azure;
+    }
 
 .chat-window {
     box-sizing: border-box;
     border-left: 1px dotted black;
     height: 100vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    background-color: azure;
 }
 
-    .chat-window h3 {
-    }
 
-    .chat-window .footer {
+    .chat-window > .footer {
         display: flex;
         flex-direction: row;
         border-top: 1px dotted black;
     }
 
-        .chat-window .footer textarea {
+        .chat-window > .footer textarea {
             flex: 5;
             border: none;
             resize: none;
             height: 4.5rem;
             padding: 9px;
             margin: 6px;
+            background-color: azure;
         }
 
-        .chat-window .footer button {
+        .chat-window > .footer button {
             flex: 1;
-            background-color: aliceblue;
+            background-color: azure;
             border: none;
+            border-left: 1px dotted black;
         }
 
 .chat-history {
@@ -54,6 +85,11 @@
     padding: 3px;
     padding-left: 9px;
 }
+
+    .history-item > .header {
+        display: inline;
+        color: grey;
+    }
 
     .history-item ~ .history-item {
         border-top: 1px dotted black;
@@ -69,12 +105,14 @@
 
     .history-item .username {
         display: inline;
-        color: grey;
+    }
+
+    .history-item .sent-time {
+        display: inline;
     }
 
     .history-item .message-direction {
         display: inline;
-        color: grey;
     }
 
     .history-item .contents {

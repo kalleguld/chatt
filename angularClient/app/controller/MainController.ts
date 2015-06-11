@@ -19,15 +19,20 @@
             this._userService = us;
             this._tokenService = ts;
             this._messageService = ms;
-            if (routeParams.friend) {
-                if (this._userService.friends[routeParams.friend]) {
-                    this._selectedUser = this._userService.friends[routeParams.friend];
+            this.parseRoute();
+        }
+
+        private parseRoute() {
+            if (this._routeParams.friend) {
+                if (this._userService.friends[this._routeParams.friend]) {
+                    this._selectedUser = this._userService.friends[this._routeParams.friend];
+                    this._rootScope.title = this._selectedUser.username;
                 } else {
                     this._loc.path("/chat");
                 }
             } else {
                 //no friend selected
-                rootScope.title = "Main";
+                this._rootScope.title = "Main";
             }
         }
 
@@ -63,5 +68,17 @@
             this._messageService.sendMessage(user);
         }
 
+        prettyDate(d: Date): string {
+
+            var now = new Date();
+            var offsetMs = now.getDate() - d.getDate();
+            var oneDayMs = 1000 * 60 * 60 * 24;
+
+            if (offsetMs < oneDayMs) {
+                return d.toLocaleTimeString();
+            } else {
+                return d.toLocaleDateString();
+            }
+        }
     }
 }
