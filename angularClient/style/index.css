@@ -36,10 +36,34 @@ h3 {
 
 .friend-list-item {
     list-style-type: none;
-    padding: 3px 30px;
+    padding: 4px 10px;
+    display: flex;
+    flex-direction: row;
+    vertical-align: baseline;
 }
     .friend-list-item.selected {
         background-color: azure;
+    }
+
+    .friend-list-item .selector {
+        visibility: hidden;
+        margin-right: 4px;
+    }
+        .friend-list-item.selected .selector {
+            visibility: visible;
+        }
+
+    .friend-list-item > .username {
+        display: inline;
+        flex: 1;
+    }
+    .friend-list-item .unread-count {
+        display: inline;
+        font-size: 75%;
+        background-color: lightcoral;
+        border-radius: 10px;
+        padding: 3px;
+        color: white;
     }
 
 .chat-window {

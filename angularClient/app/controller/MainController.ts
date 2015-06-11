@@ -11,6 +11,7 @@
         private _selectedUser: User;
 
         constructor(scope: ng.IScope, rootScope: IRootScope, location: ng.ILocationService, routeParams,
+            timeout:ng.ITimeoutService,
             us: IUserService, ts: ITokenService, ms: IMessageService) {
             this._scope = scope;
             this._rootScope = rootScope;
@@ -19,7 +20,12 @@
             this._userService = us;
             this._tokenService = ts;
             this._messageService = ms;
+
             this.parseRoute();
+            if (this._selectedUser) {
+                this._userService.markMessagesRead(this._selectedUser);
+                timeout(() => this._scope.$broadcast("scrollDown"), 100, false);
+            }
         }
 
         private parseRoute() {

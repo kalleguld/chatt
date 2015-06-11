@@ -54,46 +54,29 @@ module dk.kalleguld.AngularChatt {
         "$rootScope",
         "$location",
         "$routeParams",
+        "$timeout",
         "UserService",
         "TokenService",
         "MessageService",
-        (scope, rootScope, location, routeParams, user, token, message) =>
-            new MainController(scope, rootScope, location, routeParams, user, token, message)
+        (scope, rootScope, location, routeParams, timeout, user, token, message) =>
+            new MainController(scope, rootScope, location, routeParams, timeout, user, token, message)
     ]);
 
-    function authChecker($q, $rootScope, $location) {
-        if (!!$rootScope.token) return true;
-        $location.path("/login");
-        return $q.reject();
-    }
-
-    //Routes
-    app.config([
-        "$routeProvider",
-        (routeProvider) => {
-
-            routeProvider.when("/chat", {
-                templateUrl: "app/view/main.html",
-                resolve: {
-                    authed: authChecker
+    app.directive("scrollToBottom", [
+        "$timeout",
+        timeout => {
+            console.log("scrollToBottom inited");
+            return {
+                link: ($scope, element, attrs) => {
+                    console.log("link inited");
+                    $scope.$on("scrollDown", () => {
+                        console.log("scrollDown triggered with element: ", element);
+                        timeout(() => {
+                            element[0].scrollTop = element[0].scrollHeight;
+                        }, 0, false);
+                    });
                 }
-            });
-
-            routeProvider.when("/chat/:friend", {
-                templateUrl: "app/view/main.html",
-                resolve: {
-                    authed: authChecker
-                }
-            });
-
-            routeProvider.when("/login", {
-                templateUrl: "app/view/login.html"
-            });
-
-            routeProvider.otherwise({
-                redirectTo: "/login"
-            });
+            };
         }
     ]);
-
 }

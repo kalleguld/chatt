@@ -8,14 +8,21 @@
                 ng-click="mc.selectUser(f)"
                 class="friend-list-item"
                 ng-class="mc.selectedUser == f ? 'selected' : ''">
-                {{f.username}}
+                <div class="selector">&#8594;</div>
+                <div class="username">
+                    {{::f.username}}
+                </div>
+                <div class="unread-count"
+                     ng-show="f.unreadMessages > 0">
+                    {{f.unreadMessages}}
+                </div>
             </li>
         </ul>
     </div>
     
     <div class="chat-window" ng-show="mc.selectedUser">
         <h3>Chat with {{mc.selectedUser.username}}</h3>
-        <div class="chat-history">
+        <div class="chat-history" scroll-to-bottom>
             <div class="history-item"
                     ng-repeat="m in mc.selectedUser.messages"
                     ng-class="::m.outgoing ? 'outgoing' : 'incoming'"

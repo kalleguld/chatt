@@ -5,12 +5,12 @@
         fullName: string;
         messages: Array<Message>;
         outMessage: string;
-
+        unreadMessages: number = 0;
 
         constructor() {
             this.messages = new Array<Message>();
         }
 
-        
+
     }
 }

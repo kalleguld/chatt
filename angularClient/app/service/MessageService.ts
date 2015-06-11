@@ -41,6 +41,7 @@
                         message.outgoing = rMessage.outgoing;
                         message.sent = new Date(rMessage.sent);
                         user.messages.push(message);
+                        user.unreadMessages++;
                     }
             });
         }

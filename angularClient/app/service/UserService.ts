@@ -53,6 +53,10 @@
             var user = this._friends[partner];
             if (user) this._messageService.getMessages(user);
         }
+
+        markMessagesRead(user: User): void {
+            user.unreadMessages = 0;
+        }
     }
 
     export interface IRUserListUser {
