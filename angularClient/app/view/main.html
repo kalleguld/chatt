@@ -1,24 +1,41 @@
 ﻿<div ng-controller="MainController as mc">
-    <h2>Main</h2>
-    <div ng-show="mc.loggedIn">Logged in with token {{mc.token}}</div>
-    <div ng-hide="mc.loggedIn">Not logged in</div>
-
-    <div class="friend-list">
-        <h3>Friends of {{mc.username}}</h3>
-        <ul>
-            <li ng-repeat="f in mc.friends">{{f.username}}</li>
-        </ul>
-    </div>
-    <div class="chat-window" ng-repeat="f in mc.friends">
-        <h3>Chat with {{f.username}}</h3>
-        <div class="chat-history">
-            <div class="history-item"
-                 ng-repeat="m in f.messages"
-                 ng-class="::m.outgoing ? 'outgoing' : 'incoming'">
-                {{::m.contents}}
+    <div class="m-table">
+        <div class="m-coll-a"></div>
+        <div class="m-coll-b"></div>
+        <div class="m-row">
+            <div class="m-cell">
+                <div class="friend-list">
+                    <h3>Friends of {{mc.username}}</h3>
+                    <ul>
+                        <li ng-repeat="f in mc.friends"
+                            ng-click="mc.selectUser(f)"
+                            class="friend-list-item"
+                            ng-class="mc.selectedUser == f ? 'selected' : ''">
+                            {{f.username}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="m-cell">
+                <div class="chat-window" ng-show="mc.selectedUser">
+                    <h3>Chat with {{mc.selectedUser.username}}</h3>
+                    <div class="chat-history">
+                        <div class="history-item"
+                             ng-repeat="m in mc.selectedUser.messages"
+                             ng-class="::m.outgoing ? 'outgoing' : 'incoming'"
+                             title="Sent: {{m.sent}}">
+                            <div class="username">{{::mc.selectedUser.username}}</div>
+                            <div class="message-direction" ng-show="::m.outgoing">&#8594;</div>
+                            <div class="message-direction" ng-hide="::m.outgoing">&#8592;</div>
+                            <div class="contents">{{::m.contents}}</div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <textarea ng-model="mc.selectedUser.outMessage"></textarea>
+                        <button ng-click="mc.sendMessage(mc.selectedUser)">Send Message</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <textarea ng-model="f.outMessage"></textarea>
-        <button ng-click="mc.sendMessage(f)">Send Message</button>
     </div>
 </div>

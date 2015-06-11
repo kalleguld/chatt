@@ -1,11 +1,105 @@
-﻿body {
+﻿html, body {
+    height: 100vh;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }
 
 .friend-list {
-    border: 2px solid blue;
+    box-sizing: border-box;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .chat-window {
-    border: 2px solid blue;
+    box-sizing: border-box;
+    border-left: 1px dotted black;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
+    .chat-window h3 {
+    }
+
+    .chat-window .footer {
+        display: flex;
+        flex-direction: row;
+        border-top: 1px dotted black;
+    }
+
+        .chat-window .footer textarea {
+            flex: 5;
+            border: none;
+            resize: none;
+            height: 4.5rem;
+            padding: 9px;
+            margin: 6px;
+        }
+
+        .chat-window .footer button {
+            flex: 1;
+            background-color: aliceblue;
+            border: none;
+        }
+
+.chat-history {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.history-item {
+    padding: 3px;
+    padding-left: 9px;
+}
+
+    .history-item ~ .history-item {
+        border-top: 1px dotted black;
+    }
+
+    .history-item.outgoing {
+        background-color: azure;
+    }
+
+    .history-item.incoming {
+        background-color: ivory;
+    }
+
+    .history-item .username {
+        display: inline;
+        color: grey;
+    }
+
+    .history-item .message-direction {
+        display: inline;
+        color: grey;
+    }
+
+    .history-item .contents {
+        display: inline;
+    }
+
+.m-table {
+    display: table;
+    width: 100%;
+    max-height: 100vh;
+}
+
+.m-coll-a {
+    display: table-column;
+    width: 250px;
+}
+
+.m-coll-b {
+    display: table-column;
+}
+
+.m-row {
+    display: table-row;
+}
+
+.m-cell {
+    display: table-cell;
+}

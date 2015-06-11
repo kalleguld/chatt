@@ -52,11 +52,13 @@ module dk.kalleguld.AngularChatt {
     app.controller("MainController", [
         "$scope",
         "$rootScope",
+        "$location",
+        "$routeParams",
         "UserService",
         "TokenService",
         "MessageService",
-        (scope, rootScope, user, token, message) =>
-            new MainController(scope, rootScope, user, token, message)
+        (scope, rootScope, location, routeParams, user, token, message) =>
+            new MainController(scope, rootScope, location, routeParams, user, token, message)
     ]);
 
     function authChecker($q, $rootScope, $location) {
@@ -70,7 +72,14 @@ module dk.kalleguld.AngularChatt {
         "$routeProvider",
         (routeProvider) => {
 
-            routeProvider.when("/", {
+            routeProvider.when("/chat", {
+                templateUrl: "app/view/main.html",
+                resolve: {
+                    authed: authChecker
+                }
+            });
+
+            routeProvider.when("/chat/:friend", {
                 templateUrl: "app/view/main.html",
                 resolve: {
                     authed: authChecker

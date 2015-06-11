@@ -30,7 +30,7 @@
             this.loginFailed = false;
             this._tokenService.setCredentials(this.username, this.password,(success) => {
                 if (success) {
-                    this._location.path("/");
+                    this._location.path("/chat");
                 } else {
                     this.loginFailed = true;
                 }
