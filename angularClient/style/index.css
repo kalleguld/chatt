@@ -40,9 +40,12 @@ h3 {
     display: flex;
     flex-direction: row;
     vertical-align: baseline;
+    cursor: pointer;
 }
     .friend-list-item.selected {
         background-color: azure;
+        border-top: 1px dotted black;
+        border-bottom: 1px dotted black;
     }
 
     .friend-list-item .selector {
@@ -141,6 +144,7 @@ h3 {
 
     .history-item .contents {
         display: inline;
+        white-space: pre-line;
     }
 
 .m-table {

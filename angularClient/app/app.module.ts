@@ -58,19 +58,17 @@ module dk.kalleguld.AngularChatt {
         "UserService",
         "TokenService",
         "MessageService",
-        (scope, rootScope, location, routeParams, timeout, user, token, message) =>
-            new MainController(scope, rootScope, location, routeParams, timeout, user, token, message)
+        "MessageListenerService",
+        (scope, rootScope, location, routeParams, timeout, user, token, message, mls) =>
+            new MainController(scope, rootScope, location, routeParams, timeout, user, token, message, mls)
     ]);
 
     app.directive("scrollToBottom", [
         "$timeout",
         timeout => {
-            console.log("scrollToBottom inited");
             return {
                 link: ($scope, element, attrs) => {
-                    console.log("link inited");
                     $scope.$on("scrollDown", () => {
-                        console.log("scrollDown triggered with element: ", element);
                         timeout(() => {
                             element[0].scrollTop = element[0].scrollHeight;
                         }, 0, false);

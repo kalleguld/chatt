@@ -1,10 +1,12 @@
 ﻿module dk.kalleguld.AngularChatt {
-    export class MainController {
+    export class MainController implements IMessageCreatedListener {
 
         private _scope: ng.IScope;
         private _rootScope: IRootScope;
         private _loc: ng.ILocationService;
         private _routeParams;
+        private _timeout:ng.ITimeoutService;
+        private _messageListenerService:IMessageListenerService;
         private _userService: IUserService;
         private _tokenService: ITokenService;
         private _messageService: IMessageService;
@@ -12,20 +14,30 @@
 
         constructor(scope: ng.IScope, rootScope: IRootScope, location: ng.ILocationService, routeParams,
             timeout:ng.ITimeoutService,
-            us: IUserService, ts: ITokenService, ms: IMessageService) {
+            us: IUserService, ts: ITokenService, ms: IMessageService, mls: IMessageListenerService) {
             this._scope = scope;
             this._rootScope = rootScope;
             this._loc = location;
             this._routeParams = routeParams;
+            this._timeout = timeout;
+            this._messageListenerService = mls;
             this._userService = us;
             this._tokenService = ts;
             this._messageService = ms;
 
+            scope.$on("$destroy",() => { this.destructor() });
+
             this.parseRoute();
+
+            mls.addListener(this);
+
             if (this._selectedUser) {
-                this._userService.markMessagesRead(this._selectedUser);
-                timeout(() => this._scope.$broadcast("scrollDown"), 100, false);
+                this.scrollDown();
             }
+        }
+
+        private destructor() {
+            this._messageListenerService.removeListener(this);
         }
 
         private parseRoute() {
@@ -40,6 +52,14 @@
                 //no friend selected
                 this._rootScope.title = "Main";
             }
+        }
+        private scrollDown():void {
+            if (!this.selectedUser) return;
+            this._timeout(() => {
+                this._userService.markMessagesRead(this._selectedUser);
+                this._scope.$broadcast("scrollDown");
+                this._scope.$apply();
+            }, 100, false);
         }
 
         get friends(): Map<string, User> {
@@ -84,6 +104,12 @@
                 return d.toLocaleTimeString();
             } else {
                 return d.toLocaleDateString();
+            }
+        }
+
+        messageCreated(messageId: number, partner: string) {
+            if (this._selectedUser && this._selectedUser.username === partner) {
+                this.scrollDown();
             }
         }
     }
