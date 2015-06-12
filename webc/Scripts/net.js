@@ -1,4 +1,4 @@
-﻿var User = (function () {
+var User = (function () {
     function User(username, fullName) {
         this.messages = [];
         this.lastMessage = 0;
@@ -6,37 +6,33 @@
         this.fullName = fullName;
     }
     User.prototype.addMessage = function (id, sent, outgoing, content) {
-        var m = new Message(id, this, sent, outgoing, content);
+        var m = new Message(id, this.username, sent, outgoing, content);
         this.messages.push(m);
         this.lastMessage = Math.max(this.lastMessage, id);
         return m;
     };
     return User;
 })();
-
 var Message = (function () {
-    function Message(id, partner, sent, outgoing, content) {
+    function Message(id, partner, sent, outgoing, contents) {
         this.id = id;
         this.partner = partner;
         this.sent = sent;
         this.outgoing = outgoing;
-        this.content = content;
+        this.contents = contents;
         return this;
     }
     return Message;
 })();
-
 var ChattSingleton = (function () {
     function ChattSingleton() {
         this.friends = [];
         this.friendRequests = [];
-        this.users = [];
-        this.token = "931a9540-9238-4094-a03c-9b19219e2d97";
-        this.self = null;
+        this.users = new Map();
+        this.currentZIndex = 1;
     }
     return ChattSingleton;
 })();
-
 function classEscape(s) {
     return htmlEscape(s);
 }
@@ -46,7 +42,6 @@ function classUnescape(s) {
     var child = p.childNodes[0];
     return child ? child.nodeValue : "";
 }
-
 function htmlEscape(s) {
     var entityMap = {
         "&": "&amp;",
@@ -56,15 +51,11 @@ function htmlEscape(s) {
         "'": "&#39;",
         "/": "&#x2F;"
     };
-    return String(s).replace(/[&<>"'\/]/g, function (ss) {
-        return entityMap[ss];
-    });
+    return String(s).replace(/[&<>"'\/]/g, function (ss) { return entityMap[ss]; });
 }
-
 function getUrl(path, params) {
     return "http://localhost:8733/jsonv1/" + path + encodeParams(params);
 }
-
 function encodeParams(map) {
     var result = "";
     var first = true;
@@ -75,7 +66,6 @@ function encodeParams(map) {
     }
     return result;
 }
-
 function getXhrErrorHandler($, helpText) {
     return function (xhr, errorType, error) {
         console.log("Xhr Error: " + helpText, xhr);
@@ -87,12 +77,12 @@ function getXhrErrorHandler($, helpText) {
             if (obj.errorCode === 7) {
                 console.log("incorrect login");
             }
-        } else {
+        }
+        else {
             console.log("error: " + errorType);
         }
     };
 }
-
 function getNewMessages($, token, user, callback) {
     $.ajax({
         url: getUrl("messages/", { token: token, sender: user.username, afterId: user.lastMessage }),
