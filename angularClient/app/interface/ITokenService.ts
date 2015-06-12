@@ -6,6 +6,7 @@
         username: string;
 
         setCredentials(username: string, password: string, callback:ILoginCallback): void;
+
         clearCredentials(): void;
         
         addTokenChangeListener(tcl: ITokenChangeListener):void;

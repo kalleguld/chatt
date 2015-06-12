@@ -107,6 +107,11 @@
             }
         }
 
+        logout():void {
+            this._tokenService.clearCredentials();
+            this._loc.path("/login");
+        }
+
         messageCreated(messageId: number, partner: string) {
             if (this._selectedUser && this._selectedUser.username === partner) {
                 this.scrollDown();
