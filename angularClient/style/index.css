@@ -6,8 +6,8 @@
     font-family: sans-serif;
 }
 
-ul {
-    padding: 0;
+* {
+    box-sizing: border-box;
 }
 
 .main-body {
@@ -15,9 +15,47 @@ ul {
     flex-direction: row;
 }
 
+.full-height {
+    height: 100vh;
+}
+
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+.flex {
+    flex: 1;
+}
+
+ul {
+    padding: 0;
+}
+
 h3 {
     font-family: monospace;
     padding-left: 18px;
+}
+
+.login-field {
+    margin: 4px;
+    padding: 3px 9px;
+    border: 1px solid silver;
+    font-size: 115%;
+}
+
+.login-button {
+    background-color: white;
+    border: 1px solid silver;
+    padding: 3px 9px;
+    margin: 4px;
+    color: grey;
+    font-size: 115%;
+
 }
 
 .side-bar {

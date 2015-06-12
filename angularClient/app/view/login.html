@@ -1,12 +1,27 @@
-﻿<div ng-controller="LoginController as loginCtrl">
-    <div>
-        <input type="text" placeholder="Username" ng-model="loginCtrl.username"/>
+﻿<div ng-controller="LoginController as loginCtrl" class="flex-col full-height ">
+    <div class="flex"></div>
+    <div class="flex-row ">
+        <div class="flex"></div>
+
+        <div >
+            <div >
+                <input type="text" placeholder="Username" 
+                       ng-model="loginCtrl.username" class="login-field "/>
+            </div>
+            <div >
+                <input type="password" placeholder="Password" 
+                       ng-model="loginCtrl.password" class="login-field "/>
+            </div>
+            <div class="flex-row ">
+                
+                <div class="flex "></div>
+                <input type="submit" value="Log In" ng-click="loginCtrl.login()"
+                       class="login-button "/>
+            </div>
+            <div ng-show="loginCtrl.loginFailed">Log in Failed</div>
+        </div>
+
+        <div class="flex"></div>
     </div>
-    <div >
-        <input type="password" placeholder="password" ng-model="loginCtrl.password"/>
-    </div>
-    <div>
-        <input type="submit" value="Log in" ng-click="loginCtrl.login()"/>
-    </div>
-    <div ng-show="loginCtrl.loginFailed">Log in Failed</div>
+    <div class="flex"></div>
 </div>
