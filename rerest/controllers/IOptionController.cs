@@ -22,7 +22,8 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method="OPTIONS",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{input}")]
+            UriTemplate = "*")]
         JsonResponse GetNamedOptions(string input);
+        
     }
 }

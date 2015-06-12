@@ -29,7 +29,7 @@
         }
 
         get loggedIn(): boolean {
-            return this.token != null && this.token !== "";
+            return !!this.token;
         }
 
         constructor($http: ng.IHttpService, rootScope:any, rerestService:IRerestService) {
@@ -58,9 +58,11 @@
         }
 
         clearCredentials(): void {
-
+            var url = this._rerestService.getUrl(`tokens/${this.token}/`, {});
+            this._http.delete(url);
             this.pToken = null;
             this._username = null;
+
         }
 
         addTokenChangeListener(tcl: ITokenChangeListener): void {

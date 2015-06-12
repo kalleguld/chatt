@@ -25,6 +25,7 @@ namespace rerest.behaviors
             {
                 {"Access-Control-Allow-Origin", "*"},
                 {"Access-Control-Request-Method", "POST,GET,PUT,DELETE,OPTIONS"},
+                {"Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS"},
                 {"Access-Control-Allow-Headers", "X-Requested-With,Content-Type"}
             };
 

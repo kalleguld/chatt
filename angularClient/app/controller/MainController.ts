@@ -112,7 +112,7 @@
             this._loc.path("/login");
         }
 
-        messageCreated(messageId: number, partner: string) {
+        messageCreated(messageId: number, partner: string):void {
             if (this._selectedUser && this._selectedUser.username === partner) {
                 this.scrollDown();
             }

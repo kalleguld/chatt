@@ -41,6 +41,11 @@ namespace serviceInterface.service
             return CreateToken(user);
         }
 
+        public void DeleteToken(IToken token)
+        {
+            Connection.Context.Tokens.Remove(GetToken(token));
+        }
+
         private IToken CreateToken(IUser user)
         {
             var guid = Guid.NewGuid();
@@ -86,7 +91,7 @@ namespace serviceInterface.service
 
         private static string CreateHash(string password)
         {
-            if (password == null) throw new ArgumentNullException("password");
+            if (password == null) throw new ArgumentNullException(nameof(password));
             return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(10));
         }
 
@@ -98,6 +103,11 @@ namespace serviceInterface.service
         internal User GetUser(IUser iUser)
         {
             return iUser as User ?? Connection.Context.Users.First(u => u.Username == iUser.Username);
+        }
+
+        internal Token GetToken(IToken iToken)
+        {
+            return iToken as Token ?? Connection.Context.Tokens.First(t => t.Guid == iToken.Guid);
         }
 
         public static bool IsValidUsername(string name)
