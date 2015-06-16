@@ -13,6 +13,10 @@
         "$routeProvider",
         (routeProvider) => {
 
+            routeProvider.when("/", {
+                redirectTo: "/chat"
+            });
+
             routeProvider.when("/chat", {
                 templateUrl: "app/view/main.html",
                 resolve: {

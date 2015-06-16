@@ -1,4 +1,7 @@
 ﻿module dk.kalleguld.AngularChatt {
+
+    declare var $: JQueryStatic;
+
     export class MainController implements IMessageCreatedListener {
 
         private _scope: ng.IScope;
@@ -33,6 +36,7 @@
 
             if (this._selectedUser) {
                 this.scrollDown();
+                $("#out-message").focus();
             }
         }
 
@@ -92,6 +96,7 @@
 
         sendMessage(user: User): void {
             this._messageService.sendMessage(user);
+            $("#out-message").focus();
         }
 
         prettyDate(d: Date): string {

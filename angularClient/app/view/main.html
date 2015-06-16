@@ -42,7 +42,8 @@
             </div>
         </div>
         <div class="footer">
-            <textarea ng-model="mc.selectedUser.outMessage" 
+            <textarea id="out-message"
+                      ng-model="mc.selectedUser.outMessage" 
                       placeholder="Your Message"></textarea>
             <button ng-click="mc.sendMessage(mc.selectedUser)">
                 Send Message
