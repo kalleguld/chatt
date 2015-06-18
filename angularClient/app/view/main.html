@@ -1,25 +1,49 @@
 ﻿<div ng-controller="MainController as mc" class="main-body">
 
     
-    <div class="side-bar">
-        <h3>Friends of {{mc.username}}</h3>
-        <ul class="friend-list">
-            <li ng-repeat="f in mc.friends"
-                ng-click="mc.selectUser(f)"
-                class="friend-list-item"
-                ng-class="mc.selectedUser == f ? 'selected' : ''">
-                <div class="selector">&#8594;</div>
-                <div class="username">
-                    {{::f.username}}
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <h3>Friends of {{::mc.username}}</h3>
+
+            <ul class="user-list friend-list">
+                <li ng-repeat="f in mc.friends"
+                    ng-click="mc.selectUser(f)"
+                    class="user-list-item"
+                    ng-class="mc.selectedUser == f ? 'selected' : ''">
+                    <div class="selector">&#8594;</div>
+                    <div class="username">
+                        {{::f.username}}
+                    </div>
+                    <div class="unread-count"
+                         ng-show="f.unreadMessages > 0">
+                        {{f.unreadMessages}}
+                    </div>
+                </li>
+            </ul>
+            <div class="friend-requests" ng-show="mc.hasFriendRequests">
+                <h3>Friend Requests</h3>
+                <ul id="user-list friend-request-list">
+                    <li ng-repeat="(un, u) in mc.friendRequests"
+                        class="user-list-item">
+                        <div class="selector">&#8594;</div>
+                        <div class="username" ng-bind="::un" ng-click="mc.addFriend(u)"></div>
+                        <div class="delete" ng-click="mc.deleteFriendRequest(u)">&#10006;</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar-bottom">
+            <div class="request-friend">
+                <h3>Request Friend</h3>
+                <div class="flex-row">
+                    <input type="text" ng-model="mc.requestedFriend" id="tf-request-friend"/>
+                    <button ng-click="mc.requestFriend()" id="btn-request-friend">Request</button>
                 </div>
-                <div class="unread-count"
-                     ng-show="f.unreadMessages > 0">
-                    {{f.unreadMessages}}
-                </div>
-            </li>
-        </ul>
-        <div>
-            <button ng-click="mc.logout()">Log Out</button>
+            </div>
+            <div class="flex-row">
+                <div class="flex"></div>
+                <button ng-click="mc.logout()">Log Out</button>
+            </div>
         </div>
     </div>
     

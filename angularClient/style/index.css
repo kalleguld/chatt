@@ -1,4 +1,7 @@
-﻿html, body, .main-body {
+﻿* {
+    box-sizing: border-box;
+}
+html, body, .main-body {
     height: 100vh;
     box-sizing: border-box;
     margin: 0;
@@ -6,9 +9,6 @@
     font-family: sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-}
 
 .main-body {
     display: flex;
@@ -41,7 +41,7 @@ h3 {
     padding-left: 18px;
 }
 
-button, input[type=submit] {
+button, input {
     background-color: white;
     border: 1px solid silver;
     padding: 3px 9px;
@@ -61,21 +61,29 @@ button, input[type=submit] {
 
 }
 
-.side-bar {
+.sidebar {
     box-sizing: border-box;
-    height: 100vh;
+    min-height: 100vh;
     width: 200px;
-    overflow-x: hidden;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    
 }
+.sidebar-top {
+    height: auto;
+    flex: 1 0 auto;
+}
+
+.sidebar-bottom {
+    flex: 0 0 auto;
+}
+
 
 .friend-list {
-    flex: 1;
 }
 
-.friend-list-item {
+.user-list-item {
     list-style-type: none;
     padding: 4px 10px;
     display: flex;
@@ -83,32 +91,47 @@ button, input[type=submit] {
     vertical-align: baseline;
     cursor: pointer;
 }
-    .friend-list-item.selected {
+    .user-list-item.selected {
         background-color: azure;
         border-top: 1px dotted black;
         border-bottom: 1px dotted black;
     }
 
-    .friend-list-item .selector {
+    .user-list-item .selector {
         visibility: hidden;
         margin-right: 4px;
     }
-        .friend-list-item.selected .selector {
+        .user-list-item.selected .selector {
             visibility: visible;
         }
 
-    .friend-list-item > .username {
+    .user-list-item > .username {
         display: inline;
         flex: 1;
     }
-    .friend-list-item .unread-count {
+    .user-list-item .unread-count {
         display: inline;
         font-size: 75%;
         background-color: lightcoral;
         border-radius: 10px;
         padding: 3px;
+        font-family: monospace;
         color: white;
+        min-width: 1.2rem;
+        text-align: center;
     }
+
+    .user-list-item .delete:hover {
+        color: lightcoral;
+    }
+
+#tf-request-friend {
+    flex: 1;
+}
+
+#btn-request-friend {
+    flex: 0 0 auto;
+}
 
 .chat-window {
     box-sizing: border-box;

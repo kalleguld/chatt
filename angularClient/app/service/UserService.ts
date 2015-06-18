@@ -2,7 +2,9 @@
 
     export class UserService implements IUserService, ITokenChangeListener, IMessageCreatedListener {
 
-        private _friends: Map<string, User> = new Map<string, User>();
+        private _friends = new Map<string, User>();
+        private _friendRequests = {};
+
         private _tokenService: ITokenService;
         private _rerestService: IRerestService;
         private _messageService: IMessageService;
@@ -16,8 +18,8 @@
             this._rerestService = rerestService;
             this._messageService = ms;
             this._messageListenerService = mls;
-            this.updateFriends();
             tokenService.addTokenChangeListener(this);
+            this.tokenChanged(tokenService.token);
             mls.addListener(this);
         }
 
@@ -25,28 +27,79 @@
             return this._friends;
         }
 
+        get friendRequests(): Object {
+            return this._friendRequests;
+        }
+
         updateFriends(): void {
+            this._friends = new Map<string, User>();
             if (!this._tokenService.loggedIn) {
-                this._friends = new Map<string, User>();
                 return;
             }
             var url = this._rerestService.getUrl("friends/", { token: this._tokenService.token });
-            var a = this._http.get<IRUserList>(url).success(this.friendListCallback);
+            this._http.get<IRUserList>(url).success((data: IRUserList) => {
+                var newFriends = {};
+                for (var i = 0; i < data.users.length; i++) {
+                    var user = this.parseRUser(data.users[i]);
+                    newFriends[user.username] = null;
+                    if (!(user.username in this._friends)) {
+                        this._friends[user.username] = user;
+                        this._messageService.getMessages(user);
+                    }
+                }
+                for (var username in this._friends) {
+                    if (!(username in newFriends)) {
+                        this._friends.delete(username);
+                    }
+                }
+            });
         }
 
-        friendListCallback: angular.IHttpPromiseCallback<IRUserList> = (data: IRUserList) => {
-            for (var i = 0; i < data.users.length; i++) {
-                var rUser = data.users[i];
-                var user = new User();
-                user.username = rUser.username;
-                user.fullName = rUser.fullName;
-                this._friends[user.username] = user;
-                this._messageService.getMessages(user);
+        updateFriendRequests(): void {
+            if (!this._tokenService.loggedIn) {
+                this._friendRequests = new Map<string, User>();
+                return;
             }
+
+            var url = this._rerestService.getUrl("friendrequests/", { token: this._tokenService.token });
+            this._http.get<IRUserList>(url).success((data: IRUserList) => {
+                var newRequests = {};
+                for (var i = 0; i < data.users.length; i++) {
+                    var user = this.parseRUser(data.users[i]);
+                    newRequests[user.username] = null;
+                    this._friendRequests[user.username] = user;
+                }
+                for (var username in this._friendRequests) {
+                    if (!(username in newRequests)) {
+                        delete this._friendRequests[username];
+                    }
+                }
+                
+            });
+        }
+
+        addFriend(username: string): void {
+            var url = this._rerestService.getUrl(`friendrequests/${username}/`,
+                { token: this._tokenService.token });
+            this._http.post<IRFriendRequestResponse>(url, {})
+                .success((response) => {
+                    if (response.friendAdded) {
+                        this.updateFriends();
+                        this.updateFriendRequests();
+                    }
+                });
+        }
+
+        private parseRUser(rUser: IRUserListUser):User {
+            var user = new User();
+            user.username = rUser.username;
+            user.fullName = rUser.fullName;
+            return user;
         }
 
         tokenChanged(token: string): void {
             this.updateFriends();
+            this.updateFriendRequests();
         }
 
         messageCreated(messageId: number, partner: string): void {
@@ -57,6 +110,15 @@
         markMessagesRead(user: User): void {
             user.unreadMessages = 0;
         }
+
+        deleteFriendRequest(user: User): void {
+            var url = this._rerestService.getUrl("friendRequests/" + user.username + "/", {
+                token: this._tokenService.token
+            });
+            this._http.delete(url).success(() => {
+                this.updateFriendRequests();
+            });
+        }
     }
 
     export interface IRUserListUser {
@@ -66,4 +128,9 @@
     export interface IRUserList {
         users: Array<IRUserListUser>;
     }
+
+    export interface IRFriendRequestResponse {
+        friendAdded: boolean;
+    }
+    
 }
