@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using backend;
 using backend.model;
 using modelInterface;
 using modelInterface.exceptions;
@@ -11,26 +11,28 @@ namespace serviceInterface.service
 {
     public class UserService : BaseService
     {
-
         public static readonly Regex NameRegex = new Regex("^[a-zA-Z0-9-_]+$");
 
-        internal UserService(Connection connection) : base(connection) { }
+        private readonly Context _context;
+
+        internal UserService(Context context)
+        {
+            _context = context;
+        }
 
         internal User GetUser(string username)
         {
-            return Connection.Context.Users.FirstOrDefault(u => u.Username == username);
+            return _context.Users.FirstOrDefault(u => u.Username == username);
         }
 
         public IUser GetUser(IToken token, string username)
         {
-            var user = GetUser(username);
-            if (Connection.FriendService.HasAccessToUserDetails(token, user)) return user;
-            return null;
+            return GetUser(username);
         }
 
         public IToken GetToken(Guid guid)
         {
-            return Connection.Context.Tokens.FirstOrDefault(t => t.Guid == guid);
+            return _context.Tokens.FirstOrDefault(t => t.Guid == guid);
         }
 
         public IToken CreateToken(string username, string password)
@@ -43,13 +45,13 @@ namespace serviceInterface.service
 
         public void DeleteToken(IToken token)
         {
-            Connection.Context.Tokens.Remove(GetToken(token));
+            _context.Tokens.Remove(GetToken(token));
         }
 
         private IToken CreateToken(IUser user)
         {
             var guid = Guid.NewGuid();
-            while (Connection.Context.Tokens.Any(t => t.Guid == guid))
+            while (_context.Tokens.Any(t => t.Guid == guid))
             {
                 guid = Guid.NewGuid();
             }
@@ -58,7 +60,7 @@ namespace serviceInterface.service
                 Guid = guid,
                 User = GetUser(user)
             };
-            Connection.Context.Tokens.Add(token);
+            _context.Tokens.Add(token);
             return token;
         }
 
@@ -66,7 +68,7 @@ namespace serviceInterface.service
         {
             if (!IsValidUsername(username))
                 throw new InvalidUsername(username, NameRegex);
-            if (Connection.Context.Users.Any(u => u.Username == username))
+            if (_context.Users.Any(u => u.Username == username))
                 throw new UsernameExists(username);
 
             var user = new User
@@ -75,13 +77,13 @@ namespace serviceInterface.service
                 Username = username,
                 Hash = CreateHash(password)
             };
-            Connection.Context.Users.Add(user);
+            _context.Users.Add(user);
             return user;
         }
 
         public IEnumerable<IUser> GetUsers(IToken token, string filter = null)
         {
-            IEnumerable<User> result = Connection.Context.Users;
+            IEnumerable<User> result = _context.Users;
             if (filter != null)
             {
                 result = result.Where(u => u.Username.Contains(filter));
@@ -102,12 +104,12 @@ namespace serviceInterface.service
 
         internal User GetUser(IUser iUser)
         {
-            return iUser as User ?? Connection.Context.Users.First(u => u.Username == iUser.Username);
+            return iUser as User ?? _context.Users.First(u => u.Username == iUser.Username);
         }
 
         internal Token GetToken(IToken iToken)
         {
-            return iToken as Token ?? Connection.Context.Tokens.First(t => t.Guid == iToken.Guid);
+            return iToken as Token ?? _context.Tokens.First(t => t.Guid == iToken.Guid);
         }
 
         public static bool IsValidUsername(string name)

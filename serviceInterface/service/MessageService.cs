@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using backend;
 using backend.model;
 using modelInterface;
 using modelInterface.exceptions;
@@ -9,11 +10,18 @@ namespace serviceInterface.service
 {
     public class MessageService : BaseService
     {
-        internal MessageService(Connection connection) : base(connection) { }
+        private readonly Context _context;
+        private readonly UserService _userService;
+
+        internal MessageService(Context context, UserService userService)
+        {
+            _context = context;
+            _userService = userService;
+        }
 
         public IMessage GetMessage(IToken token, int messageId)
         {
-            var message = Connection.Context.Messages.FirstOrDefault(m => m.Id == messageId);
+            var message = _context.Messages.FirstOrDefault(m => m.Id == messageId);
 
             if (message == null) return null;
             if (!CanSeeMessage(token, message)) return null;
@@ -23,7 +31,7 @@ namespace serviceInterface.service
 
         public IMessage CreateMessage(IToken token, string receiver, string content)
         {
-            var iReceiver = Connection.UserService.GetUser(receiver);
+            var iReceiver = _userService.GetUser(receiver);
             return CreateMessage(token, iReceiver, content);
         }
 
@@ -34,12 +42,12 @@ namespace serviceInterface.service
 
             var msg = new Message
             {
-                Sender = Connection.UserService.GetUser(token.User),
-                Receiver = Connection.UserService.GetUser(receiver),
+                Sender = _userService.GetUser(token.User),
+                Receiver = _userService.GetUser(receiver),
                 Content = content,
                 Sent = DateTime.UtcNow
             };
-            Connection.Context.Messages.Add(msg);
+            _context.Messages.Add(msg);
             return msg;
         }
 
@@ -52,7 +60,7 @@ namespace serviceInterface.service
             DateTime? afterTime = null,
             int? maxResults = null)
         {
-            IQueryable<Message> result = Connection.Context.Messages;
+            IQueryable<Message> result = _context.Messages;
 
             if (includeReceived && includeSent)
             {
@@ -92,7 +100,7 @@ namespace serviceInterface.service
 
         public IEnumerable<IMessage> GetMessages(int afterId)
         {
-            return Connection.Context.Messages.Where(m => m.Id > afterId);
+            return _context.Messages.Where(m => m.Id > afterId);
         } 
 
         public bool CanSendMessage(IToken token, IUser receiver)

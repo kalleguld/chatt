@@ -4,9 +4,14 @@ using modelInterface;
 
 namespace serviceInterface.service
 {
-    public class FriendService : BaseService
+    public class FriendService
     {
-        internal FriendService(Connection connection) : base(connection) { }
+        private readonly UserService _userService;
+
+        internal FriendService(UserService userService)
+        {
+            _userService = userService;
+        }
 
         public IEnumerable<IUser> GetFriends(IUser user)
         {
@@ -15,8 +20,8 @@ namespace serviceInterface.service
 
         public bool RequestFriend(IToken iToken, string friendName)
         {
-            var user = Connection.UserService.GetUser(iToken.User);
-            var friend = Connection.UserService.GetUser(friendName);
+            var user = _userService.GetUser(iToken.User);
+            var friend = _userService.GetUser(friendName);
             if (friend == null) return false;
             if (user == friend) return true;
             if (user.FriendRequests.Contains(friend))
@@ -36,16 +41,16 @@ namespace serviceInterface.service
 
         public void RemoveFriend(IToken iToken, IUser iFriend)
         {
-            var user = Connection.UserService.GetUser(iToken.User);
-            var friend = Connection.UserService.GetUser(iFriend);
+            var user = _userService.GetUser(iToken.User);
+            var friend = _userService.GetUser(iFriend);
             user.Friends.Remove(friend);
             friend.Friends.Remove(user);
         }
 
         public void RemoveFriendRequest(IToken iToken, string friendName)
         {
-            var user = Connection.UserService.GetUser(iToken.User);
-            var friend = Connection.UserService.GetUser(friendName);
+            var user = _userService.GetUser(iToken.User);
+            var friend = _userService.GetUser(friendName);
             user.FriendRequests.Remove(friend);
             friend.FriendRequests.Remove(user);
         }

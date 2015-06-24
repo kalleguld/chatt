@@ -2,11 +2,9 @@
 {
     public class BaseService
     {
-        protected Connection Connection { get; private set; }
-
-        protected BaseService(Connection connection)
+        
+        protected BaseService()
         {
-            Connection = connection;
         }
 
     }

@@ -6,39 +6,31 @@ namespace serviceInterface
 {
     public class Connection : IDisposable
     {
-        internal Context Context { get { return _context; } }
-
-        public FriendService FriendService { get
-        {
-            return _friendService ?? (_friendService = new FriendService(this));
-        } }
-
-        public UserService UserService{  get
-        {
-            return _userService ?? (_userService = new UserService(this));
-        } }
-
-        public MessageService MessageService { get
-        {
-            return _messageService ?? (_messageService = new MessageService(this));
-        } }
-
-
-
-        private readonly Context _context;
         private FriendService _friendService;
         private UserService _userService;
         private MessageService _messageService;
 
+        private Context Context { get; }
+
+        public UserService UserService => 
+            _userService ?? (_userService = new UserService(Context));
+
+        public FriendService FriendService => 
+            _friendService ?? (_friendService = new FriendService(UserService));
+
+
+        public MessageService MessageService => 
+            _messageService ?? (_messageService = new MessageService(Context, UserService));
+
 
         internal Connection()
         {
-            _context = new Context();
+            Context = new Context();
         }
 
         public int SaveChanges()
         {
-            var result = _context.SaveChanges();
+            var result = Context.SaveChanges();
             return result;
         }
 
@@ -53,7 +45,7 @@ namespace serviceInterface
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing) return;
-            if (_context != null) _context.Dispose();
+            Context?.Dispose();
         }
         #endregion
 

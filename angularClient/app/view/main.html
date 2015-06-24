@@ -51,12 +51,11 @@
         <h3>Chat with {{mc.selectedUser.username}}</h3>
         <div class="chat-history" scroll-to-bottom>
             <div class="history-item"
-                    ng-repeat="m in mc.selectedUser.messages"
-                    ng-class="::m.outgoing ? 'outgoing' : 'incoming'"
-                    title="Sent: {{::m.sent}}">
+                ng-repeat="m in mc.selectedUser.messages"
+                ng-class="::m.outgoing ? 'outgoing' : 'incoming'">
                 <div class="header">
                     <div class="username">{{::mc.selectedUser.username}}</div>
-                    <div class="sent-time" title="{{::m.sent}}">
+                    <div class="sent-time" title="Sent {{::m.sent}}">
                         {{::mc.prettyDate(m.sent)}}
                     </div>
                     <div class="message-direction" ng-show="::m.outgoing">&#8594;</div>
