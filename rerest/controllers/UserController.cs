@@ -21,14 +21,14 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}&filter={filter}")]
-        UserList GetUsers(string guidStr, string filter);
+            UriTemplate = "?filter={filter}")]
+        UserList GetUsers(string filter);
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{username}/?token={guidStr}")]
-        UserInfo GetFriend(string guidStr, string username);
+            UriTemplate = "{username}/")]
+        UserInfo GetFriend(string username);
     }
 
     public class UserController : BaseController, IUserController
@@ -60,30 +60,30 @@ namespace rerest.controllers
             }
         }
 
-        public UserInfo GetSelf(string guidStr)
+        public UserInfo GetSelf()
         {
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 return new UserInfo(token.User);
             }
         }
 
-        public UserList GetUsers(string guidStr, string filter)
+        public UserList GetUsers(string filter)
         {
             using (var conn = GetConnection())
             {
-                var token = GetToken(conn, guidStr);
+                var token = GetToken(conn);
                 var users = conn.UserService.GetUsers(token, filter);
                 return new UserList(users);
             }
         }
 
-        public UserInfo GetFriend(string guidStr, string username)
+        public UserInfo GetFriend(string username)
         {
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 var friend = GetFriend(connection, token, username);
                 return new UserInfo(friend);
             }

@@ -19,14 +19,14 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{guidStr}/")]
-        TokenInfo GetToken(string guidStr);
+            UriTemplate = "")]
+        TokenInfo GetToken();
 
         [OperationContract]
         [WebInvoke(Method = "DELETE",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{guidStr}/")]
-        JsonResponse DeleteToken(string guidStr);
+            UriTemplate = "")]
+        JsonResponse DeleteToken();
     }
 
     public class TokenController : BaseController, ITokenController
@@ -45,20 +45,20 @@ namespace rerest.controllers
             }
         }
         
-        public TokenInfo GetToken(string guidStr)
+        public TokenInfo GetToken()
         {
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 return new TokenInfo(token);
             }
         }
 
-        public JsonResponse DeleteToken(string guidStr)
+        public JsonResponse DeleteToken()
         {
             using (var conn = GetConnection())
             {
-                var token = GetToken(conn, guidStr);
+                var token = GetToken(conn);
                 if (token == null) throw new JsonError(JsonResponseCode.LoginError).GetException();
                 conn.UserService.DeleteToken(token);
                 conn.SaveChanges();

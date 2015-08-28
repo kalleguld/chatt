@@ -16,35 +16,32 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}" +
-                          "&sender={sender}" +
+            UriTemplate = "?sender={sender}" +
                           "&afterId={afterIdStr}" +
                           "&afterTimestamp={afterTimestampStr}" +
                           "&getSent={getSentStr}" +
                           "&getReceived={getReceivedStr}" +
                           "&maxResults={maxResultsStr}")]
-        MessageList GetMessages(string guidStr, 
-            string sender, string afterIdStr, string afterTimestampStr, 
+        MessageList GetMessages(string sender, string afterIdStr, string afterTimestampStr, 
             string getSentStr, string getReceivedStr, string maxResultsStr);
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{messageIdStr}/?token={guidStr}")]
-        MessageInfo GetMessage(string guidStr, string messageIdStr);
+            UriTemplate = "{messageIdStr}/")]
+        MessageInfo GetMessage(string messageIdStr);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}&receiver={receiver}&contents={contents}")]
-        MessageInfo CreateMessage(string guidStr, string receiver, string contents);
+            UriTemplate = "?receiver={receiver}&contents={contents}")]
+        MessageInfo CreateMessage(string receiver, string contents);
     }
 
     public class MessageController : BaseController, IMessageController
     {
 
-        public MessageList GetMessages(string guidStr, 
-            string sender, string afterIdStr, string afterTimestampStr, 
+        public MessageList GetMessages(string sender, string afterIdStr, string afterTimestampStr, 
             string getSentStr, string getReceivedStr, string maxResultsStr)
         {
             int? afterId = IntUtils.ParseN(afterIdStr);
@@ -52,7 +49,7 @@ namespace rerest.controllers
 
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 var messages = connection.MessageService.GetMessages(
                     token, 
                     BoolUtils.ParseN(getSentStr) ?? true,
@@ -66,7 +63,7 @@ namespace rerest.controllers
             }
         }
 
-        public MessageInfo GetMessage(string guidStr, string messageIdStr)
+        public MessageInfo GetMessage(string messageIdStr)
         {
             int messageId;
             if (!int.TryParse(messageIdStr, out messageId))
@@ -76,7 +73,7 @@ namespace rerest.controllers
 
             using (var conn = GetConnection())
             {
-                var token = GetToken(conn, guidStr);
+                var token = GetToken(conn);
                 var message = conn.MessageService.GetMessage(token, messageId);
                 if (message == null)
                 {
@@ -86,11 +83,11 @@ namespace rerest.controllers
             }
         }
 
-        public MessageInfo CreateMessage(string guidStr, string receiver, string contents)
+        public MessageInfo CreateMessage(string receiver, string contents)
         {
             using (var conn = GetConnection())
             {
-                var token = GetToken(conn, guidStr);
+                var token = GetToken(conn);
                 CheckNull(receiver, "receiver");
                 CheckNull(contents, "contents");
                 IMessage message;

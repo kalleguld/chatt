@@ -11,34 +11,34 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET", 
             ResponseFormat = WebMessageFormat.Json, 
-            UriTemplate = "?token={guidStr}")]
-        UserList GetFriends(string guidStr);
+            UriTemplate = "")]
+        UserList GetFriends();
 
         [OperationContract]
         [WebInvoke(Method = "DELETE", 
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}&username={username}")]
-        JsonResponse RemoveFriend(string guidStr, string username);
+            UriTemplate = "?username={username}")]
+        JsonResponse RemoveFriend(string username);
 
     }
 
     public class FriendController : BaseController, IFriendController
     {
 
-        public UserList GetFriends(string guidStr)
+        public UserList GetFriends()
         {
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 return new UserList(token.User.Friends);
             }
         }
 
-        public JsonResponse RemoveFriend(string guidStr, string username)
+        public JsonResponse RemoveFriend(string username)
         {
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 var friend = GetUser(connection, token, username);
                 if (friend == null) return new JsonResponse();
                 connection.FriendService.RemoveFriend(token, friend);

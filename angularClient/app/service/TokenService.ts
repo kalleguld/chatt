@@ -5,6 +5,7 @@
         static injName = "TokenService";
 
         private _http: ng.IHttpService;
+        private _httpProvider: ng.IHttpProvider;
         private _rootScope: any;
         private _rerestService: IRerestService;
         private _username: string = null;
@@ -21,6 +22,11 @@
         private set pToken(token: string) {
             var sendChange = (this._rootScope.token !== token);
             this._rootScope.token = token;
+            if (token == null) {
+                this._httpProvider.defaults.headers.common.Authorization = undefined;
+            } else {
+                this._httpProvider.defaults.headers.common.Authorization = "Token " + token;
+            }
             if (sendChange) {
                 for (var i = 0; i < this._tokenChangeListeners.length; i++) {
                     this._tokenChangeListeners[i].tokenChanged(token);
@@ -32,10 +38,11 @@
             return !!this.token;
         }
 
-        constructor($http: ng.IHttpService, rootScope:any, rerestService:IRerestService) {
+        constructor($http: ng.IHttpService, rootScope:any, rerestService:IRerestService, $httpProvider: ng.IHttpProvider) {
             this._http = $http;
             this._rootScope = rootScope;
             this._rerestService = rerestService;
+            this._httpProvider = $httpProvider;
         }
 
         setCredentials(username: string, password: string, callback:ILoginCallback): void {

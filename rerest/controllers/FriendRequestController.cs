@@ -16,51 +16,51 @@ namespace rerest.controllers
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "?token={guidStr}")]
-        UserList GetFriendRequests(string guidStr);
+            UriTemplate = "")]
+        UserList GetFriendRequests();
 
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{username}/?token={guidStr}")]
-        FriendRequestResponse AddFriend(string guidStr, string username);
+            UriTemplate = "{username}/")]
+        FriendRequestResponse AddFriend(string username);
 
         [OperationContract]
         [WebInvoke(Method = "DELETE",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "{username}/?token={guidStr}")]
-        JsonResponse CancelFriendRequest(string guidStr, string username);
+            UriTemplate = "{username}/")]
+        JsonResponse CancelFriendRequest(string username);
     }
 
     public class FriendRequestController : BaseController, IFriendRequestController
     {
-        public UserList GetFriendRequests(string guidStr)
+        public UserList GetFriendRequests()
         {
             using (var conn = GetConnection())
             {
-                var token = GetToken(conn, guidStr);
+                var token = GetToken(conn);
                 return new UserList(token.User.FriendRequests);
             }
         }
 
-        public FriendRequestResponse AddFriend(string guidStr, string username)
+        public FriendRequestResponse AddFriend(string username)
         {
             CheckNull(username, "username");
             using (var connection = GetConnection())
             {
-                var token = GetToken(connection, guidStr);
+                var token = GetToken(connection);
                 var response = connection.FriendService.RequestFriend(token, username);
                 connection.SaveChanges();
                 return new FriendRequestResponse(response);
             }
         }
 
-        public JsonResponse CancelFriendRequest(string guidStr, string username)
+        public JsonResponse CancelFriendRequest(string username)
         {
             CheckNull(username, "username");
             using (var conn = GetConnection())
             {
-                var token = GetToken(conn, guidStr);
+                var token = GetToken(conn);
                 conn.FriendService.RemoveFriendRequest(token, username);
                 conn.SaveChanges();
                 return new JsonResponse();

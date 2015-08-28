@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ServiceModel;
 using System.ServiceModel.Web;
+using System.Text.RegularExpressions;
 using modelInterface;
 using rerest.jsonBase;
 using rerest.viewmodel.exceptions;
@@ -36,24 +36,38 @@ namespace rerest.controllers
             return _connectionFactory.GetConnection();
         }
 
-
-
-        protected IToken GetToken(Connection connection, string guidStr)
+        protected IToken GetToken(Connection connection)
         {
-            if (guidStr == null) 
-                throw new JsonMissingParameter("token").GetException();
-            Guid guid;
-            if (!Guid.TryParse(guidStr, out guid)) 
-                throw new JsonWrongParameterType("token", "guid").GetException();
-
+            var guid = GetGuidFromAuthHeader(WebOperationContext.Current);
+            
             var token = connection.UserService.GetToken(guid);
             if (token == null) throw new JsonError(JsonResponseCode.InvalidToken).GetException();
             return token;
         }
 
+        private static Guid GetGuidFromAuthHeader(WebOperationContext woc)
+        {
+            var request = woc.IncomingRequest;
+            var headers = request.Headers;
+            var authHeader = headers["Authorization"];
+            var authHeaderPattern = new Regex("Token (.*)");
+            var match = authHeaderPattern.Match(authHeader);
+            if (!match.Success)
+            {
+                throw new JsonError(JsonResponseCode.WrongTokenType).GetException();
+            }
+            var guidStr = match.Groups[1].ToString();
+            Guid guid;
+            if (!Guid.TryParse(guidStr, out guid))
+            {
+                throw new JsonError(JsonResponseCode.WrongTokenType).GetException();
+            }
+            return guid;
+        }
+
         protected IUser GetUser(Connection connection, IToken token, string username)
         {
-            if (username == null) throw new JsonMissingParameter("username").GetException();
+            CheckNull(username, "username");
             return connection.UserService.GetUser(token, username);
         }
 

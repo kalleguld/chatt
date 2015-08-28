@@ -11,7 +11,7 @@ namespace serviceInterface.service
 {
     public class UserService : BaseService
     {
-        public static readonly Regex NameRegex = new Regex("^[a-zA-Z0-9-_]+$");
+        public static readonly Regex NameRegex = new Regex("^[a-zA-Z0-9-_]{1,63}$");
 
         private readonly Context _context;
 
