@@ -2,7 +2,8 @@
 
     export interface IUserService {
 
-        friends: Map<string, User>;
+        
+        friends: { [key: string]: User }
 
         friendRequests: Object;
 

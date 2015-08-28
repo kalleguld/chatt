@@ -2,7 +2,7 @@
 
     export class UserService implements IUserService, ITokenChangeListener, IMessageCreatedListener {
 
-        private _friends = new Map<string, User>();
+        private _friends: { [key: string]: User } = {};
         private _friendRequests = {};
 
         private _tokenService: ITokenService;
@@ -23,7 +23,7 @@
             mls.addListener(this);
         }
 
-        get friends(): Map<string, User> {
+        get friends(): { [key: string]: User } {
             return this._friends;
         }
 
@@ -32,7 +32,7 @@
         }
 
         updateFriends(): void {
-            this._friends = new Map<string, User>();
+            this._friends = {};
             if (!this._tokenService.loggedIn) {
                 return;
             }
@@ -49,7 +49,7 @@
                 }
                 for (var username in this._friends) {
                     if (!(username in newFriends)) {
-                        this._friends.delete(username);
+                        delete this._friends[username];
                     }
                 }
             });
@@ -57,7 +57,7 @@
 
         updateFriendRequests(): void {
             if (!this._tokenService.loggedIn) {
-                this._friendRequests = new Map<string, User>();
+                this._friendRequests = {};
                 return;
             }
 
