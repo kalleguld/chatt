@@ -5,7 +5,6 @@
         static injName = "TokenService";
 
         private _http: ng.IHttpService;
-        private _httpProvider: ng.IHttpProvider;
         private _rootScope: any;
         private _rerestService: IRerestService;
         private _username: string = null;
@@ -23,9 +22,9 @@
             var sendChange = (this._rootScope.token !== token);
             this._rootScope.token = token;
             if (token == null) {
-                this._httpProvider.defaults.headers.common.Authorization = undefined;
+                this._http.defaults.headers.common.Authorization = undefined;
             } else {
-                this._httpProvider.defaults.headers.common.Authorization = "Token " + token;
+                this._http.defaults.headers.common.Authorization = "Token " + token;
             }
             if (sendChange) {
                 for (var i = 0; i < this._tokenChangeListeners.length; i++) {
@@ -38,11 +37,10 @@
             return !!this.token;
         }
 
-        constructor($http: ng.IHttpService, rootScope:any, rerestService:IRerestService, $httpProvider: ng.IHttpProvider) {
+        constructor($http: ng.IHttpService, rootScope:any, rerestService:IRerestService) {
             this._http = $http;
             this._rootScope = rootScope;
             this._rerestService = rerestService;
-            this._httpProvider = $httpProvider;
         }
 
         setCredentials(username: string, password: string, callback:ILoginCallback): void {
@@ -65,7 +63,7 @@
         }
 
         clearCredentials(): void {
-            var url = this._rerestService.getUrl(`tokens/${this.token}/`, {});
+            var url = this._rerestService.getUrl(`tokens/`, {});
             this._http.delete(url);
             this.pToken = null;
             this._username = null;

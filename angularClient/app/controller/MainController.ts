@@ -68,7 +68,7 @@
             }, 100, false);
         }
 
-        get friends(): Map<string, User> {
+        get friends(): { [key: string]: User } {
             return this._userService.friends;
         }
 

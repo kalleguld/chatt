@@ -25,7 +25,6 @@
                 : 0);
 
             var url = this._rerestService.getUrl("messages/", {
-                token: this._tokenService.token,
                 sender: user.username,
                 afterId: lastMessageId,
                 maxResults: (lastMessageId > 0 ? -1 : 20)
@@ -52,7 +51,6 @@
             if (user.outMessage.match(/^\s*$/g)) return;
 
             var url = this._rerestService.getUrl("messages/", {
-                token: this._tokenService.token,
                 receiver: user.username,
                 contents: user.outMessage
             });

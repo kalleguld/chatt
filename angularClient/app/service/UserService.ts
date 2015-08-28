@@ -2,7 +2,7 @@
 
     export class UserService implements IUserService, ITokenChangeListener, IMessageCreatedListener {
 
-        private _friends = new Map<string, User>();
+        private _friends: { [key: string]: User } = {};
         private _friendRequests = {};
 
         private _tokenService: ITokenService;
@@ -23,7 +23,7 @@
             mls.addListener(this);
         }
 
-        get friends(): Map<string, User> {
+        get friends(): { [key: string]: User } {
             return this._friends;
         }
 
@@ -32,11 +32,11 @@
         }
 
         updateFriends(): void {
-            this._friends = new Map<string, User>();
+            this._friends = {};
             if (!this._tokenService.loggedIn) {
                 return;
             }
-            var url = this._rerestService.getUrl("friends/", { token: this._tokenService.token });
+            var url = this._rerestService.getUrl("friends/", {});
             this._http.get<IRUserList>(url).success((data: IRUserList) => {
                 var newFriends = {};
                 for (var i = 0; i < data.users.length; i++) {
@@ -49,7 +49,7 @@
                 }
                 for (var username in this._friends) {
                     if (!(username in newFriends)) {
-                        this._friends.delete(username);
+                        delete this._friends[username];
                     }
                 }
             });
@@ -57,11 +57,11 @@
 
         updateFriendRequests(): void {
             if (!this._tokenService.loggedIn) {
-                this._friendRequests = new Map<string, User>();
+                this._friendRequests = {};
                 return;
             }
 
-            var url = this._rerestService.getUrl("friendrequests/", { token: this._tokenService.token });
+            var url = this._rerestService.getUrl("friendrequests/", {});
             this._http.get<IRUserList>(url).success((data: IRUserList) => {
                 var newRequests = {};
                 for (var i = 0; i < data.users.length; i++) {
@@ -79,8 +79,7 @@
         }
 
         addFriend(username: string): void {
-            var url = this._rerestService.getUrl(`friendrequests/${username}/`,
-                { token: this._tokenService.token });
+            var url = this._rerestService.getUrl(`friendrequests/${username}/`,{});
             this._http.post<IRFriendRequestResponse>(url, {})
                 .success((response) => {
                     if (response.friendAdded) {
@@ -112,9 +111,7 @@
         }
 
         deleteFriendRequest(user: User): void {
-            var url = this._rerestService.getUrl("friendRequests/" + user.username + "/", {
-                token: this._tokenService.token
-            });
+            var url = this._rerestService.getUrl("friendRequests/" + user.username + "/", {});
             this._http.delete(url).success(() => {
                 this.updateFriendRequests();
             });

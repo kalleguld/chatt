@@ -26,7 +26,7 @@ namespace rerest.behaviors
                 {"Access-Control-Allow-Origin", "*"},
                 {"Access-Control-Request-Method", "POST,GET,PUT,DELETE,OPTIONS"},
                 {"Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS"},
-                {"Access-Control-Allow-Headers", "X-Requested-With,Content-Type"}
+                {"Access-Control-Allow-Headers", "X-Requested-With,Content-Type,Authorization"}
             };
 
             endpointDispatcher.DispatchRuntime.MessageInspectors.Add(new HeaderInjectorInspector(requiredHeaders));
@@ -37,10 +37,7 @@ namespace rerest.behaviors
 
         }
 
-        public override Type BehaviorType
-        {
-            get { return typeof(EnableCrossOriginResourceSharingBehavior); }
-        }
+        public override Type BehaviorType => typeof(EnableCrossOriginResourceSharingBehavior);
 
         protected override object CreateBehavior()
         {

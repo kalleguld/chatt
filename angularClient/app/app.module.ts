@@ -11,9 +11,8 @@ module dk.kalleguld.AngularChatt {
         "$http",
         "$rootScope",
         "RerestService",
-        "$httpProvider",
-        (http, rootScope, rerest, httpProvider) =>
-            new TokenService(http, rootScope, rerest, httpProvider)
+        (http, rootScope, rerest) =>
+            new TokenService(http, rootScope, rerest)
     ]);
 
     app.factory("MessageListenerService", [

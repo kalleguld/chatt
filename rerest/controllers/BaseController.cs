@@ -50,6 +50,10 @@ namespace rerest.controllers
             var request = woc.IncomingRequest;
             var headers = request.Headers;
             var authHeader = headers["Authorization"];
+            if (authHeader == null)
+            {
+                throw new JsonError(JsonResponseCode.WrongTokenType).GetException();
+            }
             var authHeaderPattern = new Regex("Token (.*)");
             var match = authHeaderPattern.Match(authHeader);
             if (!match.Success)
