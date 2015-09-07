@@ -1,4 +1,4 @@
-﻿module dk.kalleguld.AngularChatt {
+module dk.kalleguld.AngularChatt {
 
     var app = angular.module(AngularChatt.moduleName);
 

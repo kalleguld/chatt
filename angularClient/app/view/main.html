@@ -5,7 +5,7 @@
         <div class="sidebar-top">
             <h3>Friends of {{::mc.username}}</h3>
 
-            <ul class="user-list friend-list">
+            <ul class="user-list friend-list" ng-show="mc.hasFriends">
                 <li ng-repeat="f in mc.friends"
                     ng-click="mc.selectUser(f)"
                     class="user-list-item"
@@ -19,6 +19,14 @@
                         {{f.unreadMessages}}
                     </div>
                 </li>
+            </ul>
+            <ul ng-hide="mc.hasFriends" class="user-list friend-list">
+                <li class="user-list-item">You have</li>
+                <li class="user-list-item">0 friends.</li>
+                <li class="user-list-item"></li>
+                <li class="user-list-item">Request or</li>
+                <li class="user-list-item">accept new</li>
+                <li class="user-list-item">friends below.</li>
             </ul>
             <div class="friend-requests" ng-show="mc.hasFriendRequests">
                 <h3>Friend Requests</h3>
@@ -36,7 +44,8 @@
             <div class="request-friend">
                 <h3>Request Friend</h3>
                 <div class="flex-row">
-                    <input type="text" ng-model="mc.requestedFriend" id="tf-request-friend"/>
+                    <input type="text" ng-model="mc.requestedFriend" id="tf-request-friend" 
+                           placeholder="Username"/>
                     <button ng-click="mc.requestFriend()" id="btn-request-friend">Request</button>
                 </div>
             </div>
@@ -46,13 +55,13 @@
             </div>
         </div>
     </div>
-    
+
     <div class="chat-window" ng-show="mc.selectedUser">
         <h3>Chat with {{mc.selectedUser.username}}</h3>
         <div class="chat-history" scroll-to-bottom>
             <div class="history-item"
-                ng-repeat="m in mc.selectedUser.messages"
-                ng-class="::m.outgoing ? 'outgoing' : 'incoming'">
+                 ng-repeat="m in mc.selectedUser.messages"
+                 ng-class="::m.outgoing ? 'outgoing' : 'incoming'">
                 <div class="header">
                     <div class="username">{{::mc.selectedUser.username}}</div>
                     <div class="sent-time" title="Sent {{::m.sent}}">
@@ -66,11 +75,14 @@
         </div>
         <div class="footer">
             <textarea id="out-message"
-                      ng-model="mc.selectedUser.outMessage" 
+                      ng-model="mc.selectedUser.outMessage"
                       placeholder="Your Message"></textarea>
             <button ng-click="mc.sendMessage(mc.selectedUser)">
                 Send Message
             </button>
         </div>
+    </div>
+    <div class="help-select-friend" ng-hide="mc.selectedUser">
+        <h3>&#8592; Select a friend to start chatting.</h3>
     </div>
 </div>

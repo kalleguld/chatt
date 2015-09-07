@@ -99,6 +99,13 @@
             return false;
         }
 
+        get hasFriends(): boolean {
+            for (var a in this.friends) {
+                return true;
+            }
+            return false;
+        }
+
         selectUser(user: User): void {
             this._loc.path("/chat/" + user.username);
         }
