@@ -14,10 +14,13 @@
                        ng-model="loginCtrl.password" class="login-field "/>
             </div>
             <div class="flex-row ">
-                
                 <div class="flex "></div>
                 <input type="submit" value="Log In" ng-click="loginCtrl.login()"
                        class="login-button "/>
+            </div>
+            <div class="flex-row ">
+                <div class="flex "></div>
+                <a href="/#/newUser" class="login-link">New User</a>
             </div>
             <div ng-show="loginCtrl.loginFailed">Log in Failed</div>
         </div>
