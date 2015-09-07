@@ -100,6 +100,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\view\newUser.html" />
     <Content Include="app\view\login.html" />
     <Content Include="app\view\main.html" />
     <Content Include="packages.config" />
@@ -912,6 +913,7 @@
     <TypeScriptCompile Include="app\controller\ChatWindowController.ts" />
     <TypeScriptCompile Include="app\controller\LoginController.ts" />
     <TypeScriptCompile Include="app\controller\MainController.ts" />
+    <TypeScriptCompile Include="app\controller\NewUserController.ts" />
     <TypeScriptCompile Include="app\interface\IMessageListenerService.ts" />
     <TypeScriptCompile Include="app\interface\IMessageService.ts" />
     <TypeScriptCompile Include="app\interface\IRerestService.ts" />

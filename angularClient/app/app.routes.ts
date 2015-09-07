@@ -35,6 +35,10 @@
                 templateUrl: "app/view/login.html"
             });
 
+            routeProvider.when("/newUser", {
+                templateUrl: "app/view/newUser.html"
+            });
+
             routeProvider.otherwise({
                 redirectTo: "/login"
             });

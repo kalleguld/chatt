@@ -49,6 +49,14 @@ module dk.kalleguld.AngularChatt {
             new LoginController(scope, rootScope, loc, token)
     ]);
 
+    app.controller("NewUserController", [
+        "UserService",
+        "TokenService",
+        "$location",
+        (userService, tokenService, locationService) =>
+        new NewUserController(userService, tokenService, locationService)
+    ]);
+
     app.controller("MainController", [
         "$scope",
         "$rootScope",

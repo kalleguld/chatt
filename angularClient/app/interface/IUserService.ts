@@ -16,5 +16,11 @@
         addFriend(username: string): void;
 
         deleteFriendRequest(user: User): void;
+
+        createUser(
+            username: string,
+            password: string,
+            fullName: string,
+            callback: (user: IRUserListUser) => void) : void;
     }
 }

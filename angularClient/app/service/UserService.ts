@@ -116,6 +116,22 @@
                 this.updateFriendRequests();
             });
         }
+
+        createUser(
+                username: string,
+                password: string,
+                fullName: string,
+                callback: (user: IRUserListUser) => void):void {
+
+            var url = this._rerestService.getUrl("users/", {
+                username: username,
+                password: password,
+                fullName:fullName
+            });
+            this._http.post(url, {}).success((u:IRUserListUser) => {
+                callback(u);
+            });
+        }
     }
 
     export interface IRUserListUser {
