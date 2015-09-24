@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rerest", "rerest\rerest.csproj", "{0FE757D7-425A-4A89-BB1B-58FCDEE89159}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webc", "webc\webc.csproj", "{864360F4-8629-4D27-839E-03837EA701D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{2F3A436A-E57B-4CF7-BA66-B2C3405BD5AD}"
 EndProject
@@ -32,10 +30,6 @@ Global
 		{0FE757D7-425A-4A89-BB1B-58FCDEE89159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE757D7-425A-4A89-BB1B-58FCDEE89159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE757D7-425A-4A89-BB1B-58FCDEE89159}.Release|Any CPU.Build.0 = Release|Any CPU
-		{864360F4-8629-4D27-839E-03837EA701D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{864360F4-8629-4D27-839E-03837EA701D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{864360F4-8629-4D27-839E-03837EA701D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{864360F4-8629-4D27-839E-03837EA701D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F3A436A-E57B-4CF7-BA66-B2C3405BD5AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F3A436A-E57B-4CF7-BA66-B2C3405BD5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F3A436A-E57B-4CF7-BA66-B2C3405BD5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
