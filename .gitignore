@@ -197,6 +197,6 @@ webc/Scripts/*.map
 
 webc/Scripts/net.js
 
-angularClient/Scripts/**
+#angularClient/Scripts/**
 angularClient/app/**/*.js
 angularClient/app/**/*.js.map

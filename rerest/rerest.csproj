@@ -101,10 +101,6 @@
       <Project>{af07a3fe-7735-47dc-9b16-b7adcb861b4e}</Project>
       <Name>utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WcfWsComms\WcfWsComms.csproj">
-      <Project>{c4c4a035-2a86-44d9-9ab1-c04b2438106e}</Project>
-      <Name>WcfWsComms</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
